@@ -31,15 +31,13 @@
                 <artifactId>franchise-module</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            <!-- 
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>franchise-admin-module-simple-tests</artifactId>
+                <artifactId>franchise-module-tests</artifactId>
                 <version>${project.version}</version>
                 <scope>test</scope>
                 <type>test-jar</type>
             </dependency>
-            -->
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>franchise-admin-webapp</artifactId>
@@ -66,7 +64,7 @@
 
     <modules>
         <module>module-franchise</module>
-        <!--<module>module-simple-tests</module>-->
+        <module>module-franchise-tests</module>
         <module>webapp</module>
         <module>webapp-tests</module>
     </modules>

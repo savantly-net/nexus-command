@@ -58,6 +58,12 @@ public class FranchiseLocations {
         return item;
     }
 
+    @Action(semantics = SemanticsOf.SAFE)
+    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+    public FranchiseLocation findByNameExact(final String search) {
+        return repository.findByNameContainingIgnoreCase(search).stream().findFirst().orElse(null);
+    }
+
     public Long default0Create() {
         return repository.getMaxId().orElse(0L) + 1;
     }

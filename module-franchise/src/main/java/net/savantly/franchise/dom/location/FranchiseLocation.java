@@ -62,8 +62,9 @@ import net.savantly.franchise.types.PhoneNumber;
 @javax.persistence.Entity
 @javax.persistence.Table(
 	schema=FranchiseModule.SCHEMA,
+    name="franchise_location",
     uniqueConstraints = {
-        @javax.persistence.UniqueConstraint(name = "franchiselocation__name__UNQ", columnNames = {"NAME"})
+        @javax.persistence.UniqueConstraint(name = "franchise_location__name__UNQ", columnNames = {"NAME"})
     }
 )
 @javax.persistence.EntityListeners(CausewayEntityListener.class)
@@ -102,7 +103,7 @@ public class FranchiseLocation implements Comparable<FranchiseLocation>  {
     
     @Title
     @Name
-    @Column(length = Name.MAX_LEN, nullable = false)
+    @Column(name="name", length = Name.MAX_LEN, nullable = false)
     @Property(editing = Editing.DISABLED)
     @Getter @Setter @ToString.Include
     @PropertyLayout(fieldSetId = "name", sequence = "1.1")
