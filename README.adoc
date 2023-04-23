@@ -1,22 +1,46 @@
-= SimpleApp
+= Franchise Admin
 :toc:
 :toc-placement!:
 
-image:https://github.com/apache/causeway-app-simpleapp/workflows/Build%20w/%20Maven%20+%20Jdk%208/badge.svg[]
-image:https://github.com/apache/causeway-app-simpleapp/workflows/Build%20w/%20Maven%20+%20Jdk%2015/badge.svg[]
 
-This is a simple link:https://causeway.apache.org[Apache Causeway] application, structured so that it can be used as a starting point for developing your own applications.
+This is an link:https://causeway.apache.org[Apache Causeway] application, using best practices and conventions.  
+It takes advantage of the rapid development capabilities of Causeway, and provides enterprise-grade features.  
+
+* a domain-driven design
+* a layered architecture
+* a modular architecture
+* a security model
+* a command pattern
+* a repository pattern
+* a service layer
+* a view model layer
+* a view model factory
+* a view model repository
+* a view model service
+* an event bus
+* scheduled jobs
+* rich domain APIs
+* a REST API
+* auditing
+* exection logging
+* sql logging
+* session logging
+* sql migrations
+* automated testing
+* a Docker image
+
 
 It consists of:
 
-* a single module, which you can refactor for your own domain, or take a copy of in order to ensure that your application is properly modular
-* configuration to bring in some of the more commonly used extensions: secman, command log, audit trail, execution log, session logger, flyway,quartz and excel download.
+* a "Franchise Module", which contains the domain objects and services for managing the data for a multi-site and/or franchise business.
+* a "Webapp" module, which contains the bootstrapping classes, along with application-level scoped services and home page.
 
-You can easily remove these extensions (or add others) in the `AppManifest`.
+You can use the webapp as a starting point for your own application, or you can use the Franchise Module in your own Webapp project and customize it to your needs.  The Franchise Module is a standalone module that can be used in any webapp project.
+
 
 [TIP]
 ====
-If all you want is get a feel for what the framework is all about, then take a look at the link:https://github.com/apache/causeway-app-helloworld[HelloWorld] starter app, which has the bare minimum of configuration.
+TODO: add a link to the demo site here
 ====
 
 toc::[]
@@ -27,17 +51,15 @@ toc::[]
 
 ** Java 11 LTS (eg link:https://adoptopenjdk.net/[Adopt OpenJDK] distribution)
 ** Maven 3.6 or later (http://maven.apache.org/download.cgi[download])
-* download and unzip
+* Clone the repository:
 +
 [source,bash]
 ----
-APP=simpleapp
-BRANCH=master
+git clone git@github.com:savantly-net/franchise-admin.git
+# or
+git clone https://github.com/savantly-net/franchise-admin.git
 
-REPO=causeway-app-$APP
-curl "https://codeload.github.com/apache/$REPO/zip/$BRANCH" | jar xv
-mv $REPO-$BRANCH $REPO
-cd $REPO
+cd franchise-admin
 ----
 
 * Build using Maven:
@@ -72,9 +94,14 @@ mvn -pl webapp spring-boot:run
 *** username: `secman-admin`
 *** password: `pass`
 
-** or as a regular user:
+** as a franchise admin user:
 
 *** username: `sven`
+*** password: `pass`
+
+** or as a franchisee user:
+
+*** username: `franchisee`
 *** password: `pass`
 
 +
@@ -105,16 +132,16 @@ The following table explains the contents of each of the directories:
 |Directory
 |Description
 
-|`module-simple`
-|Holds the "simple" module, consisting of the `SimpleObject` entity and supporting services.
+|`module-franchise`
+|Holds the "franchise" module, consisting of the `FranchiseLocation` entity and supporting services, among several other related entities.
 
 [TIP]
 ====
 Larger applications should consist of multiple modules; each such module can be copied from this starter module.
 ====
 
-|`module-simple-tests`
-|Holds the unit- and integration tests for `module-simple`.
+|`module-franchise-tests`
+|Holds the unit- and integration tests for `module-franchise`.
 
 
 |`webapp`
@@ -154,22 +181,6 @@ Change "XXX" to the value that `${spring-framework.version}` resolves to in the 
 ----
 -javaagent:lib/spring-instrument.jar
 ----
-
-
-
-//This version of the application uses DataNucleus as its ORM, which requires that any entities are "enhanced", a post-compile process.
-//
-//Normally this is done as part of a "mvn clean install", but the entities can also be enhanced explicity using:
-//
-//[source,bash]
-//----
-//mvn -pl module-simple datanucleus:enhance -o
-//----
-//
-//This is useful to know if the application or integration test fails to bootstrap, complaining of "unenhanced entities".
-//
-//TIP: You can also use `enhance-all.sh`
-
 
 == Testing
 
