@@ -1,10 +1,5 @@
 package domainapp.webapp;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.PropertySources;
-
 import org.apache.causeway.applib.CausewayModuleApplibChangeAndExecutionLoggers;
 import org.apache.causeway.applib.CausewayModuleApplibMixins;
 import org.apache.causeway.core.config.presets.CausewayPresets;
@@ -25,9 +20,16 @@ import org.apache.causeway.testing.fixtures.applib.CausewayModuleTestingFixtures
 import org.apache.causeway.testing.h2console.ui.CausewayModuleTestingH2ConsoleUi;
 import org.apache.causeway.valuetypes.asciidoc.metamodel.CausewayModuleValAsciidocMetaModel;
 import org.apache.causeway.valuetypes.asciidoc.ui.wkt.CausewayModuleValAsciidocUiWkt;
+import org.apache.causeway.valuetypes.markdown.metamodel.CausewayModuleValMarkdownMetaModel;
+import org.apache.causeway.valuetypes.markdown.persistence.jpa.CausewayModuleValMarkdownPersistenceJpa;
+import org.apache.causeway.valuetypes.markdown.ui.wkt.CausewayModuleValMarkdownUiWkt;
 import org.apache.causeway.viewer.restfulobjects.jaxrsresteasy.CausewayModuleViewerRestfulObjectsJaxrsResteasy;
 import org.apache.causeway.viewer.wicket.applib.CausewayModuleViewerWicketApplibMixins;
 import org.apache.causeway.viewer.wicket.viewer.CausewayModuleViewerWicketViewer;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 
 import domainapp.webapp.application.ApplicationModule;
 import domainapp.webapp.custom.CustomModule;
@@ -67,6 +69,14 @@ import domainapp.webapp.quartz.QuartzModule;
         ApplicationModule.class,
         CustomModule.class,
         QuartzModule.class,
+
+
+        // Metamodel
+        CausewayModuleValMarkdownMetaModel.class,
+        // UI (Wicket Viewer)
+        CausewayModuleValMarkdownUiWkt.class,
+        // Persistence/Converters (JPA)
+        CausewayModuleValMarkdownPersistenceJpa.class,
 
         // discoverable fixtures
         //DomainAppDemo.class

@@ -31,23 +31,20 @@
                 <mb3:serviceAction objectType="savantly.franchise.FranchiseLocations" id="create"/>
                 <mb3:serviceAction objectType="savantly.franchise.FranchiseLocations" id="listAll"/>
                 <mb3:serviceAction objectType="savantly.franchise.FranchiseLocations" id="findByName"/>
+                <mb3:serviceAction objectType="savantly.franchise.FranchiseLocations" id="findByNameExact"/>
+            </mb3:section>
+            <mb3:section>
+                <mb3:named>Member Roles</mb3:named>
+                <mb3:serviceAction objectType="savantly.franchise.FranchiseLocationMemberRoles" id="create"/>
+                <mb3:serviceAction objectType="savantly.franchise.FranchiseLocationMemberRoles" id="listAll"/>
             </mb3:section>
         </mb3:menu>
         <mb3:menu>
             <mb3:named>Configuration</mb3:named>
             <mb3:section>
-                <mb3:named>Homepage</mb3:named>
-                <mb3:serviceAction objectType="public.HomepageVersions" id="create">
-                    <cpt:named>New Homepage Version</cpt:named>
-                </mb3:serviceAction>
-                <mb3:serviceAction objectType="public.HomepageVersions" id="listAll">
-                    <cpt:named>List Homepage Versions</cpt:named>
-                </mb3:serviceAction>
-            </mb3:section>
-            <mb3:section>
-                <mb3:named>Location Member Roles</mb3:named>
-                <mb3:serviceAction objectType="savantly.franchise.FranchiseLocationMemberRoles" id="create"/>
-                <mb3:serviceAction objectType="savantly.franchise.FranchiseLocationMemberRoles" id="listAll"/>
+                <mb3:named>Homepage Version</mb3:named>
+                <mb3:serviceAction objectType="public.HomepageVersions" id="create" />
+                <mb3:serviceAction objectType="public.HomepageVersions" id="listAll" />
             </mb3:section>
         </mb3:menu>
         <mb3:menu unreferencedActions="true">

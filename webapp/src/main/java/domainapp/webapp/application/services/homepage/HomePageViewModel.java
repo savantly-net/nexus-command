@@ -33,13 +33,13 @@ public class HomePageViewModel {
 
     @Property
     @PropertyLayout(named = "Body")
-    public Markup getBody() {
-        return getLatestPublishedVersion().map(v -> createMarkup(v.getBodyAsMarkdown())).orElse(defaultMarkup());
+    public Markdown getBody() {
+        return getLatestPublishedVersion().map(v -> v.getBody()).orElse(defaultMarkup());
     }
 
     @Programmatic
-    private Markup defaultMarkup() {
-        return createMarkup(Markdown.valueOf("## Welcome to the homepage"));
+    private Markdown defaultMarkup() {
+        return Markdown.valueOf("## Welcome to the homepage");
     }
 
     private Markup createMarkup(Markdown body) {

@@ -92,27 +92,30 @@
             <artifactId>causeway-testing-h2console-ui</artifactId>
         </dependency>
 
+        <!-- MARKDOWN SUPPORT -->
         <dependency>
             <groupId>org.apache.causeway.valuetypes</groupId>
             <artifactId>causeway-valuetypes-markdown-applib</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.apache.causeway.valuetypes</groupId>
             <artifactId>causeway-valuetypes-markdown-metamodel</artifactId>
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/org.apache.causeway.valuetypes/causeway-valuetypes-markdown-ui -->
+        <dependency>
+            <groupId>org.apache.causeway.valuetypes</groupId>
+            <artifactId>causeway-valuetypes-markdown-ui-wkt</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.apache.causeway.valuetypes</groupId>
             <artifactId>causeway-valuetypes-markdown-persistence-jpa</artifactId>
         </dependency>
-
-<!-- https://mvnrepository.com/artifact/com.vladsch.flexmark/flexmark-all -->
-<dependency>
-    <groupId>com.vladsch.flexmark</groupId>
-    <artifactId>flexmark-all</artifactId>
-    <version>0.64.0</version>
-</dependency>
+        <!-- https://mvnrepository.com/artifact/com.vladsch.flexmark/flexmark-all -->
+        <dependency>
+            <groupId>com.vladsch.flexmark</groupId>
+            <artifactId>flexmark-all</artifactId>
+            <version>0.64.0</version>
+        </dependency>
 
 
 
