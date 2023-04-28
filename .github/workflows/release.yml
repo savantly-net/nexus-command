@@ -1,0 +1,89 @@
+name: Production Release
+on:
+  push:
+    branches:
+      - 'main'
+
+env:
+  PROJ_NAME: franchise-admin
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Caching
+      - name: Cache Maven deps
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      # Setup Environments
+      - name: Setup Java
+        uses: actions/setup-java@v2.5.0
+        with:
+          distribution: 'temurin'
+          java-version: '11' # The JDK version to make available on the path.
+          java-package: jdk # (jre, jdk, or jdk+fx) - defaults to jdk
+          architecture: x64 # (x64 or x86) - defaults to x64
+
+      # Setup for Docker build
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      # Cache Docker layers
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      
+      - name: Prepare Docker
+        id: prep_docker
+        env:
+          IMAGE_REPOSITORY: savantly/${{ env.PROJ_NAME }}
+        run: |
+          IMAGE_URL=$IMAGE_REPOSITORY:$GITHUB_REF_NAME.${{ github.sha }}
+          LATEST_TAG=$IMAGE_REPOSITORY:latest
+          TAGS=$IMAGE_URL,$LATEST_TAG
+          echo "::set-output name=image::$IMAGE_URL"
+          echo ::set-output name=version::${VERSION}
+          echo ::set-output name=latest_tag::${LATEST_TAG}
+          echo ::set-output name=tags::${TAGS}
+          echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+      
+      # Install artifacts locally for the docker build
+      # Also runs unit/integration tests
+      - name: Install artifacts locally
+        run: mvn install
+
+      # Build the docker image
+      - name: Build Server Projects
+        run: mvn -pl webapp jib:dockerBuild -Dimage=${{ steps.prep_docker.outputs.image }} -Dspring.profiles.active=POSTGRESQL
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Tag and push image to Docker Hub
+        id: push-image
+        run:  |
+          docker tag ${{ steps.prep_docker.outputs.image }} ${{ steps.prep_docker.outputs.latest_tag }}
+          docker push ${{ steps.prep_docker.outputs.image }}
+          docker push ${{ steps.prep_docker.outputs.latest_tag }}
+      
