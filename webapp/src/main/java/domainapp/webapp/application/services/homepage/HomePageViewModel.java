@@ -32,7 +32,7 @@ public class HomePageViewModel {
     }
 
     @Property
-    @PropertyLayout(named = "Body")
+    @PropertyLayout(named = "Body", cssClass = "hidden-label")
     public Markdown getBody() {
         return getLatestPublishedVersion().map(v -> v.getBody()).orElse(defaultMarkup());
     }
