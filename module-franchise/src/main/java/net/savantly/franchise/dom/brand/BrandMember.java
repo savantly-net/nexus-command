@@ -1,12 +1,10 @@
-package net.savantly.franchise.dom.group;
+package net.savantly.franchise.dom.brand;
 
 import static org.apache.causeway.applib.annotation.SemanticsOf.NON_IDEMPOTENT_ARE_YOU_SURE;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Transient;
@@ -35,7 +33,7 @@ import lombok.ToString;
 import lombok.val;
 import net.savantly.franchise.FranchiseModule;
 
-@Named(FranchiseModule.NAMESPACE + ".FranchiseGroupMember")
+@Named(FranchiseModule.NAMESPACE + ".BrandMember")
 @javax.persistence.Entity
 @javax.persistence.Table(
 		schema=FranchiseModule.SCHEMA
@@ -46,15 +44,15 @@ import net.savantly.franchise.FranchiseModule;
 	@NoArgsConstructor(access = AccessLevel.PUBLIC)
 	@XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 	@ToString(onlyExplicitlyIncluded = true)
-public class FranchiseGroupMember {
+public class BrandMember {
 
     @Inject @Transient RepositoryService repositoryService;
     @Inject @Transient TitleService titleService;
     @Inject @Transient MessageService messageService;
     
-    public static FranchiseGroupMember withRequiredFields(FranchiseGroup group, FranchiseGroupMemberRole memberRole, HasUsername username) {
-        val entity = new FranchiseGroupMember();
-        entity.setGroup(group);
+    public static BrandMember withRequiredFields(Brand brand, BrandMemberRole memberRole, HasUsername username) {
+        val entity = new BrandMember();
+        entity.setBrand(brand);
         entity.setMemberRole(memberRole);
         entity.setUserName(username.getUsername());
         return entity;
@@ -75,15 +73,14 @@ public class FranchiseGroupMember {
 
     @Title
     @Getter @Setter
-	@Enumerated(EnumType.STRING)
-    private FranchiseGroupMemberRole memberRole;
+    private BrandMemberRole memberRole;
 
     @Title
     @Getter @Setter
 	private String userName;
 
     @Getter @Setter
-	private FranchiseGroup group;
+	private Brand brand;
     
     @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
     @ActionLayout(
@@ -91,7 +88,7 @@ public class FranchiseGroupMember {
             describedAs = "Deletes this object from the persistent datastore")
     public void delete() {
         final String title = titleService.titleOf(this);
-        this.group.getMembers().remove(this);
+        this.brand.getMembers().remove(this);
         repositoryService.removeAndFlush(this);
         messageService.informUser(String.format("'%s' deleted", title));
     }

@@ -1,4 +1,4 @@
-package net.savantly.franchise.dom.group;
+package net.savantly.franchise.dom.brand;
 
 import static org.apache.causeway.applib.annotation.SemanticsOf.NON_IDEMPOTENT_ARE_YOU_SURE;
 
@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
+import org.apache.causeway.applib.annotation.Bounding;
 import org.apache.causeway.applib.annotation.Collection;
 import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.DomainObjectLayout;
@@ -46,31 +47,31 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
 import net.savantly.franchise.FranchiseModule;
-import net.savantly.franchise.dom.brand.Brand;
+import net.savantly.franchise.dom.brandAddress.BrandAddress;
+import net.savantly.franchise.dom.brandAddress.BrandAddressType;
 import net.savantly.franchise.dom.franchiseUser.FranchiseUser;
 import net.savantly.franchise.dom.franchiseUser.FranchiseUsers;
-import net.savantly.franchise.dom.groupAddress.FranchiseGroupAddress;
-import net.savantly.franchise.dom.groupAddress.FranchiseGroupAddressType;
+import net.savantly.franchise.dom.group.FranchiseGroup;
 import net.savantly.franchise.types.EmailAddress;
 import net.savantly.franchise.types.Name;
 import net.savantly.franchise.types.Notes;
 import net.savantly.franchise.types.PhoneNumber;
 
-@Named(FranchiseModule.NAMESPACE + ".FranchiseGroup")
+@Named(FranchiseModule.NAMESPACE + ".Brand")
 @javax.persistence.Entity
 @javax.persistence.Table(
 	schema=FranchiseModule.SCHEMA,
     uniqueConstraints = {
-        @javax.persistence.UniqueConstraint(name = "franchisegroup__name__UNQ", columnNames = {"NAME"})
+        @javax.persistence.UniqueConstraint(name = "brand__name__UNQ", columnNames = {"NAME"})
     }
 )
 @javax.persistence.EntityListeners(CausewayEntityListener.class)
-@DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.ENABLED)
-@DomainObjectLayout(cssClassFa = "building")
+@DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.ENABLED, bounding = Bounding.BOUNDED)
+@DomainObjectLayout(cssClassFa = "copyright")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
-public class FranchiseGroup implements Comparable<FranchiseGroup>  {
+public class Brand implements Comparable<Brand>  {
 	
 
     @Inject @Transient RepositoryService repositoryService;
@@ -78,8 +79,8 @@ public class FranchiseGroup implements Comparable<FranchiseGroup>  {
     @Inject @Transient MessageService messageService;
     @Inject @Transient FranchiseUsers userRepository;
     
-    public static FranchiseGroup withName(String name) {
-        val entity = new FranchiseGroup();
+    public static Brand withName(String name) {
+        val entity = new Brand();
         entity.setName(name);
         return entity;
     }
@@ -89,7 +90,6 @@ public class FranchiseGroup implements Comparable<FranchiseGroup>  {
     @Id
     @GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    @Getter
     private Long id;
 
     @javax.persistence.Version
@@ -105,11 +105,6 @@ public class FranchiseGroup implements Comparable<FranchiseGroup>  {
     @Getter @Setter @ToString.Include
     @PropertyLayout(fieldSetId = "name", sequence = "1")
     private String name;
-
-    @Property(editing = Editing.DISABLED)
-    @PropertyLayout(fieldSetId = "name", sequence = "1.1")
-    @Getter @Setter
-    private Brand brand;
 
     @PhoneNumber
     @Column(length = PhoneNumber.MAX_LEN, nullable = true)
@@ -180,36 +175,32 @@ public class FranchiseGroup implements Comparable<FranchiseGroup>  {
     
     @Collection
     @Getter @Setter
-	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "group")
-	private Set<FranchiseGroupMember> members = new HashSet<>();
+	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "brand")
+	private Set<BrandMember> members = new HashSet<>();
 
     @Collection
     @Getter @Setter
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "group")
-    private Set<FranchiseGroupAddress> addresses = new HashSet<>();
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "brand")
+    private Set<BrandAddress> addresses = new HashSet<>();
     
+
+    @Collection
+    @Getter @Setter
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "brand")
+    private Set<FranchiseGroup> groups = new HashSet<>();
 
 	
 	// *** IMPLEMENTATIONS ****
 
-    private final static Comparator<FranchiseGroup> comparator =
-            Comparator.comparing(FranchiseGroup::getName);
+    private final static Comparator<Brand> comparator =
+            Comparator.comparing(Brand::getName);
 
     @Override
-    public int compareTo(final FranchiseGroup other) {
+    public int compareTo(final Brand other) {
         return comparator.compare(this, other);
     }
 
     // *** ACTIONS ***
-
-    @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
-    @ActionLayout(
-        associateWith = "brand", 
-        describedAs = "Update which Brand this Franchisee belongs to")
-    public FranchiseGroup updateBrand(Brand brand) {
-        setBrand(brand);
-        return this;
-    }
 
     @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
     @ActionLayout(
@@ -222,17 +213,17 @@ public class FranchiseGroup implements Comparable<FranchiseGroup>  {
     
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
     @ActionLayout(associateWith = "members", promptStyle = PromptStyle.DIALOG)
-    public FranchiseGroup addMember(
+    public Brand addMember(
     		@ParameterLayout(named = "User") final FranchiseUser user, 
-    		@ParameterLayout(named = "Role") final FranchiseGroupMemberRole role) {
-    	members.add(FranchiseGroupMember.withRequiredFields(this, role, user));
+    		@ParameterLayout(named = "Role") final BrandMemberRole role) {
+    	members.add(BrandMember.withRequiredFields(this, role, user));
         return this;
     }
 
     
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
     @ActionLayout(associateWith = "members", promptStyle = PromptStyle.DIALOG)
-    public FranchiseGroup removeMember(
+    public Brand removeMember(
             @ParameterLayout(named = "User") final FranchiseUser user) {
         members.removeIf(m -> {
             return m.getUserName().equals(user.getUsername());
@@ -245,11 +236,36 @@ public class FranchiseGroup implements Comparable<FranchiseGroup>  {
     
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
     @ActionLayout(associateWith = "addresses", promptStyle = PromptStyle.DIALOG)
-    public FranchiseGroupAddress addAddress(
-            @ParameterLayout(named = "Address Type") final FranchiseGroupAddressType addressType) {
-        FranchiseGroupAddress address = FranchiseGroupAddress.withRequiredFields(this, addressType);
+    public BrandAddress addAddress(
+            @ParameterLayout(named = "Address Type") final BrandAddressType addressType) {
+        BrandAddress address = BrandAddress.withRequiredFields(this, addressType);
         addresses.add(address);
         return address;
+    }
+
+
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
+    @ActionLayout(associateWith = "groups", promptStyle = PromptStyle.DIALOG)
+    public Brand addGroup(
+    		@ParameterLayout(named = "Franchisee") final FranchiseGroup group) {
+            groups.add(group);
+            group.setBrand(this);
+        return this;
+    }
+    public List<FranchiseGroup> choices0AddGroup() {
+        return repositoryService.allInstances(FranchiseGroup.class);
+    }
+
+    
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
+    @ActionLayout(associateWith = "groups", promptStyle = PromptStyle.DIALOG)
+    public Brand removeGroup(
+            @ParameterLayout(named = "Franchisee") final FranchiseGroup group) {
+        groups.removeIf(g -> g.getId().equals(group.getId()));
+        return this;
+    }
+    public Set<FranchiseGroup> choices0RemoveGroup() {
+        return this.getGroups();
     }
 }
 
