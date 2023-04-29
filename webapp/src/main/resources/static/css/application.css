@@ -6,3 +6,8 @@ body > nav > div > a > img {
 td.fc-day a.fc-daygrid-event {
     cursor: pointer;
 }
+
+
+.hidden-label label {
+    display: none;
+}
