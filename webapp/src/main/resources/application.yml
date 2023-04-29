@@ -64,7 +64,7 @@ causeway:
         # https://stackoverflow.com/a/38983935/56880
         version: @project.version@
       credit:
-        - url:  https://causeway.apache.org
+        - url:  https://savantly.net
           image: images/apache-causeway/logo-65x48.png
           name: Savantly LLC
     wicket:
