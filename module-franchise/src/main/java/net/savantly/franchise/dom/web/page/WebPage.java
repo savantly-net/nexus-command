@@ -157,7 +157,7 @@ public class WebPage implements Comparable<WebPage>  {
     @Action(semantics = SemanticsOf.IDEMPOTENT)
     @ActionLayout(named = "Create Block (location specific)", associateWith = "pageBlocks")
     public WebPage createPageBlockLocationSpecific(final FranchiseLocation location, final BlockType blockType, final String name) {
-        val block = Block.withRequiredFields(name, blockType, location);
+        val block = this.repositoryService.persistAndFlush(Block.withRequiredFields(name, blockType, location));
         val pageBlock = PageBlock.withRequiredFields(this, block);
         getPageBlocks().add(pageBlock);
         return this;
