@@ -52,6 +52,8 @@ import net.savantly.franchise.dom.franchiseUser.FranchiseUser;
 import net.savantly.franchise.dom.franchiseUser.FranchiseUsers;
 import net.savantly.franchise.dom.groupAddress.FranchiseGroupAddress;
 import net.savantly.franchise.dom.groupAddress.FranchiseGroupAddressType;
+import net.savantly.franchise.dom.location.FranchiseLocation;
+import net.savantly.franchise.dom.location.FranchiseLocations;
 import net.savantly.franchise.types.EmailAddress;
 import net.savantly.franchise.types.Name;
 import net.savantly.franchise.types.Notes;
@@ -78,6 +80,7 @@ public class FranchiseGroup implements Comparable<FranchiseGroup>  {
     @Inject @Transient TitleService titleService;
     @Inject @Transient MessageService messageService;
     @Inject @Transient FranchiseUsers userRepository;
+    @Inject @Transient FranchiseLocations franchiseLocations;
     
     public static FranchiseGroup withName(Brand brand, String name) {
         val entity = new FranchiseGroup();
@@ -191,6 +194,10 @@ public class FranchiseGroup implements Comparable<FranchiseGroup>  {
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "group")
     private Set<FranchiseGroupAddress> addresses = new HashSet<>();
     
+    @Collection
+    @Getter @Setter
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "group")
+    private Set<FranchiseLocation> locations = new HashSet<>();
 
 	
 	// *** IMPLEMENTATIONS ****
@@ -253,6 +260,14 @@ public class FranchiseGroup implements Comparable<FranchiseGroup>  {
         FranchiseGroupAddress address = FranchiseGroupAddress.withRequiredFields(this, addressType);
         addresses.add(address);
         return address;
+    }
+
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
+    @ActionLayout(associateWith = "locations", promptStyle = PromptStyle.DIALOG)
+    public FranchiseLocation createLocation(final String name) {
+        FranchiseLocation location = this.franchiseLocations.create(this, name);
+        locations.add(location);
+        return location;
     }
 }
 

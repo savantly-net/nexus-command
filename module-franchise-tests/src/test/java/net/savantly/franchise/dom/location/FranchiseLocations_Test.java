@@ -1,9 +1,15 @@
 package net.savantly.franchise.dom.location;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.apache.causeway.applib.services.repository.RepositoryService;
+import org.apache.causeway.persistence.jpa.applib.services.JpaSupportService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -12,13 +18,6 @@ import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.when;
-
-import org.apache.causeway.applib.services.repository.RepositoryService;
-import org.apache.causeway.persistence.jpa.applib.services.JpaSupportService;
 
 @ExtendWith(MockitoExtension.class)
 class FranchiseLocations_Test {
@@ -49,7 +48,7 @@ class FranchiseLocations_Test {
             ).then((Answer<FranchiseLocation>) invocation -> invocation.getArgument(0));
 
             // when
-            final FranchiseLocation obj = objects.create(someName);
+            final FranchiseLocation obj = objects.create(null, someName);
 
             // then
             assertThat(obj).isNotNull();

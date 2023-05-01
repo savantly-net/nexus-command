@@ -33,7 +33,7 @@ class Smoke_IntegTest extends WebAppIntegTestAbstract {
 
 
         // when
-        final FranchiseLocation fred = wrap(menu).create("Fred");
+        final FranchiseLocation fred = wrap(menu).create(null, "Fred");
         transactionService.flushTransaction();
 
         // then
@@ -43,7 +43,7 @@ class Smoke_IntegTest extends WebAppIntegTestAbstract {
 
 
         // when
-        final FranchiseLocation bill = wrap(menu).create("Bill");
+        final FranchiseLocation bill = wrap(menu).create(null, "Bill");
         transactionService.flushTransaction();
 
         // then

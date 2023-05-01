@@ -54,7 +54,7 @@ implements Persona<FranchiseLocation, FranchiseLocation_persona.Builder> {
         @Override
         protected FranchiseLocation buildResult(final ExecutionContext ec) {
 
-            val simpleObject = wrap(simpleObjects).create(persona.name);
+            val simpleObject = wrap(simpleObjects).create(null, persona.name);
             simpleObject.setNotes(persona.notes);
 
             return simpleObject;

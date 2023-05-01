@@ -51,6 +51,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
 import net.savantly.franchise.FranchiseModule;
+import net.savantly.franchise.dom.group.FranchiseGroup;
 import net.savantly.franchise.dom.group.FranchiseGroupRepository;
 import net.savantly.franchise.dom.market.FranchiseMarket;
 import net.savantly.franchise.types.EmailAddress;
@@ -84,6 +85,14 @@ public class FranchiseLocation implements Comparable<FranchiseLocation>  {
     public static FranchiseLocation withRequiredFields(String name) {
         val entity = new FranchiseLocation();
         entity.setName(name);
+        return entity;
+    }
+
+
+    public static FranchiseLocation withRequiredFields(FranchiseGroup group, String name) {
+        val entity = new FranchiseLocation();
+        entity.setName(name);
+        entity.setGroup(group);
         return entity;
     }
 
@@ -215,6 +224,10 @@ public class FranchiseLocation implements Comparable<FranchiseLocation>  {
     
     // *** RELATIONS ***
 
+	@JoinColumn(name = "franchise_group_id", referencedColumnName = "id", nullable = true)
+	@Getter @Setter
+    @PropertyLayout(fieldSetId = "name", sequence = "1")
+	private FranchiseGroup group;
 
 	@JoinColumn(name = "marketId", referencedColumnName = "id")
 	@Getter @Setter

@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.val;
+import net.savantly.franchise.dom.group.FranchiseGroups;
 import net.savantly.franchise.fixture.location.FranchiseLocation_persona;
 import net.savantly.franchise.integtests.FranchiseModuleIntegTestAbstract;
 
@@ -29,6 +30,8 @@ public class FranchiseLocations_IntegTest extends FranchiseModuleIntegTestAbstra
 
     @Inject
     FranchiseLocations menu;
+    @Inject
+    FranchiseGroups groups;
 
     @Nested
     public static class listAll extends FranchiseLocations_IntegTest {
@@ -64,7 +67,7 @@ public class FranchiseLocations_IntegTest extends FranchiseModuleIntegTestAbstra
         @Test
         public void happyCase() {
 
-            wrap(menu).create("Faz");
+            wrap(menu).create(null, "Faz");
 
             // then
             final List<FranchiseLocation> all = wrap(menu).listAll();
@@ -84,7 +87,7 @@ public class FranchiseLocations_IntegTest extends FranchiseModuleIntegTestAbstra
                 // expect
                 Throwable cause = assertThrows(Throwable.class, () -> {
                     // when
-                    wrap(menu).create("Fizz");
+                    wrap(menu).create(null, "Fizz");
                     transactionService.flushTransaction();
                 });
 

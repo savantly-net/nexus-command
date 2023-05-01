@@ -15,6 +15,9 @@ import org.apache.causeway.applib.annotation.BookmarkPolicy;
 import org.apache.causeway.applib.annotation.DomainService;
 import org.apache.causeway.applib.annotation.MinLength;
 import org.apache.causeway.applib.annotation.NatureOfService;
+import org.apache.causeway.applib.annotation.Optionality;
+import org.apache.causeway.applib.annotation.Parameter;
+import org.apache.causeway.applib.annotation.ParameterLayout;
 import org.apache.causeway.applib.annotation.PriorityPrecedence;
 import org.apache.causeway.applib.annotation.Programmatic;
 import org.apache.causeway.applib.annotation.PromptStyle;
@@ -23,6 +26,7 @@ import org.apache.causeway.applib.services.repository.RepositoryService;
 import org.apache.causeway.persistence.jpa.applib.services.JpaSupportService;
 
 import net.savantly.franchise.FranchiseModule;
+import net.savantly.franchise.dom.group.FranchiseGroup;
 import net.savantly.franchise.types.Name;
 
 @Named(FranchiseModule.NAMESPACE + ".FranchiseLocations")
@@ -41,8 +45,9 @@ public class FranchiseLocations {
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR)
     public FranchiseLocation create(
+            @Parameter(optionality = Optionality.OPTIONAL) final FranchiseGroup franchisee,
             @Name final String name) {
-        return repositoryService.persist(FranchiseLocation.withRequiredFields(name));
+        return repositoryService.persist(FranchiseLocation.withRequiredFields(franchisee, name));
     }
 
 
