@@ -16,6 +16,7 @@ import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -78,9 +79,10 @@ public class FranchiseGroup implements Comparable<FranchiseGroup>  {
     @Inject @Transient MessageService messageService;
     @Inject @Transient FranchiseUsers userRepository;
     
-    public static FranchiseGroup withName(String name) {
+    public static FranchiseGroup withName(Brand brand, String name) {
         val entity = new FranchiseGroup();
         entity.setName(name);
+        entity.setBrand(brand);
         return entity;
     }
 
@@ -106,6 +108,7 @@ public class FranchiseGroup implements Comparable<FranchiseGroup>  {
     @PropertyLayout(fieldSetId = "name", sequence = "1")
     private String name;
 
+    @JoinColumn(name = "brand_id", nullable = false)
     @Property(editing = Editing.DISABLED)
     @PropertyLayout(fieldSetId = "name", sequence = "1.1")
     @Getter @Setter

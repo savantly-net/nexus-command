@@ -33,7 +33,7 @@ public class FranchiseMarkets {
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR)
     public FranchiseMarket create(
-    		final Long id,
+    		final String id,
             @Name final String name) {
         return repositoryService.persist(FranchiseMarket.withRequiredFields(id, name));
     }

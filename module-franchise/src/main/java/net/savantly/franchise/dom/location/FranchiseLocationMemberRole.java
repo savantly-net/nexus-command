@@ -47,6 +47,7 @@ public class FranchiseLocationMemberRole {
     
     @Id
     @GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
+    @PropertyLayout(fieldSetId = "metadata")
     @Column(name = "id", nullable = false)
     private Long id;
 

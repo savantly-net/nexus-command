@@ -52,6 +52,8 @@ import net.savantly.franchise.dom.brandAddress.BrandAddressType;
 import net.savantly.franchise.dom.franchiseUser.FranchiseUser;
 import net.savantly.franchise.dom.franchiseUser.FranchiseUsers;
 import net.savantly.franchise.dom.group.FranchiseGroup;
+import net.savantly.franchise.dom.group.FranchiseGroups;
+import net.savantly.franchise.dom.web.site.WebSite;
 import net.savantly.franchise.types.EmailAddress;
 import net.savantly.franchise.types.Name;
 import net.savantly.franchise.types.Notes;
@@ -78,6 +80,7 @@ public class Brand implements Comparable<Brand>  {
     @Inject @Transient TitleService titleService;
     @Inject @Transient MessageService messageService;
     @Inject @Transient FranchiseUsers userRepository;
+    @Inject @Transient FranchiseGroups franchiseGroups;
     
     public static Brand withName(String name) {
         val entity = new Brand();
@@ -187,8 +190,12 @@ public class Brand implements Comparable<Brand>  {
     @Collection
     @Getter @Setter
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "brand")
-    private Set<FranchiseGroup> groups = new HashSet<>();
+    private Set<FranchiseGroup> franchisees = new HashSet<>();
 
+    @Collection
+    @Getter @Setter
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "brand")
+    private Set<WebSite> webSites = new HashSet<>();
 	
 	// *** IMPLEMENTATIONS ****
 
@@ -209,15 +216,6 @@ public class Brand implements Comparable<Brand>  {
         final String title = titleService.titleOf(this);
         messageService.informUser(String.format("'%s' deleted", title));
         repositoryService.removeAndFlush(this);
-    }
-    
-    @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
-    @ActionLayout(associateWith = "members", promptStyle = PromptStyle.DIALOG)
-    public Brand addMember(
-    		@ParameterLayout(named = "User") final FranchiseUser user, 
-    		@ParameterLayout(named = "Role") final BrandMemberRole role) {
-    	members.add(BrandMember.withRequiredFields(this, role, user));
-        return this;
     }
 
     
@@ -243,29 +241,57 @@ public class Brand implements Comparable<Brand>  {
         return address;
     }
 
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
+    @ActionLayout(associateWith = "franchisees", promptStyle = PromptStyle.DIALOG)
+    public FranchiseGroup createFranchisee(
+    		@ParameterLayout(named = "Franchisee Name") final String name) {
+                val franchisee = franchiseGroups.create(this, name);
+            franchisees.add(franchisee);
+        return franchisee;
+    }
 
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
-    @ActionLayout(associateWith = "groups", promptStyle = PromptStyle.DIALOG)
-    public Brand addGroup(
+    @ActionLayout(associateWith = "franchisees", promptStyle = PromptStyle.DIALOG)
+    public Brand addFranchisee(
     		@ParameterLayout(named = "Franchisee") final FranchiseGroup group) {
-            groups.add(group);
+            franchisees.add(group);
             group.setBrand(this);
         return this;
     }
-    public List<FranchiseGroup> choices0AddGroup() {
+    public List<FranchiseGroup> choices0AddFranchisee() {
         return repositoryService.allInstances(FranchiseGroup.class);
     }
 
     
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
-    @ActionLayout(associateWith = "groups", promptStyle = PromptStyle.DIALOG)
-    public Brand removeGroup(
+    @ActionLayout(associateWith = "franchisees", promptStyle = PromptStyle.DIALOG)
+    public Brand removeFranchisee(
             @ParameterLayout(named = "Franchisee") final FranchiseGroup group) {
-        groups.removeIf(g -> g.getId().equals(group.getId()));
+        franchisees.removeIf(g -> g.getId().equals(group.getId()));
         return this;
     }
-    public Set<FranchiseGroup> choices0RemoveGroup() {
-        return this.getGroups();
+    public Set<FranchiseGroup> choices0RemoveFranchisee() {
+        return this.getFranchisees();
+    }
+
+    @Action
+    @ActionLayout(named = "Create Web Site", associateWith = "webSites", promptStyle = PromptStyle.DIALOG)
+    public WebSite createWebSite(
+    		@ParameterLayout(named = "Name") final String name) {
+    	WebSite webSite = WebSite.withRequiredFields(this, name);
+    	webSites.add(webSite);
+        return webSite;
+    }
+
+    @Action
+    @ActionLayout(named = "Delete Web Site", associateWith = "webSites", promptStyle = PromptStyle.DIALOG)
+    public Brand deleteWebSite(
+    		@ParameterLayout(named = "Web Site") final WebSite webSite) {
+    	webSites.removeIf(w -> w.getId().equals(webSite.getId()));
+        return this;
+    }
+    public Set<WebSite> choices0DeleteWebSite() {
+        return this.getWebSites();
     }
 }
 

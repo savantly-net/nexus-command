@@ -50,7 +50,7 @@ public class FranchiseMarket {
     @Inject @Transient TitleService titleService;
     @Inject @Transient MessageService messageService;
 
-    public static FranchiseMarket withRequiredFields(Long id, String name) {
+    public static FranchiseMarket withRequiredFields(String id, String name) {
         val entity = new FranchiseMarket();
         entity.id = id;
         entity.name = name;
@@ -59,7 +59,7 @@ public class FranchiseMarket {
     
     @Id
     @Column(name = "id", nullable = false)
-    private Long id;
+    private String id;
     
     @Name
     @Title

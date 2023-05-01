@@ -53,9 +53,9 @@ public class FranchiseLocationMember {
     @Inject @Transient TitleService titleService;
     @Inject @Transient MessageService messageService;
     
-    public static FranchiseLocationMember withRequiredFields(FranchiseLocation parent, FranchiseLocationMemberRole memberRole, HasUsername username) {
+    public static FranchiseLocationMember withRequiredFields(FranchiseLocation location, FranchiseLocationMemberRole memberRole, HasUsername username) {
         val entity = new FranchiseLocationMember();
-        entity.setParent(parent);
+        entity.setLocation(location);
         entity.setMemberRole(memberRole);
         entity.setUserName(username.getUsername());
         return entity;
@@ -85,7 +85,7 @@ public class FranchiseLocationMember {
 
     @Getter @Setter
     @PropertyLayout(navigable = Navigable.PARENT)
-	private FranchiseLocation parent;
+	private FranchiseLocation location;
     
     @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
     @ActionLayout(
@@ -93,7 +93,7 @@ public class FranchiseLocationMember {
             describedAs = "Deletes this object from the persistent datastore")
     public void delete() {
         final String title = titleService.titleOf(this);
-        this.parent.getMembers().remove(this);
+        this.location.getMembers().remove(this);
         repositoryService.removeAndFlush(this);
         messageService.informUser(String.format("'%s' deleted", title));
     }

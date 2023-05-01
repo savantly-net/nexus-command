@@ -223,7 +223,7 @@ public class FranchiseLocation implements Comparable<FranchiseLocation>  {
 
     @Collection
     @Getter @Setter
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "parent")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "location")
     private Set<FranchiseLocationMember> members = new HashSet<>();
 
     @Collection
