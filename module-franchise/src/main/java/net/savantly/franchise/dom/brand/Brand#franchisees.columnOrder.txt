@@ -1,0 +1,8 @@
+name
+phoneNumber
+emailAddress
+address1
+address2
+city
+state
+zip
