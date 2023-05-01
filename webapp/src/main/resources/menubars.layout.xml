@@ -61,6 +61,45 @@
                 <mb3:serviceAction objectType="public.HomepageVersions" id="listAll" />
             </mb3:section>
         </mb3:menu>
+        <mb3:menu>
+            <mb3:named>Web</mb3:named>
+            <mb3:section>
+                <mb3:named>Sites</mb3:named>
+                <mb3:serviceAction objectType="savantly.franchise.WebSites" id="create">
+                    <cpt:named>New Web Site</cpt:named>
+                </mb3:serviceAction>
+                <mb3:serviceAction objectType="savantly.franchise.WebSites" id="listAll">
+                    <cpt:named>List Web Sites</cpt:named>
+                </mb3:serviceAction>
+                <mb3:serviceAction objectType="savantly.franchise.WebSites" id="findByName">
+                    <cpt:named>Find Web Site</cpt:named>
+                </mb3:serviceAction>
+            </mb3:section>
+            <mb3:section>
+                <mb3:named>Block Types</mb3:named>
+                <mb3:serviceAction objectType="savantly.franchise.BlockTypes" id="create">
+                    <cpt:named>New Block Type</cpt:named>
+                </mb3:serviceAction>
+                <mb3:serviceAction objectType="savantly.franchise.BlockTypes" id="listAll">
+                    <cpt:named>List Block Types</cpt:named>
+                </mb3:serviceAction>
+                <mb3:serviceAction objectType="savantly.franchise.BlockTypes" id="findByName">
+                    <cpt:named>Find Block Type</cpt:named>
+                </mb3:serviceAction>
+            </mb3:section>
+            <mb3:section>
+                <mb3:named>Blocks</mb3:named>
+                <mb3:serviceAction objectType="savantly.franchise.Blocks" id="create">
+                    <cpt:named>New Block</cpt:named>
+                </mb3:serviceAction>
+                <mb3:serviceAction objectType="savantly.franchise.Blocks" id="listAll">
+                    <cpt:named>List Blocks</cpt:named>
+                </mb3:serviceAction>
+                <mb3:serviceAction objectType="savantly.franchise.Blocks" id="findByName">
+                    <cpt:named>Find Block</cpt:named>
+                </mb3:serviceAction>
+            </mb3:section>
+        </mb3:menu>
         <mb3:menu unreferencedActions="true">
             <mb3:named>Other</mb3:named>
         </mb3:menu>
