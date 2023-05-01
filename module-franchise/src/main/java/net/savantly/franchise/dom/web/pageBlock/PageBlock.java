@@ -2,6 +2,7 @@ package net.savantly.franchise.dom.web.pageBlock;
 
 import java.time.ZonedDateTime;
 import java.util.Comparator;
+import java.util.Objects;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -18,6 +19,7 @@ import org.apache.causeway.applib.annotation.Editing;
 import org.apache.causeway.applib.annotation.Property;
 import org.apache.causeway.applib.annotation.PropertyLayout;
 import org.apache.causeway.applib.annotation.Publishing;
+import org.apache.causeway.applib.annotation.Title;
 import org.apache.causeway.applib.jaxb.PersistentEntityAdapter;
 import org.apache.causeway.applib.services.message.MessageService;
 import org.apache.causeway.applib.services.repository.RepositoryService;
@@ -95,9 +97,13 @@ public class PageBlock implements Comparable<PageBlock>  {
 
 	// *** IMPLEMENTATIONS ****
 
+    @Title
     @Transient
     public String getTitle() {
-        return String.format("%s (%s)", titleService.titleOf(this.block), titleService.titleOf(this.webPage));
+        if (Objects.nonNull(block) && Objects.nonNull(block.getLocation())) {
+            return String.format("%s - %s (%s)", titleService.titleOf(this.block), titleService.titleOf(this.webPage), titleService.titleOf(this.block.getLocation()));
+        }
+        return String.format("%s - %s", titleService.titleOf(this.block), titleService.titleOf(this.webPage));
     }
 
     private final static Comparator<PageBlock> comparator =
