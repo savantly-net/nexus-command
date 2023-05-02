@@ -66,6 +66,14 @@ public class BlockTypes {
     }
 
     @Programmatic
+    @Action(semantics = SemanticsOf.SAFE)
+    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+    public BlockType getById(final Long id) {
+        return repository.getReferenceById(id);
+    }
+
+
+    @Programmatic
     public void ping() {
         jpaSupportService.getEntityManager(BlockType.class)
             .ifSuccess(entityManager -> {
