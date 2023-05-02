@@ -31,6 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.val;
 import net.savantly.franchise.FranchiseModule;
 import net.savantly.franchise.dom.web.blockType.BlockType;
+import net.savantly.franchise.dom.web.blockType.BlockTypeDto;
 import net.savantly.franchise.types.Name;
 
 @Named(FranchiseModule.NAMESPACE + ".Blocks")
@@ -76,22 +77,16 @@ public class Blocks {
     }
 
     @Programmatic
-    @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
     public List<BlockDto> listAllDtos() {
         return repository.findAll().stream().map(d -> toDto(d)).collect(Collectors.toList());
     }
 
     @Programmatic
-    @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
     public BlockDto getById(final Long id) {
         return toDto(repository.getReferenceById(id));
     }
 
     @Programmatic
-    @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
     public BlockDto updateFromDto(final BlockDto dto) throws JsonProcessingException {
         val entity = repository.getReferenceById(dto.getId());
         entity.setName(dto.getName());
@@ -106,7 +101,18 @@ public class Blocks {
         dto.setId(blockType.getId());
         dto.setName(blockType.getName());
         dto.setContent(asMap(blockType.getContent()));
+        dto.setBlockType(asDto(blockType.getBlockType()));
         return dto;
+    }
+
+
+    private BlockTypeDto asDto(BlockType blockType) {
+        return new BlockTypeDto()
+            .setDescription(blockType.getDescription())
+            .setId(blockType.getId())
+            .setName(blockType.getName())
+            .setSchema(asMap(blockType.getSchema()))
+            .setUiSchema(asMap(blockType.getUiSchema()));
     }
 
 

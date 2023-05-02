@@ -73,22 +73,16 @@ public class BlockTypes {
     }
 
     @Programmatic
-    @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
     public List<BlockTypeDto> listAllDtos() {
         return repository.findAll().stream().map(d -> toDto(d)).collect(Collectors.toList());
     }
 
     @Programmatic
-    @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
     public BlockTypeDto getById(final Long id) {
         return toDto(repository.getReferenceById(id));
     }
 
     @Programmatic
-    @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
     public BlockTypeDto updateFromDto(final BlockTypeDto dto) throws JsonProcessingException {
         val entity = repository.getReferenceById(dto.getId());
         entity.setName(dto.getName());
