@@ -1,5 +1,5 @@
 DO $$ BEGIN
-    create domain clob as text;
-EXCEPTION
-    WHEN duplicate_object THEN null;
+    IF to_regtype('causewayExtCommandLog.clob') IS NULL THEN
+        create domain causewayExtCommandLog.clob as text;
+    END IF;
 END $$;
