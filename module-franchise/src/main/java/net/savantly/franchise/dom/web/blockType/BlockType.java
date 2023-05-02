@@ -99,6 +99,13 @@ public class BlockType implements Comparable<BlockType>  {
     @Getter @Setter
     private String schema;
 
+
+    @Property
+    @PropertyLayout(multiLine = 30, fieldSetId = "content", sequence = "4")
+    @Column(name = "ui_schema", nullable = true, length = 100000)
+    @Getter @Setter
+    private String uiSchema;
+
 	// *** IMPLEMENTATIONS ****
 
     private final static Comparator<BlockType> comparator =
