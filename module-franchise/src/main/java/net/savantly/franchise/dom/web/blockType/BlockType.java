@@ -116,5 +116,4 @@ public class BlockType implements Comparable<BlockType>  {
         return comparator.compare(this, other);
     }
 
-    
 }

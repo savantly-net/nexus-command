@@ -12,24 +12,41 @@ import org.apache.causeway.applib.services.iactnlayer.InteractionService;
 import org.apache.causeway.applib.services.user.UserMemento;
 import org.apache.causeway.applib.services.xactn.TransactionalProcessor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import net.savantly.franchise.dom.location.FranchiseLocation;
-import net.savantly.franchise.dom.location.FranchiseLocations;
+import net.savantly.franchise.dom.web.block.BlockDto;
+import net.savantly.franchise.dom.web.block.Blocks;
 
 @RestController
+@RequestMapping("/api/blocks")
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
-class CustomController {
+class BlockController {
 
     private final InteractionService interactionService;
     private final TransactionalProcessor transactionalProcessor;
-    private final FranchiseLocations simpleObjects;
+    private final Blocks blocks;
 
-    @GetMapping("/custom/simpleObjects")
-    List<FranchiseLocation> all() {
-        return call("sven", simpleObjects::listAll)
-                .orElse(Collections.<FranchiseLocation>emptyList());
+    @GetMapping
+    public List<BlockDto> allBlocks() {
+        return call("sven", blocks::listAllDtos)
+                .orElse(Collections.<BlockDto>emptyList());
+    }
+
+    @GetMapping("/{id}")
+    public BlockDto allBlockTypeById(@PathVariable final Long id) {
+        return call("sven", () -> blocks.getById(id))
+                .orElse(null);
+    }
+
+    @PostMapping("/update")
+    public BlockDto updateBlock(@RequestBody final BlockDto blockDto) {
+        return call("sven", () -> blocks.updateFromDto(blockDto))
+                .orElse(null);
     }
 
     private <T> Optional<T> call(

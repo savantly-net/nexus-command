@@ -4,7 +4,9 @@ package net.savantly.franchise.dom.web.block;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -23,6 +25,10 @@ import org.apache.causeway.applib.annotation.SemanticsOf;
 import org.apache.causeway.applib.services.repository.RepositoryService;
 import org.apache.causeway.persistence.jpa.applib.services.JpaSupportService;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.val;
 import net.savantly.franchise.FranchiseModule;
 import net.savantly.franchise.dom.web.blockType.BlockType;
 import net.savantly.franchise.types.Name;
@@ -38,6 +44,7 @@ public class Blocks {
     final RepositoryService repositoryService;
     final JpaSupportService jpaSupportService;
     final BlockRepository repository;
+    final ObjectMapper objectMapper = new ObjectMapper();
 
 
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
@@ -71,8 +78,44 @@ public class Blocks {
     @Programmatic
     @Action(semantics = SemanticsOf.SAFE)
     @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
-    public Block getById(final Long id) {
-        return repository.getReferenceById(id);
+    public List<BlockDto> listAllDtos() {
+        return repository.findAll().stream().map(d -> toDto(d)).collect(Collectors.toList());
+    }
+
+    @Programmatic
+    @Action(semantics = SemanticsOf.SAFE)
+    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+    public BlockDto getById(final Long id) {
+        return toDto(repository.getReferenceById(id));
+    }
+
+    @Programmatic
+    @Action(semantics = SemanticsOf.SAFE)
+    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+    public BlockDto updateFromDto(final BlockDto dto) throws JsonProcessingException {
+        val entity = repository.getReferenceById(dto.getId());
+        entity.setName(dto.getName());
+        entity.setContent(asString(dto.getContent()));
+        return toDto(entity);
+    }
+
+
+    @Programmatic
+    private BlockDto toDto(Block blockType) {
+        val dto = new BlockDto();
+        dto.setId(blockType.getId());
+        dto.setName(blockType.getName());
+        dto.setContent(asMap(blockType.getContent()));
+        return dto;
+    }
+
+
+    private Map<String, Object> asMap(String dataString) {
+        return objectMapper.convertValue(dataString, Map.class);
+    }
+    
+    private String asString(Map<String, Object> data) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(data);
     }
 
     @Programmatic
