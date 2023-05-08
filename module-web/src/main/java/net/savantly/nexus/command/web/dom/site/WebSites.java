@@ -43,15 +43,9 @@ public class WebSites {
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR)
     public WebSite create(
-            @ParameterLayout(describedAs = "A friendly name for the website") final String name) {
-        return repositoryService.persist(WebSite.withRequiredFields(name));
-    }
-
-    @Programmatic
-    public WebSite create(
-        final String id,
-        final String name) {
-    return repositoryService.persist(WebSite.withRequiredFields(name, id));
+        @ParameterLayout(describedAs = "A friendly name for the website") final String name,
+        final String id) {
+    return repository.save(WebSite.withRequiredFields(name, id));
 }
 
 

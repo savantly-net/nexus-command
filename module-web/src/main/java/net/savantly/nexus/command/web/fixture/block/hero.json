@@ -1,0 +1,10 @@
+{
+    "headerText": "Savantly Nexus Seed UI",
+    "tagline": "Rapid UI development leveraging the Savantly Nexus Command CMS",
+    "imageUrl": "https://images.unsplash.com/photo-1644325349124-d1756b79dd42?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3275&q=80",
+    "description": "This starter app provides the necessary scaffolding to help you rapidly develop a new website that uses Savantly Nexus Command CMS to provide the data. ",
+    "link": {
+        "display": "Savantly",
+        "url": "https://savantly.net"
+    }
+}

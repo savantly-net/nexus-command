@@ -22,6 +22,9 @@ import org.apache.causeway.applib.annotation.Collection;
 import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.DomainObjectLayout;
 import org.apache.causeway.applib.annotation.Editing;
+import org.apache.causeway.applib.annotation.MemberSupport;
+import org.apache.causeway.applib.annotation.Programmatic;
+import org.apache.causeway.applib.annotation.PromptStyle;
 import org.apache.causeway.applib.annotation.Property;
 import org.apache.causeway.applib.annotation.PropertyLayout;
 import org.apache.causeway.applib.annotation.Publishing;
@@ -70,6 +73,11 @@ public class WebSite implements Comparable<WebSite>  {
         val entity = new WebSite();
         entity.id = id;
         entity.setName(name);
+        entity.setOpenGraphData(new OpenGraphData()
+        .setTitle(name)
+        .setDescription("A website about " + name)
+        .setImage("https://savantly.net/img/logo.png")
+        .setKeywords("savantly, nexus, oss, seed, command"));
         return entity;
     }
 
@@ -102,7 +110,7 @@ public class WebSite implements Comparable<WebSite>  {
     private String url;
 
 
-    @Property
+    @Property(editing = Editing.DISABLED)
     @PropertyLayout(fieldSetId = "content", sequence = "1.4", named = "Default Open Graph Data")
     @Embedded
     @Getter @Setter
@@ -114,6 +122,32 @@ public class WebSite implements Comparable<WebSite>  {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "webSite")
     private Set<WebPage> webPages = new HashSet<>();
 
+    @Action
+    @ActionLayout(associateWith = "openGraphData", promptStyle = PromptStyle.DIALOG_MODAL)
+    public WebSite updateOpenGraphData(final String title, final String description, final String image, final String keywords) {
+        setOpenGraphData(new OpenGraphData()
+        .setTitle(title)
+        .setDescription(description)
+        .setImage(image)
+        .setKeywords(keywords));
+        return this;
+    }
+    @MemberSupport
+    public String default0UpdateOpenGraphData() {
+        return getOpenGraphData().getTitle();
+    }
+    @MemberSupport
+    public String default1UpdateOpenGraphData() {
+        return getOpenGraphData().getDescription();
+    }
+    @MemberSupport
+    public String default2UpdateOpenGraphData() {
+        return getOpenGraphData().getImage();
+    }
+    @MemberSupport
+    public String default3UpdateOpenGraphData() {
+        return getOpenGraphData().getKeywords();
+    }
     
     @Action
     @ActionLayout(associateWith = "webPages")
@@ -136,6 +170,19 @@ public class WebSite implements Comparable<WebSite>  {
     }
 
 	// *** IMPLEMENTATIONS ****
+
+    @Programmatic
+    public WebSiteDto toDto() {
+        val dto = new WebSiteDto();
+        dto.setId(getId());
+        dto.setName(getName());
+        dto.setUrl(getUrl());
+        dto.setOpenGraphData(getOpenGraphData());
+        this.webPages.stream()
+                .map(WebPage::toDto)
+                .forEach(dto.getWebPages()::add);
+        return dto;
+    }
 
     private final static Comparator<WebSite> comparator =
             Comparator.comparing(WebSite::getId);

@@ -1,9 +1,7 @@
 package domainapp.webapp.custom.restapi;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Callable;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -17,34 +15,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import net.savantly.nexus.command.web.dom.block.BlockDto;
-import net.savantly.nexus.command.web.dom.block.BlockDtoConverter;
-import net.savantly.nexus.command.web.dom.siteBlock.SiteBlocks;
+import net.savantly.nexus.command.web.dom.site.WebSiteDto;
+import net.savantly.nexus.command.web.dom.site.WebSites;
 
 @RestController
-@RequestMapping("/api/site-blocks")
+@RequestMapping("/api/sites")
 @RequiredArgsConstructor(onConstructor_ = { @Inject })
-class SiteBlocksController {
+class SiteController {
 
     private final InteractionService interactionService;
     private final TransactionalProcessor transactionalProcessor;
-    private final SiteBlocks blocks;
+    private final WebSites sites;
 
-    @GetMapping("/by-site/{id}")
-    public List<BlockDto> getBlocksBySiteId(@PathVariable final String id) {
+    @GetMapping("/{id}")
+    public WebSiteDto getBlocksBySiteId(@PathVariable final String id) {
         return call("sven",
-                () -> blocks.findBySiteId(id).stream().map(b -> BlockDtoConverter.toDto(b.getBlock()))
-                        .collect(Collectors.toList()))
+                () -> sites.findById(id)).map(s -> s.toDto())
                 .orElse(null);
     }
 
-    @GetMapping("/by-site/{id}/type/{type}")
-    public List<BlockDto> getBlocksBySiteIdAndTypeId(@PathVariable final String id, @PathVariable final String typeId) {
-        return call("sven", () -> blocks.findBySiteIdAndBlockTypeId(id, typeId).stream().map(b -> {
-            return BlockDtoConverter.toDto(b.getBlock());
-        }).collect(Collectors.toList()))
-                .orElse(null);
-    }
 
     private <T> Optional<T> call(
             final String username,

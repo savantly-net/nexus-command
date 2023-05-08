@@ -22,6 +22,7 @@ import net.savantly.nexus.command.web.fixture.site.WebSite_persona;
 public enum WebPage_persona
 implements Persona<WebPage, WebPage_persona.Builder> {
 
+    HOME("home", "Home", WebSite_persona.SAVANTLY),
     ABOUT_US("about-us", "About Us", WebSite_persona.SAVANTLY);
 
     private final String id;
@@ -49,7 +50,7 @@ implements Persona<WebPage, WebPage_persona.Builder> {
         @Override
         protected WebPage buildResult(final ExecutionContext ec) {
             val webSite = webSites.findById(persona.site.getId());
-            val object = service.create(persona.name, persona.id, webSite);
+            val object = service.create(persona.id, persona.name, webSite);
             return object;
         }
 

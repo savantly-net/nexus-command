@@ -24,7 +24,8 @@ import net.savantly.nexus.command.web.fixture.site.WebSite_persona;
 public enum SiteBlock_persona
 implements Persona<SiteBlock, SiteBlock_persona.Builder> {
 
-    SAVANTLY("savantly-site-blocks", WebSite_persona.SAVANTLY, Block_persona.FOOTER);
+    SAVANTLY_HERO("savantly-site-hero", WebSite_persona.SAVANTLY, Block_persona.HERO),
+    SAVANTLY_FOOTER("savantly-site-footer", WebSite_persona.SAVANTLY, Block_persona.FOOTER);
 
     private final String id;
     private final WebSite_persona webSitePersona;

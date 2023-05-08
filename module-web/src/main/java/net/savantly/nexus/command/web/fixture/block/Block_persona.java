@@ -25,6 +25,7 @@ import net.savantly.nexus.command.web.fixture.blockType.BlockType_persona;
 public enum Block_persona
         implements Persona<Block, Block_persona.Builder> {
 
+    HERO("default-hero", BlockType_persona.HERO, "hero.json"),
     FOOTER("default-footer", BlockType_persona.FOOTER, "footer.json"),
     CATEGORIZED_LINKS("default-categorized-links", BlockType_persona.CATEGORIZED_LINKS, "categorized-links.json");
 

@@ -76,6 +76,27 @@
                 </mb3:serviceAction>
             </mb3:section>
             <mb3:section>
+                <mb3:named>Pages</mb3:named>
+                <mb3:serviceAction objectType="nexus.command.web.WebPages" id="listAll">
+                    <cpt:named>List Web Pages</cpt:named>
+                </mb3:serviceAction>
+                <mb3:serviceAction objectType="nexus.command.web.WebPages" id="findByName">
+                    <cpt:named>Find Web Page</cpt:named>
+                </mb3:serviceAction>
+            </mb3:section>
+            <mb3:section>
+                <mb3:named>Page Blocks</mb3:named>
+                <mb3:serviceAction objectType="nexus.command.web.PageBlocks" id="listAll">
+                    <cpt:named>List Page Blocks</cpt:named>
+                </mb3:serviceAction>
+            </mb3:section>
+            <mb3:section>
+                <mb3:named>Site Blocks</mb3:named>
+                <mb3:serviceAction objectType="nexus.command.web.SiteBlocks" id="listAll">
+                    <cpt:named>List Site Blocks</cpt:named>
+                </mb3:serviceAction>
+            </mb3:section>
+            <mb3:section>
                 <mb3:named>Block Types</mb3:named>
                 <mb3:serviceAction objectType="nexus.command.web.BlockTypes" id="create">
                     <cpt:named>New Block Type</cpt:named>

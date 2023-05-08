@@ -25,6 +25,7 @@ import net.savantly.nexus.command.web.dom.blockType.BlockTypes;
 public enum BlockType_persona
 implements Persona<BlockType, BlockType_persona.Builder> {
 
+    HERO("default-hero", "hero.json", "hero-ui.json", "The default hero block type"),
     FOOTER("default-footer", "footer.json", "footer-ui.json", "The default footer block type"),
     CATEGORIZED_LINKS("default-categorized-links", "categorized-links.json", "categorized-links-ui.json", "The default categorized links block type");
 

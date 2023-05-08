@@ -36,7 +36,8 @@ import net.savantly.franchise.dom.group.FranchiseGroupRepository;
 @Named(ApplicationModule.PUBLIC_NAMESPACE + ".HomepageVersion")
 @javax.persistence.Entity
 @javax.persistence.Table(
-    name = "homepage_version"
+    name = "homepage_version",
+    schema = ApplicationModule.PUBLIC_NAMESPACE
 )
 @javax.persistence.EntityListeners(CausewayEntityListener.class)
 @DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.ENABLED)

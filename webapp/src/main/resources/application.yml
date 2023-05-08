@@ -45,7 +45,7 @@ causeway:
           password: "pass"
           role-name: "causeway-ext-secman-admin"
           namespace-permissions:
-            sticky: "franchise"
+            sticky: "savantly,nc_web"
 #            additional: ...
         regular-user:
           role-name: "causeway-ext-secman-user"
@@ -86,12 +86,12 @@ causeway:
           data-tables-net:
             options: "info: false, pagingType: 'numbers'"
 
-#  testing:
-#    fixtures:
-#      fixture-scripts-specification:
-#        context-class: domainapp.webapp.application.fixture.scenarios.DomainAppDemo
-#        run-script-default: domainapp.webapp.application.fixture.scenarios.DomainAppDemo
-#        recreate: domainapp.webapp.application.fixture.scenarios.DomainAppDemo
+  testing:
+    fixtures:
+      fixture-scripts-specification:
+        context-class: domainapp.webapp.application.fixture.scenarios.DemoFixtures
+        run-script-default: domainapp.webapp.application.fixture.scenarios.DemoFixtures
+#        recreate: domainapp.webapp.application.fixture.scenarios.DemoFixtures
 #        non-persisted-objects-strategy: persist
 #        multiple-execution-strategy: execute
 

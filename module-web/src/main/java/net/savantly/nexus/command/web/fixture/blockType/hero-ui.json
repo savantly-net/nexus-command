@@ -1,0 +1,29 @@
+{
+    "type": "VerticalLayout",
+    "elements": [
+      {
+        "type": "Control",
+        "scope": "#/properties/headerText"
+      },
+      {
+        "type": "Control",
+        "scope": "#/properties/tagline"
+      },
+      {
+        "type": "Control",
+        "scope": "#/properties/description"
+      },
+      {
+        "type": "Control",
+        "scope": "#/properties/imageUrl"
+      },
+      {
+        "type": "Control",
+        "scope": "#/properties/link/properties/display"
+      },
+      {
+        "type": "Control",
+        "scope": "#/properties/link/properties/url"
+      }
+    ]
+  }

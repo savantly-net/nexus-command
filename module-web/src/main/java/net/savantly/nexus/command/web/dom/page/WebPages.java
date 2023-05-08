@@ -42,8 +42,8 @@ public class WebPages {
         final String id,
         final String name,
         final WebSite site) {
-    return repositoryService.persist(WebPage.withRequiredFields(name, site, id));
-}
+        return repositoryService.persist(WebPage.withRequiredFields(name, site, id));
+    }
 
 
     @Action(semantics = SemanticsOf.SAFE)

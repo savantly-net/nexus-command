@@ -59,6 +59,11 @@ public class SiteBlocks {
     }
 
     @Programmatic
+    public List<SiteBlock> findBySiteIdAndBlockTypeId(final String siteId, final String blockTypeId) {
+        return repository.findBySiteIdAndBlockBlockTypeId(siteId, blockTypeId);
+    }
+
+    @Programmatic
     public void ping() {
         jpaSupportService.getEntityManager(SiteBlock.class)
             .ifSuccess(entityManager -> {

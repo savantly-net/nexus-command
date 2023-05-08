@@ -38,7 +38,7 @@ import net.savantly.nexus.command.web.dom.site.WebSite;
 @Named(NexusCommandWebModule.NAMESPACE + ".SiteBlock")
 @javax.persistence.Entity
 @javax.persistence.Table(
-    name = "page_block",
+    name = "site_block",
     schema = NexusCommandWebModule.SCHEMA
 )
 @javax.persistence.EntityListeners(CausewayEntityListener.class)

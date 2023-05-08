@@ -1,0 +1,43 @@
+{
+    "type": "object",
+    "title": "Hero",
+    "required": [
+      "imageUrl",
+      "headerText",
+      "tagline",
+      "description",
+      "link"
+    ],
+    "properties": {
+      "imageUrl": {
+        "type": "string"
+      },
+      "headerText": {
+        "type": "string"
+      },
+      "tagline": {
+        "type": "string"
+      },
+      "description": {
+        "type": "string"
+      },
+      "link": {
+        "type": "object",
+        "title": "Link",
+        "required": [
+          "display",
+          "url"
+        ],
+        "properties": {
+          "display": {
+            "title": "Link Display Text",
+            "type": "string"
+          },
+          "url": {
+            "title": "Link URL",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }

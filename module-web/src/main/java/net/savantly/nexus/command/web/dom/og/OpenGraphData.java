@@ -10,11 +10,14 @@ import org.apache.causeway.applib.annotation.PropertyLayout;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.Accessors;
 import net.savantly.nexus.command.web.NexusCommandWebModule;
 
 @Embeddable
 @Getter @Setter
-@DomainObject
+@Accessors(chain = true)
+@ToString
 @Named(NexusCommandWebModule.NAMESPACE + ".OpenGraphData")
 public class OpenGraphData {
     

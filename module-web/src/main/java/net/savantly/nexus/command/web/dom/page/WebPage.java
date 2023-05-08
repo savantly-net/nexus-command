@@ -100,7 +100,7 @@ public class WebPage implements Comparable<WebPage>  {
 
     @Property
     @PropertyLayout(fieldSetId = "content", sequence = "1.0")
-    @JoinColumn(name = "web_site_id", nullable = false)
+    @JoinColumn(name = "website_id", nullable = false)
     @Getter @Setter
     private WebSite webSite;
 
@@ -179,6 +179,16 @@ public class WebPage implements Comparable<WebPage>  {
     }
 
 	// *** IMPLEMENTATIONS ****
+
+    @Programmatic
+    public WebPageDto toDto() {
+        val dto = new WebPageDto();
+        dto.setId(getId());
+        dto.setName(getName());
+        dto.setPublishDate(getPublishDate());
+        dto.setOpenGraphData(getOpenGraphData());
+        return dto;
+    }
 
     private final static Comparator<WebPage> comparator =
             Comparator.comparing(WebPage::getId);

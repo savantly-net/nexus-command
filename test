@@ -1,0 +1,3 @@
+mvn test
+mvn integration-test
+mvn -pl webapp integration-test

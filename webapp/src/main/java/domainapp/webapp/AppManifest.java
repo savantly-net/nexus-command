@@ -32,6 +32,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 
 import domainapp.webapp.application.ApplicationModule;
+import domainapp.webapp.application.fixture.scenarios.DemoFixtures;
 import domainapp.webapp.custom.CustomModule;
 import domainapp.webapp.quartz.QuartzModule;
 
@@ -79,7 +80,7 @@ import domainapp.webapp.quartz.QuartzModule;
         CausewayModuleValMarkdownPersistenceJpa.class,
 
         // discoverable fixtures
-        //DomainAppDemo.class
+        DemoFixtures.class
 })
 @PropertySources({
         @PropertySource(CausewayPresets.DebugDiscovery),
