@@ -24,7 +24,7 @@ import net.savantly.nexus.command.web.dom.siteBlock.SiteBlocks;
 @RestController
 @RequestMapping("/api/site-blocks")
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
-class BlockController {
+class SiteBlocksController {
 
     private final InteractionService interactionService;
     private final TransactionalProcessor transactionalProcessor;
