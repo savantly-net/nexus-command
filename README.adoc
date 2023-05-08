@@ -1,4 +1,4 @@
-= Franchise Admin
+= Nexus Command
 :toc:
 :toc-placement!:
 
@@ -55,11 +55,11 @@ toc::[]
 +
 [source,bash]
 ----
-git clone git@github.com:savantly-net/franchise-admin.git
+git clone git@github.com:savantly-net/nexus-command.git
 # or
-git clone https://github.com/savantly-net/franchise-admin.git
+git clone https://github.com/savantly-net/nexus-command.git
 
-cd franchise-admin
+cd nexus-command
 ----
 
 * Build using Maven:
@@ -94,7 +94,7 @@ mvn -pl webapp spring-boot:run
 *** username: `secman-admin`
 *** password: `pass`
 
-** as a franchise admin user:
+** as a Nexus Command user:
 
 *** username: `sven`
 *** password: `pass`

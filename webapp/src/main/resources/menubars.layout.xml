@@ -65,37 +65,37 @@
             <mb3:named>Web</mb3:named>
             <mb3:section>
                 <mb3:named>Sites</mb3:named>
-                <mb3:serviceAction objectType="savantly.franchise.WebSites" id="create">
+                <mb3:serviceAction objectType="nexus.command.web.WebSites" id="create">
                     <cpt:named>New Web Site</cpt:named>
                 </mb3:serviceAction>
-                <mb3:serviceAction objectType="savantly.franchise.WebSites" id="listAll">
+                <mb3:serviceAction objectType="nexus.command.web.WebSites" id="listAll">
                     <cpt:named>List Web Sites</cpt:named>
                 </mb3:serviceAction>
-                <mb3:serviceAction objectType="savantly.franchise.WebSites" id="findByName">
+                <mb3:serviceAction objectType="nexus.command.web.WebSites" id="findByName">
                     <cpt:named>Find Web Site</cpt:named>
                 </mb3:serviceAction>
             </mb3:section>
             <mb3:section>
                 <mb3:named>Block Types</mb3:named>
-                <mb3:serviceAction objectType="savantly.franchise.BlockTypes" id="create">
+                <mb3:serviceAction objectType="nexus.command.web.BlockTypes" id="create">
                     <cpt:named>New Block Type</cpt:named>
                 </mb3:serviceAction>
-                <mb3:serviceAction objectType="savantly.franchise.BlockTypes" id="listAll">
+                <mb3:serviceAction objectType="nexus.command.web.BlockTypes" id="listAll">
                     <cpt:named>List Block Types</cpt:named>
                 </mb3:serviceAction>
-                <mb3:serviceAction objectType="savantly.franchise.BlockTypes" id="findByName">
+                <mb3:serviceAction objectType="nexus.command.web.BlockTypes" id="findByName">
                     <cpt:named>Find Block Type</cpt:named>
                 </mb3:serviceAction>
             </mb3:section>
             <mb3:section>
                 <mb3:named>Blocks</mb3:named>
-                <mb3:serviceAction objectType="savantly.franchise.Blocks" id="create">
+                <mb3:serviceAction objectType="nexus.command.web.Blocks" id="create">
                     <cpt:named>New Block</cpt:named>
                 </mb3:serviceAction>
-                <mb3:serviceAction objectType="savantly.franchise.Blocks" id="listAll">
+                <mb3:serviceAction objectType="nexus.command.web.Blocks" id="listAll">
                     <cpt:named>List Blocks</cpt:named>
                 </mb3:serviceAction>
-                <mb3:serviceAction objectType="savantly.franchise.Blocks" id="findByName">
+                <mb3:serviceAction objectType="nexus.command.web.Blocks" id="findByName">
                     <cpt:named>Find Block</cpt:named>
                 </mb3:serviceAction>
             </mb3:section>

@@ -1,0 +1,41 @@
+package net.savantly.nexus.command.web.dom.og;
+
+import javax.inject.Named;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
+import org.apache.causeway.applib.annotation.DomainObject;
+import org.apache.causeway.applib.annotation.Property;
+import org.apache.causeway.applib.annotation.PropertyLayout;
+
+import lombok.Getter;
+import lombok.Setter;
+import net.savantly.nexus.command.web.NexusCommandWebModule;
+
+@Embeddable
+@Getter @Setter
+@DomainObject
+@Named(NexusCommandWebModule.NAMESPACE + ".OpenGraphData")
+public class OpenGraphData {
+    
+    @Property
+    @PropertyLayout(fieldSetId = "content", sequence = "1.4")
+    @Column(name = "og_title", nullable = true)
+    private String title;
+
+    @Property
+    @PropertyLayout(fieldSetId = "content", sequence = "1.4")
+    @Column(name = "og_description", nullable = true)
+    private String description;
+
+    @Property
+    @PropertyLayout(fieldSetId = "content", sequence = "1.4")
+    @Column(name = "og_keywords", nullable = true)
+    private String keywords;
+
+    @Property
+    @PropertyLayout(fieldSetId = "content", sequence = "1.4")
+    @Column(name = "og_image", nullable = true)
+    private String image;
+
+}

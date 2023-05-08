@@ -47,6 +47,12 @@ public class Brands {
         return repositoryService.persist(Brand.withName(name));
     }
 
+    @Programmatic
+    public Brand create(
+            final String id,
+            @Name final String name) {
+        return repositoryService.persist(Brand.withRequiredFields(id, name));
+    }
 
     @Action(semantics = SemanticsOf.SAFE)
     @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
@@ -58,6 +64,16 @@ public class Brands {
     @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
     public Brand findByName(final Brand group) {
         return group;
+    }
+
+    @Programmatic
+    public Brand findByNameIgnoreCase(final String name) {
+        return repository.findByNameIgnoreCase(name);
+    }
+
+    @Programmatic
+    public Brand getById(String brandId) {
+        return repository.getReferenceById(brandId);
     }
     
     public Collection<Brand> autoComplete0FindByName(@MinLength(1) final String search) {
@@ -78,4 +94,5 @@ public class Brands {
                 q.getResultList();
             });
     }
+
 }

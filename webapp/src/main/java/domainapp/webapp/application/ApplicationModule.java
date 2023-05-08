@@ -7,9 +7,10 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import net.savantly.franchise.FranchiseModule;
+import net.savantly.nexus.command.web.NexusCommandWebModule;
 
 @Configuration
-@Import(FranchiseModule.class)
+@Import({ FranchiseModule.class, NexusCommandWebModule.class })
 @ComponentScan
 @EnableJpaRepositories
 @EntityScan

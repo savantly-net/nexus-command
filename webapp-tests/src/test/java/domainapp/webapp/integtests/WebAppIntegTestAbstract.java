@@ -23,6 +23,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import domainapp.webapp.application.ApplicationModule;
 import net.savantly.franchise.FranchiseModule;
+import net.savantly.nexus.command.web.NexusCommandWebModule;
 
 @SpringBootTest(
     classes = {
@@ -47,6 +48,7 @@ public abstract class WebAppIntegTestAbstract extends CausewayIntegrationTestAbs
         CausewayModulePersistenceJpaEclipselink.class,
         CausewayModuleTestingFixturesApplib.class,
 
+        NexusCommandWebModule.class,
         FranchiseModule.class
     })
     @PropertySources({

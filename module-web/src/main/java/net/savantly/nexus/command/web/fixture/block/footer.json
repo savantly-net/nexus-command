@@ -1,0 +1,14 @@
+{
+    "socialLinks": [
+        {
+            "name": "Twitter",
+            "url": "https://twitter.com/savantlyllc",
+            "iconUrl": "https://upload.wikimedia.org/wikipedia/commons/6/6f/Logo_of_Twitter.svg"
+        },
+        {
+            "name": "LinkedIn",
+            "url": "https://www.linkedin.com/company/savantly",
+            "iconUrl": "https://upload.wikimedia.org/wikipedia/commons/0/01/LinkedIn_Logo.svg"
+        }
+    ]
+}

@@ -10,11 +10,11 @@
         <relativePath/>
     </parent>
 
-    <artifactId>franchise-admin</artifactId>
+    <artifactId>nexus-command</artifactId>
     <groupId>net.savantly</groupId>
     <version>2.0.0-RC1</version>
 
-    <name>Franchise Admin - Parent</name>
+    <name>Nexus Command - Parent</name>
 
     <packaging>pom</packaging>
 
@@ -26,6 +26,11 @@
         <dependencies>
 
             <!-- this project's own modules -->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>web-module</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>franchise-module</artifactId>
@@ -40,12 +45,12 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>franchise-admin-webapp</artifactId>
+                <artifactId>nexus-command-webapp</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>franchise-admin-webapp-tests</artifactId>
+                <artifactId>nexus-command-webapp-tests</artifactId>
                 <version>${project.version}</version>
                 <scope>test</scope>
                 <type>test-jar</type>
@@ -63,6 +68,7 @@
     </dependencies>
 
     <modules>
+        <module>module-web</module>
         <module>module-franchise</module>
         <module>module-franchise-tests</module>
         <module>webapp</module>

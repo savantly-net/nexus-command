@@ -102,6 +102,7 @@ public class FranchiseLocation implements Comparable<FranchiseLocation>  {
     @GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
     @Property(editing = Editing.DISABLED)
     @Column(name = "id", nullable = false)
+    @Getter
     private Long id;
 
     @javax.persistence.Version
@@ -112,7 +113,7 @@ public class FranchiseLocation implements Comparable<FranchiseLocation>  {
     
     @Title
     @Name
-    @Column(name="name", length = Name.MAX_LEN, nullable = false)
+    @Column(name="NAME", length = Name.MAX_LEN, nullable = false)
     @Property(editing = Editing.DISABLED)
     @Getter @Setter @ToString.Include
     @PropertyLayout(fieldSetId = "name", sequence = "1.1")

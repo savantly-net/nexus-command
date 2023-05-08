@@ -1,0 +1,50 @@
+{
+    "type": "object",
+    "title": "Categorized Links",
+    "required": [
+      "name",
+      "categories"
+    ],
+    "properties": {
+      "name": {
+        "type": "string",
+        "minLength": 3
+      },
+      "categories": {
+        "type": "array",
+        "title": "Categories",
+        "items": {
+          "type": "object",
+          "title": "Category",
+          "required": [
+            "name"
+          ],
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "links": {
+              "type": "array",
+              "title": "Links",
+              "items": {
+                "type": "object",
+                "title": "Link",
+                "required": [
+                  "name",
+                  "url"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }

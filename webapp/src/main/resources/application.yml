@@ -55,12 +55,12 @@ causeway:
   viewer:
     common:
       application:
-        about: Franchise Admin
+        about: Nexus Command
         brand-logo-signin: images/favicon.png
         brand-logo-header: images/favicon.png
         favicon-url: images/favicon.png
         menubars-layout-file: menubars.layout.xml
-        name: Franchise Admin
+        name: Nexus Command
         # https://stackoverflow.com/a/38983935/56880
         version: @project.version@
       credit:

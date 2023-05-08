@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import net.savantly.franchise.dom.web.blockType.BlockTypeDto;
-import net.savantly.franchise.dom.web.blockType.BlockTypes;
+import net.savantly.nexus.command.web.dom.blockType.BlockTypeDto;
+import net.savantly.nexus.command.web.dom.blockType.BlockTypes;
 
 @RestController
 @RequestMapping("/api/block-types")
@@ -38,8 +38,8 @@ class BlockTypesController {
     }
 
     @GetMapping("/{id}")
-    public BlockTypeDto allBlockTypeById(@PathVariable final Long id) {
-        return call("sven", () -> blockTypes.getById(id))
+    public BlockTypeDto allBlockTypeById(@PathVariable final String id) {
+        return call("sven", () -> blockTypes.getDtoById(id))
                 .orElse(null);
     }
 

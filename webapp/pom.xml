@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>franchise-admin</artifactId>
+        <artifactId>nexus-command</artifactId>
         <groupId>net.savantly</groupId>
         <version>2.0.0-RC1</version>
     </parent>
 
-    <artifactId>franchise-admin-webapp</artifactId>
+    <artifactId>nexus-command-webapp</artifactId>
     <name>SimpleApp (JPA) - Webapp</name>
 
     <description>
@@ -65,6 +65,11 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>web-module</artifactId>
+        </dependency>
+        
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>franchise-module</artifactId>

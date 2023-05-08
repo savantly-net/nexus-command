@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -14,7 +15,6 @@ import javax.inject.Named;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
@@ -53,11 +53,12 @@ import net.savantly.franchise.dom.franchiseUser.FranchiseUser;
 import net.savantly.franchise.dom.franchiseUser.FranchiseUsers;
 import net.savantly.franchise.dom.group.FranchiseGroup;
 import net.savantly.franchise.dom.group.FranchiseGroups;
-import net.savantly.franchise.dom.web.site.WebSite;
+import net.savantly.franchise.dom.brandSite.BrandSite;
 import net.savantly.franchise.types.EmailAddress;
 import net.savantly.franchise.types.Name;
 import net.savantly.franchise.types.Notes;
 import net.savantly.franchise.types.PhoneNumber;
+import net.savantly.nexus.command.web.dom.site.WebSite;
 
 @Named(FranchiseModule.NAMESPACE + ".Brand")
 @javax.persistence.Entity
@@ -82,18 +83,24 @@ public class Brand implements Comparable<Brand>  {
     @Inject @Transient FranchiseUsers userRepository;
     @Inject @Transient FranchiseGroups franchiseGroups;
     
-    public static Brand withName(String name) {
+    public static Brand withRequiredFields(String id, String name) {
         val entity = new Brand();
+        entity.id = id;
         entity.setName(name);
         return entity;
+    }
+
+    public static Brand withName(String name) {
+        val id = String.format("%s-%s", name.toLowerCase(), UUID.randomUUID().toString().substring(0, 8));
+        return withRequiredFields(id, name);
     }
 
     // *** PROPERTIES ***
     
     @Id
-    @GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    private Long id;
+    @Getter
+    private String id;
 
     @javax.persistence.Version
     @javax.persistence.Column(name = "version", nullable = false)
@@ -103,7 +110,7 @@ public class Brand implements Comparable<Brand>  {
 
     @Title
     @Name
-    @Column(length = Name.MAX_LEN, nullable = false)
+    @Column(name="NAME", length = Name.MAX_LEN, nullable = false)
     @Property(editing = Editing.DISABLED)
     @Getter @Setter @ToString.Include
     @PropertyLayout(fieldSetId = "name", sequence = "1")
@@ -195,7 +202,7 @@ public class Brand implements Comparable<Brand>  {
     @Collection
     @Getter @Setter
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "brand")
-    private Set<WebSite> webSites = new HashSet<>();
+    private Set<BrandSite> brandSites = new HashSet<>();
 	
 	// *** IMPLEMENTATIONS ****
 
@@ -275,23 +282,23 @@ public class Brand implements Comparable<Brand>  {
     }
 
     @Action
-    @ActionLayout(named = "Create Web Site", associateWith = "webSites", promptStyle = PromptStyle.DIALOG)
-    public WebSite createWebSite(
-    		@ParameterLayout(named = "Name") final String name) {
-    	WebSite webSite = WebSite.withRequiredFields(this, name);
-    	webSites.add(webSite);
-        return webSite;
+    @ActionLayout(named = "Create Web Site", associateWith = "brandSites", promptStyle = PromptStyle.DIALOG)
+    public BrandSite createBrandSite(
+            final WebSite webSite) {
+    	BrandSite brandSite = BrandSite.withRequiredFields(webSite, this);
+    	brandSites.add(brandSite);
+        return brandSite;
     }
 
     @Action
-    @ActionLayout(named = "Delete Web Site", associateWith = "webSites", promptStyle = PromptStyle.DIALOG)
-    public Brand deleteWebSite(
-    		@ParameterLayout(named = "Web Site") final WebSite webSite) {
-    	webSites.removeIf(w -> w.getId().equals(webSite.getId()));
+    @ActionLayout(named = "Delete Web Site", associateWith = "brandSites", promptStyle = PromptStyle.DIALOG)
+    public Brand deleteBrandSite(
+    		@ParameterLayout(named = "Web Site") final BrandSite webSite) {
+    	brandSites.removeIf(w -> w.getId().equals(webSite.getId()));
         return this;
     }
-    public Set<WebSite> choices0DeleteWebSite() {
-        return this.getWebSites();
+    public Set<BrandSite> choices0DeleteBrandSite() {
+        return this.getBrandSites();
     }
 }
 

@@ -16,17 +16,37 @@ import org.apache.causeway.testing.fixtures.applib.fixturescripts.FixtureScript;
 
 import domainapp.webapp.application.ApplicationModule;
 import net.savantly.franchise.FranchiseModule;
+import net.savantly.nexus.command.web.NexusCommandWebModule;
 
 public class CustomRolesAndUsers extends FixtureScript {
 
     @Override
     protected void execute(ExecutionContext executionContext) {
         executionContext.executeChildren(this,
+                new NexusCommandWebModuleSuperuserRole(),
                 new FranchiseModuleSuperuserRole(),
                 new ApplicationSuperuserRole(),
                 new ApplicationUserRole(),
                 new SvenUser(),
                 new FranchiseeUser());
+    }
+
+    private static class NexusCommandWebModuleSuperuserRole extends AbstractRoleAndPermissionsFixtureScript {
+
+        public static final String ROLE_NAME = "nexus-web-superuser";
+
+        public NexusCommandWebModuleSuperuserRole() {
+            super(ROLE_NAME, "Permission to use everything in the 'Nexus Command Web' module");
+        }
+
+        @Override
+        protected void execute(ExecutionContext executionContext) {
+            newPermissions(
+                    ApplicationPermissionRule.ALLOW,
+                    ApplicationPermissionMode.CHANGING,
+                    Can.of(ApplicationFeatureId.newNamespace(NexusCommandWebModule.NAMESPACE))
+            );
+        }
     }
 
     private static class FranchiseModuleSuperuserRole extends AbstractRoleAndPermissionsFixtureScript {
@@ -96,6 +116,7 @@ public class CustomRolesAndUsers extends FixtureScript {
                 return Can.of(
                         causewayConfiguration.getExtensions().getSecman().getSeed().getRegularUser().getRoleName(), // built-in stuff
                         FranchiseModuleSuperuserRole.ROLE_NAME,
+                        NexusCommandWebModuleSuperuserRole.ROLE_NAME,
                         ApplicationSuperuserRole.ROLE_NAME
                         );
             }

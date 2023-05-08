@@ -17,7 +17,6 @@ import org.apache.causeway.applib.annotation.MinLength;
 import org.apache.causeway.applib.annotation.NatureOfService;
 import org.apache.causeway.applib.annotation.Optionality;
 import org.apache.causeway.applib.annotation.Parameter;
-import org.apache.causeway.applib.annotation.ParameterLayout;
 import org.apache.causeway.applib.annotation.PriorityPrecedence;
 import org.apache.causeway.applib.annotation.Programmatic;
 import org.apache.causeway.applib.annotation.PromptStyle;
@@ -67,10 +66,6 @@ public class FranchiseLocations {
     @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
     public FranchiseLocation findByNameExact(final String search) {
         return repository.findByNameContainingIgnoreCase(search).stream().findFirst().orElse(null);
-    }
-
-    public Long default0Create() {
-        return repository.getMaxId().orElse(0L) + 1;
     }
     
     public Collection<FranchiseLocation> autoComplete0FindByName(@MinLength(1) final String search) {

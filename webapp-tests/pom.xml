@@ -3,13 +3,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>franchise-admin</artifactId>
+        <artifactId>nexus-command</artifactId>
         <groupId>net.savantly</groupId>
         <version>2.0.0-RC1</version>
     </parent>
 
-    <artifactId>franchise-admin-webapp-tests</artifactId>
-    <name>Franchise Admin - Webapp (tests)</name>
+    <artifactId>nexus-command-webapp-tests</artifactId>
+    <name>Nexus Command - Webapp (tests)</name>
 
     <description>
         Integ tests for entire app.
@@ -36,7 +36,7 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>franchise-admin-webapp</artifactId>
+            <artifactId>nexus-command-webapp</artifactId>
             <scope>test</scope>
         </dependency>
 

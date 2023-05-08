@@ -1,0 +1,47 @@
+{
+    "name": "Savantly Nexus Category Links",
+    "categories": [
+        {
+            "name": "Important Links",
+            "links": [
+                {
+                    "name": "Savantly Nexus",
+                    "link": "https://savantly.net"
+                },
+                {
+                    "name": "Savantly Nexus",
+                    "link": "https://savantly.net"
+                },
+                {
+                    "name": "Savantly Nexus",
+                    "link": "https://savantly.net"
+                },
+                {
+                    "name": "Savantly Nexus",
+                    "link": "https://savantly.net"
+                }
+            ]
+        },
+        {
+            "name": "Even More Important Links",
+            "links": [
+                {
+                    "name": "Savantly Nexus",
+                    "link": "https://savantly.net"
+                },
+                {
+                    "name": "Savantly Nexus",
+                    "link": "https://savantly.net"
+                },
+                {
+                    "name": "Savantly Nexus",
+                    "link": "https://savantly.net"
+                },
+                {
+                    "name": "Savantly Nexus",
+                    "link": "https://savantly.net"
+                }
+            ]
+        }
+    ]
+}

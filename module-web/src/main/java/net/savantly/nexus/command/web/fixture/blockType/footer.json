@@ -1,0 +1,33 @@
+{
+    "type": "object",
+    "title": "Footer",
+    "required": [
+      "socialLinks"
+    ],
+    "properties": {
+      "socialLinks": {
+        "type": "array",
+        "title": "Links",
+        "items": {
+          "type": "object",
+          "title": "Link",
+          "required": [
+            "name",
+            "url",
+            "iconUrl"
+          ],
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            },
+            "iconUrl": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
