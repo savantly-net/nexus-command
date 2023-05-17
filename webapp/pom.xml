@@ -224,6 +224,19 @@
             <artifactId>spring-instrument</artifactId>
         </dependency>
 
+
+         <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-webmvc-core</artifactId>
+            <version>1.6.14</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+
     </dependencies>
 
     <profiles>
@@ -288,7 +301,11 @@
                                 </ports>
                             </container>
                             <to>
-                                <image>docker.io/apache/causeway-app-simpleapp</image>
+                                <image>docker.io/savantly/nexus-command</image>
+                                <platforms>
+                                    <platform>linux/amd64</platform>
+                                    <platform>linux/arm64</platform>
+                                </platforms>
                                 <tags>
                                     <tag>${env.REVISION}</tag>
                                 </tags>
