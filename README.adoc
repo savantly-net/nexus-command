@@ -7,9 +7,6 @@
 docker run -p 8080:8080 savantly/nexus-command
 ```
 
-Demo Site -  
-https://nexus-command.test-company.apps.savantly.cloud/
-
 
 This is an link:https://causeway.apache.org[Apache Causeway] application, using best practices and conventions.  
 It takes advantage of the rapid development capabilities of Causeway, and provides enterprise-grade features.  
