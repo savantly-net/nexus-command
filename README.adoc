@@ -10,10 +10,12 @@ docker run -p 8080:8080 savantly/nexus-command
 == Screenshots
 
 Brand Manager  
-image::./docs/brand-manager.png[Brand Manager]
+
+image::docs/brand-manager.png[Brand Manager]
 
 Website Manager  
-image::./docs/website-manager.png[Website Manager]  
+
+image::docs/website-manager.png[Website Manager]  
 
 == Introduction
 
