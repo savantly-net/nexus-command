@@ -2,10 +2,62 @@
 :toc:
 :toc-placement!:
 
+toc::[]
+
 == TLDR;
 ```shell
 docker run -p 8080:8080 savantly/nexus-command
 ```
+
+== Overview
+
+Nexus Command is a multi-tenant application that provides a platform for managing all types of business data.  
+It'ss built on top of the link:https://causeway.apache.org[Apache Causeway] framework, and provides a starting point for managing your own data and creating custom applications/integrations.
+
+
+image::docs/overview.png[Overview]
+
+
+=== Levels of customization:  
+
+You can use the default webapp which includes all the modules, or you can create your own webapp and include only the modules you need.  
+The modules are maintained in this repo, and published to Maven Central.  
+
+image::docs/customization.png[Customization]
+
+
+== Use Cases
+
+Nexus Command has countless use-cases.  
+Although, a generalized use-case is to provide a platform for managing your core business data, and integrate with third party systems.  
+By using Nexus as the "source of truth" for your business data, you can easily create custom applications and integrations that are specific to your business needs, without being tied to a specific vendor or platform.  
+
+The following features are (or will be) included in the default webapp:  
+
+* Website management (beta)
+* Brand management (beta)
+* Franchisee management (beta)
+* Content management (beta)
+* SEO (beta)
+* Employee management (alpha)
+* Product management (planned)
+* Inventory management (planned)
+* Customer management (planned)
+* Sales management (planned)
+* Reporting (planned)
+* Analytics (planned)
+* Marketing (planned)
+* Advertising Integration (planned)
+* Social media Integration (planned)
+* E-commerce (considering)
+
+
+=== Franchise Management
+As a franchise operator or owner, fine-grained control of content and data can facilitate a consistent brand experience across all locations.  
+Nexus Command faciliates granular content management delegation to a franchisee or agency, while maintaining control of the brand.  
+
+image::docs/franchise-use-case.png[Franchise Use Case]
+
 
 == Screenshots
 
@@ -59,7 +111,6 @@ You can use the webapp as a starting point for your own application, or you can 
 TODO: add a link to the demo site here
 ====
 
-toc::[]
 
 == Quick start
 
