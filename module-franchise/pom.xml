@@ -35,7 +35,15 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>common-types-module</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>web-module</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>organizations-module</artifactId>
         </dependency>
 
         <!-- CAUSEWAY API -->

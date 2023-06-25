@@ -6,16 +6,16 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <mb3:primary>
         <mb3:menu>
-            <mb3:named>Brands</mb3:named>
+            <mb3:named>Organizations</mb3:named>
             <mb3:section>
-                <mb3:serviceAction objectType="savantly.franchise.Brands" id="create">
-                    <cpt:named>New Brand</cpt:named>
+                <mb3:serviceAction objectType="savantly.organizations.Organizations" id="create">
+                    <cpt:named>New Organization</cpt:named>
                 </mb3:serviceAction>
-                <mb3:serviceAction objectType="savantly.franchise.Brands" id="listAll">
-                    <cpt:named>List Brands</cpt:named>
+                <mb3:serviceAction objectType="savantly.organizations.Organizations" id="listAll">
+                    <cpt:named>List Organizations</cpt:named>
                 </mb3:serviceAction>
-                <mb3:serviceAction objectType="savantly.franchise.Brands" id="findByName">
-                    <cpt:named>Find Brand</cpt:named>
+                <mb3:serviceAction objectType="savantly.organizations.Organizations" id="findByName">
+                    <cpt:named>Find Organization</cpt:named>
                 </mb3:serviceAction>
             </mb3:section>
         </mb3:menu>

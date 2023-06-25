@@ -14,18 +14,18 @@ import org.apache.causeway.extensions.secman.applib.user.dom.ApplicationUserRepo
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.savantly.franchise.FranchiseModule;
-import net.savantly.franchise.dom.franchiseUser.FranchiseUser;
-import net.savantly.franchise.dom.franchiseUser.FranchiseUsers;
+import net.savantly.nexus.franchise.FranchiseModule;
+import net.savantly.nexus.organizations.dom.organizationUser.OrganizationUser;
+import net.savantly.nexus.organizations.dom.organizationUser.OrganizationUsers;
 
 
-@Named(FranchiseModule.NAMESPACE + ".FranchiseUsers")
+@Named(FranchiseModule.NAMESPACE + ".OrganizationUsers")
 @DomainService(
         nature = NatureOfService.VIEW
 )
 @javax.annotation.Priority(PriorityPrecedence.EARLY)
 @lombok.RequiredArgsConstructor(onConstructor_ = {@Inject} )
-public class FranchiseUserService implements FranchiseUsers {
+public class FranchiseUserService implements OrganizationUsers {
 
     private static final Logger logger = LogManager.getLogger(FranchiseUserService.class);
 
@@ -33,7 +33,7 @@ public class FranchiseUserService implements FranchiseUsers {
 
     @Programmatic
     @Override
-    public List<FranchiseUser> findAll() {
+    public List<OrganizationUser> findAll() {
         var allApplicationUsers = applicationUserRepository.allUsers();
         if (allApplicationUsers == null || allApplicationUsers.isEmpty()) {
             logger.warn("No users found");
@@ -42,7 +42,7 @@ public class FranchiseUserService implements FranchiseUsers {
         logger.info("Found {} users", allApplicationUsers.size());
         return allApplicationUsers
                 .stream().map(u -> {
-                    var user = new FranchiseUser();
+                    var user = new OrganizationUser();
                     user.setUsername(u.getName());
                     user.setDisplayName(u.getName());
                     return user;

@@ -18,8 +18,8 @@ import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import net.savantly.franchise.dom.location.FranchiseLocation;
-import net.savantly.franchise.dom.location.FranchiseLocations;
+import net.savantly.nexus.franchise.dom.location.FranchiseLocation;
+import net.savantly.nexus.franchise.dom.location.FranchiseLocations;
 
 @Component
 @RequiredArgsConstructor(onConstructor_ = {@Inject})

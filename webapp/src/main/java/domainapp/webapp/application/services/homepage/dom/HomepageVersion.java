@@ -31,7 +31,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
-import net.savantly.franchise.dom.group.FranchiseGroupRepository;
 
 @Named(ApplicationModule.PUBLIC_NAMESPACE + ".HomepageVersion")
 @javax.persistence.Entity
@@ -51,7 +50,6 @@ public class HomepageVersion implements Comparable<HomepageVersion>  {
     @Inject @Transient RepositoryService repositoryService;
     @Inject @Transient TitleService titleService;
     @Inject @Transient MessageService messageService;
-    @Inject @Transient FranchiseGroupRepository groupRepository;
     
     public static HomepageVersion withRequiredFields() {
         val entity = new HomepageVersion();

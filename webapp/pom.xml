@@ -72,6 +72,16 @@
         
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>organizations-web-module</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>organizations-module</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>franchise-module</artifactId>
         </dependency>
 
@@ -235,6 +245,24 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+
+        <!-- TESTING -->
+        
+        <dependency>
+            <groupId>org.apache.causeway.testing</groupId>
+            <artifactId>causeway-testing-integtestsupport-applib</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.causeway.testing</groupId>
+            <artifactId>causeway-testing-fakedata-applib</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.causeway.testing</groupId>
+            <artifactId>causeway-testing-fixtures-applib</artifactId>
         </dependency>
 
     </dependencies>

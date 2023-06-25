@@ -35,7 +35,22 @@
             <!-- this project's own modules -->
             <dependency>
                 <groupId>${project.groupId}</groupId>
+                <artifactId>common-types-module</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>web-module</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>organizations-module</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>organizations-web-module</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -55,13 +70,6 @@
                 <artifactId>nexus-command-webapp</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>nexus-command-webapp-tests</artifactId>
-                <version>${project.version}</version>
-                <scope>test</scope>
-                <type>test-jar</type>
-            </dependency>
 
         </dependencies>
     </dependencyManagement>
@@ -75,11 +83,13 @@
     </dependencies>
 
     <modules>
+        <module>module-common-types</module>
+        <module>module-organizations</module>
         <module>module-web</module>
+        <module>module-organizations-web</module>
         <module>module-franchise</module>
         <module>module-franchise-tests</module>
         <module>webapp</module>
-        <module>webapp-tests</module>
     </modules>
 
     <profiles>

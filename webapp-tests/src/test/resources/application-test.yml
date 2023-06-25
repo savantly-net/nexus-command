@@ -1,5 +1,0 @@
-causeway:
-  persistence:
-    schema:
-      auto-create-schemas: "nc_web,franchise,causewayExtSecman"
-

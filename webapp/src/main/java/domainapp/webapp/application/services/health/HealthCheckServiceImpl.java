@@ -7,7 +7,8 @@ import org.apache.causeway.applib.services.health.Health;
 import org.apache.causeway.applib.services.health.HealthCheckService;
 import org.springframework.stereotype.Service;
 
-import net.savantly.franchise.dom.location.FranchiseLocations;
+import net.savantly.nexus.franchise.dom.location.FranchiseLocations;
+
 
 @Service
 @Named("domainapp.HealthCheckServiceImpl")

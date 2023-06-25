@@ -6,11 +6,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import net.savantly.franchise.FranchiseModule;
 import net.savantly.nexus.command.web.NexusCommandWebModule;
+import net.savantly.nexus.franchise.FranchiseModule;
+import net.savantly.nexus.organizations.OrganizationsModule;
+import net.savantly.nexus.orgweb.OrgWebModule;
 
 @Configuration
-@Import({ FranchiseModule.class, NexusCommandWebModule.class })
+@Import({ OrganizationsModule.class, OrgWebModule.class, FranchiseModule.class, NexusCommandWebModule.class })
 @ComponentScan
 @EnableJpaRepositories
 @EntityScan
