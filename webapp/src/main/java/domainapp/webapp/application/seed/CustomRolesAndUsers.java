@@ -19,6 +19,7 @@ import net.savantly.nexus.command.web.NexusCommandWebModule;
 import net.savantly.nexus.franchise.FranchiseModule;
 import net.savantly.nexus.organizations.OrganizationsModule;
 import net.savantly.nexus.orgweb.OrgWebModule;
+import net.savantly.nexus.projects.ProjectsModule;
 
 public class CustomRolesAndUsers extends FixtureScript {
 
@@ -27,6 +28,7 @@ public class CustomRolesAndUsers extends FixtureScript {
         executionContext.executeChildren(this,
                 new OrganizationsModuleSuperuserRole(),
                 new OrgWebModuleSuperuserRole(),
+                new ProjectsModuleSuperuserRole(),
                 new NexusCommandWebModuleSuperuserRole(),
                 new FranchiseModuleSuperuserRole(),
                 new ApplicationSuperuserRole(),
@@ -67,6 +69,24 @@ public class CustomRolesAndUsers extends FixtureScript {
                     ApplicationPermissionRule.ALLOW,
                     ApplicationPermissionMode.CHANGING,
                     Can.of(ApplicationFeatureId.newNamespace(OrgWebModule.NAMESPACE))
+            );
+        }
+    }
+
+    private static class ProjectsModuleSuperuserRole extends AbstractRoleAndPermissionsFixtureScript {
+
+        public static final String ROLE_NAME = "projects-superuser";
+
+        public ProjectsModuleSuperuserRole() {
+            super(ROLE_NAME, "Permission to use everything in the 'Projects' module");
+        }
+
+        @Override
+        protected void execute(ExecutionContext executionContext) {
+            newPermissions(
+                    ApplicationPermissionRule.ALLOW,
+                    ApplicationPermissionMode.CHANGING,
+                    Can.of(ApplicationFeatureId.newNamespace(ProjectsModule.NAMESPACE))
             );
         }
     }
@@ -157,6 +177,7 @@ public class CustomRolesAndUsers extends FixtureScript {
                         causewayConfiguration.getExtensions().getSecman().getSeed().getRegularUser().getRoleName(), // built-in stuff
                         OrgWebModuleSuperuserRole.ROLE_NAME,
                         OrganizationsModuleSuperuserRole.ROLE_NAME,
+                        ProjectsModuleSuperuserRole.ROLE_NAME,
                         FranchiseModuleSuperuserRole.ROLE_NAME,
                         NexusCommandWebModuleSuperuserRole.ROLE_NAME,
                         ApplicationSuperuserRole.ROLE_NAME

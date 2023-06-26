@@ -40,6 +40,11 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
+                <artifactId>projects-module</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>web-module</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -84,6 +89,7 @@
 
     <modules>
         <module>module-common-types</module>
+        <module>module-projects</module>
         <module>module-organizations</module>
         <module>module-web</module>
         <module>module-organizations-web</module>

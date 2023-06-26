@@ -20,6 +20,42 @@
             </mb3:section>
         </mb3:menu>
         <mb3:menu>
+            <mb3:named>Projects</mb3:named>
+            <mb3:section>
+                <mb3:serviceAction objectType="savantly.projects.Projects" id="create">
+                    <cpt:named>New Project</cpt:named>
+                </mb3:serviceAction>
+                <mb3:serviceAction objectType="savantly.projects.Projects" id="listAll">
+                    <cpt:named>List Projects</cpt:named>
+                </mb3:serviceAction>
+                <mb3:serviceAction objectType="savantly.projects.Projects" id="findByName">
+                    <cpt:named>Find Project</cpt:named>
+                </mb3:serviceAction>
+            </mb3:section>
+            <mb3:section>
+                <mb3:named>Project Member Roles</mb3:named>
+                <mb3:serviceAction objectType="savantly.projects.ProjectMemberRoles" id="create"/>
+                <mb3:serviceAction objectType="savantly.projects.ProjectMemberRoles" id="listAll"/>
+            </mb3:section>
+            <mb3:section>
+                <mb3:named>Issues</mb3:named>
+                <mb3:serviceAction objectType="savantly.projects.Issues" id="create">
+                    <cpt:named>New Issue</cpt:named>
+                </mb3:serviceAction>
+                <mb3:serviceAction objectType="savantly.projects.Issues" id="listAll">
+                    <cpt:named>List Issues</cpt:named>
+                </mb3:serviceAction>
+                <mb3:serviceAction objectType="savantly.projects.Issues" id="findByName">
+                    <cpt:named>Find Issue</cpt:named>
+                </mb3:serviceAction>
+            </mb3:section>
+            <mb3:section>
+                <mb3:named>Issue Member Roles</mb3:named>
+                <mb3:serviceAction objectType="savantly.projects.IssueMemberRoles" id="create"/>
+                <mb3:serviceAction objectType="savantly.projects.IssueMemberRoles" id="listAll"/>
+            </mb3:section>
+        </mb3:menu>
+        <mb3:menu>
             <mb3:named>Franchisees</mb3:named>
             <mb3:section>
                 <mb3:serviceAction objectType="savantly.franchise.FranchiseGroups" id="create">

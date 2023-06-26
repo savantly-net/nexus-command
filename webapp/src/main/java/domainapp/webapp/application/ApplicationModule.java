@@ -10,9 +10,10 @@ import net.savantly.nexus.command.web.NexusCommandWebModule;
 import net.savantly.nexus.franchise.FranchiseModule;
 import net.savantly.nexus.organizations.OrganizationsModule;
 import net.savantly.nexus.orgweb.OrgWebModule;
+import net.savantly.nexus.projects.ProjectsModule;
 
 @Configuration
-@Import({ OrganizationsModule.class, OrgWebModule.class, FranchiseModule.class, NexusCommandWebModule.class })
+@Import({ OrganizationsModule.class, OrgWebModule.class, ProjectsModule.class, FranchiseModule.class, NexusCommandWebModule.class })
 @ComponentScan
 @EnableJpaRepositories
 @EntityScan

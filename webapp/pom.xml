@@ -85,6 +85,11 @@
             <artifactId>franchise-module</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>projects-module</artifactId>
+        </dependency>
+
         <!-- causeway -->
         <dependency>
             <groupId>org.apache.causeway.mavendeps</groupId>
