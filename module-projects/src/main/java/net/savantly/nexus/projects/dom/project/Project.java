@@ -171,6 +171,7 @@ public class Project implements Comparable<Project>  {
     public Issue addIssue(
             @ParameterLayout(named = "Name") final String name) {
         val issue = Issue.withRequiredFields(UUID.randomUUID().toString(), name, this);
+        this.issues.add(issue);
         return repositoryService.persistAndFlush(issue);
     }
 
