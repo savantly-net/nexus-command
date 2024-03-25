@@ -299,6 +299,7 @@ public class FranchiseLocation implements Comparable<FranchiseLocation>  {
         found.ifPresent(m -> m.delete());
         return this;
     }
+    @MemberSupport
     public List<FranchiseLocationMember> choices0RemoveMember() {
         return this.members.stream().collect(Collectors.toList());
     }

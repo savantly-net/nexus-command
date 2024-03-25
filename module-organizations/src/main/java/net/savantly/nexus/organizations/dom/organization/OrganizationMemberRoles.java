@@ -1,9 +1,6 @@
-package net.savantly.nexus.franchise.dom.group;
+package net.savantly.nexus.organizations.dom.organization;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -13,8 +10,6 @@ import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
 import org.apache.causeway.applib.annotation.DomainService;
 import org.apache.causeway.applib.annotation.DomainServiceLayout;
-import org.apache.causeway.applib.annotation.MemberSupport;
-import org.apache.causeway.applib.annotation.MinLength;
 import org.apache.causeway.applib.annotation.NatureOfService;
 import org.apache.causeway.applib.annotation.PriorityPrecedence;
 import org.apache.causeway.applib.annotation.Programmatic;
@@ -24,57 +19,48 @@ import org.apache.causeway.applib.services.repository.RepositoryService;
 import org.apache.causeway.persistence.jpa.applib.services.JpaSupportService;
 
 import net.savantly.nexus.common.types.Name;
-import net.savantly.nexus.franchise.FranchiseModule;
-import net.savantly.nexus.franchise.dom.location.FranchiseLocation;
-import net.savantly.nexus.organizations.dom.organization.Organization;
+import net.savantly.nexus.organizations.OrganizationsModule;
 
-@Named(FranchiseModule.NAMESPACE + ".FranchiseGroups")
+@Named(OrganizationsModule.NAMESPACE + ".OrganizationMemberRoles")
 @DomainService(nature = NatureOfService.VIEW)
 @DomainServiceLayout()
 @javax.annotation.Priority(PriorityPrecedence.EARLY)
 @lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
-public class FranchiseGroups {
+public class OrganizationMemberRoles {
     final RepositoryService repositoryService;
     final JpaSupportService jpaSupportService;
-    final FranchiseGroupRepository repository;
+    final OrganizationMemberRoleRepository repository;
 
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR)
-    public FranchiseGroup create(
-            final Organization organization,
+    public OrganizationMemberRole create(
             @Name final String name) {
-        return repositoryService.persist(FranchiseGroup.withName(organization, name));
+        return repositoryService.persist(OrganizationMemberRole.withName(name));
+    }
+
+    @Programmatic
+    public OrganizationMemberRole create(
+            final String id,
+            @Name final String name) {
+        return repositoryService.persist(OrganizationMemberRole.withRequiredFields(id, name));
     }
 
     @Action(semantics = SemanticsOf.SAFE)
     @ActionLayout()
-    public List<FranchiseGroup> listAll() {
+    public List<OrganizationMemberRole> listAll() {
         return repository.findAll();
-    }
-
-    @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout()
-    public FranchiseGroup findByName(final FranchiseGroup group) {
-        return group;
-    }
-
-    @MemberSupport
-    public Collection<FranchiseGroup> autoComplete0FindByName(@MinLength(1) final String search) {
-        if (Objects.isNull(search) || "".equals(search)) {
-            return Collections.emptyList();
-        }
-        return repository.findByNameContainingIgnoreCase(search);
     }
 
     @Programmatic
     public void ping() {
-        jpaSupportService.getEntityManager(FranchiseLocation.class)
+        jpaSupportService.getEntityManager(OrganizationMemberRole.class)
                 .ifSuccess(entityManager -> {
-                    final TypedQuery<FranchiseGroup> q = entityManager.get().createQuery(
-                            "SELECT p FROM FranchiseGroup p ORDER BY p.name",
-                            FranchiseGroup.class)
+                    final TypedQuery<OrganizationMemberRole> q = entityManager.get().createQuery(
+                            "SELECT p FROM OrganizationMemberRole p ORDER BY p.name",
+                            OrganizationMemberRole.class)
                             .setMaxResults(1);
                     q.getResultList();
                 });
     }
+
 }

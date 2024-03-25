@@ -14,7 +14,6 @@ import org.apache.causeway.extensions.pdfjs.wkt.ui.CausewayModuleExtPdfjsWicketU
 import org.apache.causeway.extensions.secman.encryption.jbcrypt.CausewayModuleExtSecmanEncryptionJbcrypt;
 import org.apache.causeway.extensions.secman.jpa.CausewayModuleExtSecmanPersistenceJpa;
 import org.apache.causeway.extensions.sessionlog.jpa.CausewayModuleExtSessionLogPersistenceJpa;
-import org.apache.causeway.extensions.viewer.wicket.exceldownload.ui.CausewayModuleExtExcelDownloadWicketUi;
 import org.apache.causeway.persistence.jpa.eclipselink.CausewayModulePersistenceJpaEclipselink;
 import org.apache.causeway.testing.fixtures.applib.CausewayModuleTestingFixturesApplib;
 import org.apache.causeway.testing.h2console.ui.CausewayModuleTestingH2ConsoleUi;
@@ -60,7 +59,6 @@ import domainapp.webapp.quartz.QuartzModule;
         CausewayModuleExtExecutionLogPersistenceJpa.class,
         CausewayModuleExtExecutionOutboxPersistenceJpa.class,
 
-        CausewayModuleExtExcelDownloadWicketUi.class,
         CausewayModuleExtFullCalendarWicketUi.class,
         CausewayModuleExtPdfjsWicketUi.class,
 

@@ -11,8 +11,8 @@ import javax.persistence.TypedQuery;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
-import org.apache.causeway.applib.annotation.BookmarkPolicy;
 import org.apache.causeway.applib.annotation.DomainService;
+import org.apache.causeway.applib.annotation.MemberSupport;
 import org.apache.causeway.applib.annotation.MinLength;
 import org.apache.causeway.applib.annotation.NatureOfService;
 import org.apache.causeway.applib.annotation.Optionality;
@@ -29,17 +29,14 @@ import net.savantly.nexus.franchise.FranchiseModule;
 import net.savantly.nexus.franchise.dom.group.FranchiseGroup;
 
 @Named(FranchiseModule.NAMESPACE + ".FranchiseLocations")
-@DomainService(
-        nature = NatureOfService.VIEW
-)
+@DomainService(nature = NatureOfService.VIEW)
 @javax.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = {@Inject} )
+@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
 public class FranchiseLocations {
-	
+
     final RepositoryService repositoryService;
     final JpaSupportService jpaSupportService;
     final FranchiseLocationRepository repository;
-
 
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR)
@@ -49,25 +46,24 @@ public class FranchiseLocations {
         return repositoryService.persist(FranchiseLocation.withRequiredFields(franchisee, name));
     }
 
+    @MemberSupport
+    public List<FranchiseGroup> choices0Create() {
+        return repositoryService.allInstances(FranchiseGroup.class);
+    }
 
     @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+    @ActionLayout()
     public List<FranchiseLocation> listAll() {
         return repository.findAll();
     }
-    
+
     @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+    @ActionLayout()
     public FranchiseLocation findByName(final FranchiseLocation item) {
         return item;
     }
 
-    @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
-    public FranchiseLocation findByNameExact(final String search) {
-        return repository.findByNameContainingIgnoreCase(search).stream().findFirst().orElse(null);
-    }
-    
+    @MemberSupport
     public Collection<FranchiseLocation> autoComplete0FindByName(@MinLength(1) final String search) {
         if (Objects.isNull(search) || "".equals(search)) {
             return Collections.emptyList();
@@ -75,16 +71,22 @@ public class FranchiseLocations {
         return repository.findByNameContainingIgnoreCase(search);
     }
 
+    @Action(semantics = SemanticsOf.SAFE)
+    @ActionLayout()
+    public FranchiseLocation findByNameExact(final String search) {
+        return repository.findByNameContainingIgnoreCase(search).stream().findFirst().orElse(null);
+    }
+
     @Programmatic
     public void ping() {
         jpaSupportService.getEntityManager(FranchiseLocation.class)
-            .ifSuccess(entityManager -> {
-                final TypedQuery<FranchiseLocation> q = entityManager.get().createQuery(
-                        "SELECT p FROM FranchiseLocation p ORDER BY p.name",
-                        FranchiseLocation.class)
-                    .setMaxResults(1);
-                q.getResultList();
-            });
+                .ifSuccess(entityManager -> {
+                    final TypedQuery<FranchiseLocation> q = entityManager.get().createQuery(
+                            "SELECT p FROM FranchiseLocation p ORDER BY p.name",
+                            FranchiseLocation.class)
+                            .setMaxResults(1);
+                    q.getResultList();
+                });
     }
 
 }

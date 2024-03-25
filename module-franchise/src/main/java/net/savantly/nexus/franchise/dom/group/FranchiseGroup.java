@@ -27,6 +27,7 @@ import org.apache.causeway.applib.annotation.Collection;
 import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.DomainObjectLayout;
 import org.apache.causeway.applib.annotation.Editing;
+import org.apache.causeway.applib.annotation.MemberSupport;
 import org.apache.causeway.applib.annotation.ParameterLayout;
 import org.apache.causeway.applib.annotation.PromptStyle;
 import org.apache.causeway.applib.annotation.Property;
@@ -230,16 +231,7 @@ public class FranchiseGroup implements Comparable<FranchiseGroup>  {
         repositoryService.removeAndFlush(this);
     }
     
-    @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
-    @ActionLayout(associateWith = "members", promptStyle = PromptStyle.DIALOG)
-    public FranchiseGroup addMember(
-    		@ParameterLayout(named = "User") final OrganizationUser user, 
-    		@ParameterLayout(named = "Role") final FranchiseGroupMemberRole role) {
-    	members.add(FranchiseGroupMember.withRequiredFields(this, role, user));
-        return this;
-    }
 
-    
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
     @ActionLayout(associateWith = "members", promptStyle = PromptStyle.DIALOG)
     public FranchiseGroup removeMember(
@@ -249,6 +241,7 @@ public class FranchiseGroup implements Comparable<FranchiseGroup>  {
         });
         return this;
     }
+    @MemberSupport
     public List<String> choices0RemoveMember() {
         return this.getMembers().stream().map(m -> m.getUserName()).collect(Collectors.toList());
     }

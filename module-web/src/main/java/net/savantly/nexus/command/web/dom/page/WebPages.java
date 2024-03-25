@@ -14,6 +14,7 @@ import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
 import org.apache.causeway.applib.annotation.BookmarkPolicy;
 import org.apache.causeway.applib.annotation.DomainService;
+import org.apache.causeway.applib.annotation.MemberSupport;
 import org.apache.causeway.applib.annotation.MinLength;
 import org.apache.causeway.applib.annotation.NatureOfService;
 import org.apache.causeway.applib.annotation.PriorityPrecedence;
@@ -47,13 +48,13 @@ public class WebPages {
 
 
     @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+    @ActionLayout()
     public List<WebPage> listAll() {
         return repository.findAll();
     }
     
     @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+    @ActionLayout()
     public WebPage findByName(final WebPage item) {
         return item;
     }
@@ -63,6 +64,7 @@ public class WebPages {
         return repository.getReferenceById(id);
     }
     
+    @MemberSupport
     public Collection<WebPage> autoComplete0FindByName(@MinLength(1) final String search) {
         if (Objects.isNull(search) || "".equals(search)) {
             return Collections.emptyList();

@@ -165,6 +165,7 @@ public class WebSite implements Comparable<WebSite>  {
         this.messageService.informUser("Deleted " + webPage.getName());
         return this;
     }
+    @MemberSupport
     public Set<WebPage> choices0DeleteWebPage() {
         return webPages;
     }

@@ -13,8 +13,8 @@ import javax.persistence.TypedQuery;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
-import org.apache.causeway.applib.annotation.BookmarkPolicy;
 import org.apache.causeway.applib.annotation.DomainService;
+import org.apache.causeway.applib.annotation.MemberSupport;
 import org.apache.causeway.applib.annotation.MinLength;
 import org.apache.causeway.applib.annotation.NatureOfService;
 import org.apache.causeway.applib.annotation.ParameterLayout;
@@ -50,13 +50,13 @@ public class WebSites {
 
 
     @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+    @ActionLayout()
     public List<WebSite> listAll() {
         return repository.findAll();
     }
     
     @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+    @ActionLayout()
     public WebSite findByName(final WebSite item) {
         return item;
     }
@@ -66,6 +66,7 @@ public class WebSites {
         return repository.getReferenceById(id);
     }
     
+    @MemberSupport
     public Collection<WebSite> autoComplete0FindByName(@MinLength(1) final String search) {
         if (Objects.isNull(search) || "".equals(search)) {
             return Collections.emptyList();

@@ -12,7 +12,6 @@ import javax.persistence.TypedQuery;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
-import org.apache.causeway.applib.annotation.BookmarkPolicy;
 import org.apache.causeway.applib.annotation.DomainService;
 import org.apache.causeway.applib.annotation.DomainServiceLayout;
 import org.apache.causeway.applib.annotation.MinLength;
@@ -28,19 +27,15 @@ import net.savantly.nexus.common.types.Name;
 import net.savantly.nexus.projects.ProjectsModule;
 import net.savantly.nexus.projects.dom.project.Project;
 
-
 @Named(ProjectsModule.NAMESPACE + ".Issues")
-@DomainService(
-        nature = NatureOfService.VIEW
-)
+@DomainService(nature = NatureOfService.VIEW)
 @DomainServiceLayout()
 @javax.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = {@Inject} )
+@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
 public class Issues {
     final RepositoryService repositoryService;
     final JpaSupportService jpaSupportService;
     final IssueRepository repository;
-
 
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR)
@@ -51,13 +46,13 @@ public class Issues {
     }
 
     @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+    @ActionLayout()
     public List<Issue> listAll() {
         return repository.findAll();
     }
 
     @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+    @ActionLayout()
     public Issue findByName(final Issue group) {
         return group;
     }
@@ -71,7 +66,7 @@ public class Issues {
     public Issue getById(String projectId) {
         return repository.getReferenceById(projectId);
     }
-    
+
     public Collection<Issue> autoComplete0FindByName(@MinLength(1) final String search) {
         if (Objects.isNull(search) || "".equals(search)) {
             return Collections.emptyList();
@@ -82,13 +77,13 @@ public class Issues {
     @Programmatic
     public void ping() {
         jpaSupportService.getEntityManager(Issue.class)
-            .ifSuccess(entityManager -> {
-                final TypedQuery<Issue> q = entityManager.get().createQuery(
-                        "SELECT p FROM Issues p ORDER BY p.name",
-                        Issue.class)
-                    .setMaxResults(1);
-                q.getResultList();
-            });
+                .ifSuccess(entityManager -> {
+                    final TypedQuery<Issue> q = entityManager.get().createQuery(
+                            "SELECT p FROM Issues p ORDER BY p.name",
+                            Issue.class)
+                            .setMaxResults(1);
+                    q.getResultList();
+                });
     }
 
 }

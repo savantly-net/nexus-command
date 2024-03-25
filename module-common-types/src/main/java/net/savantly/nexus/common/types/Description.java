@@ -12,8 +12,7 @@ import org.apache.causeway.applib.annotation.Property;
 import org.apache.causeway.applib.annotation.PropertyLayout;
 import org.apache.causeway.applib.annotation.Where;
 
-
-@Property(editing = Editing.ENABLED, maxLength = Notes.MAX_LEN)
+@Property(editing = Editing.ENABLED, maxLength = Description.MAX_LEN)
 @PropertyLayout(named = "Description", multiLine = 2, hidden = Where.ALL_TABLES)
 @Parameter(maxLength = Description.MAX_LEN)
 @ParameterLayout(named = "Description", multiLine = 2)
@@ -24,4 +23,3 @@ public @interface Description {
     int MAX_LEN = 300;
 
 }
-

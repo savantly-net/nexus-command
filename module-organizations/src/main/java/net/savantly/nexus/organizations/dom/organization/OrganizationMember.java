@@ -40,7 +40,7 @@ import net.savantly.nexus.organizations.OrganizationsModule;
 	)
 	@javax.persistence.EntityListeners(CausewayEntityListener.class)
 	@DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.ENABLED)
-	@DomainObjectLayout()
+	@DomainObjectLayout(describedAs = "A member of an organization")
 	@NoArgsConstructor(access = AccessLevel.PUBLIC)
 	@XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 	@ToString(onlyExplicitlyIncluded = true)
@@ -71,13 +71,17 @@ public class OrganizationMember {
     @Getter @Setter
     private long version;
 
-    @Title
+    @Title(sequence = "1")
     @Getter @Setter
+    @PropertyLayout(fieldSetId = "name", sequence = "1")
+    @javax.persistence.Column(name = "username", nullable = false)
+	private String userName;
+
+    @Title(sequence = "2", prepend = " as ")
+    @Getter @Setter
+    @PropertyLayout(fieldSetId = "name", sequence = "2")
     private OrganizationMemberRole memberRole;
 
-    @Title
-    @Getter @Setter
-	private String userName;
 
     @Getter @Setter
 	private Organization organization;

@@ -36,7 +36,7 @@ public class FranchiseLocationMemberRoles {
 
 
     @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+    @ActionLayout()
     public List<FranchiseLocationMemberRole> listAll() {
         return repository.findAll();
     }

@@ -75,10 +75,12 @@ public class IssueMember {
 
     @Title
     @Getter @Setter
+    @PropertyLayout(fieldSetId = "name", sequence = "2")
     private IssueMemberRole memberRole;
 
     @Title
     @Getter @Setter
+    @PropertyLayout(fieldSetId = "name", sequence = "1")
 	private String userName;
 
     @Getter @Setter

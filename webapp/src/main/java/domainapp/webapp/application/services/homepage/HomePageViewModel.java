@@ -39,7 +39,7 @@ public class HomePageViewModel {
 
     @Programmatic
     private Markdown defaultMarkup() {
-        return Markdown.valueOf("## Welcome!\n\nThis is the default homepage.  \n\nYou can change this by using the configurtion menu, and creating a new version.");
+        return Markdown.valueOf("## Welcome!\n\nThis is the default homepage.  \n\nYou can change this by using the configuration menu, and creating a new version.");
     }
 
     private Markup createMarkup(Markdown body) {

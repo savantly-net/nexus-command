@@ -11,7 +11,6 @@ import javax.persistence.TypedQuery;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
-import org.apache.causeway.applib.annotation.BookmarkPolicy;
 import org.apache.causeway.applib.annotation.DomainService;
 import org.apache.causeway.applib.annotation.DomainServiceLayout;
 import org.apache.causeway.applib.annotation.MinLength;
@@ -26,19 +25,15 @@ import org.apache.causeway.persistence.jpa.applib.services.JpaSupportService;
 import net.savantly.nexus.common.types.Name;
 import net.savantly.nexus.organizations.OrganizationsModule;
 
-
 @Named(OrganizationsModule.NAMESPACE + ".Organizations")
-@DomainService(
-        nature = NatureOfService.VIEW
-)
+@DomainService(nature = NatureOfService.VIEW)
 @DomainServiceLayout()
 @javax.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = {@Inject} )
+@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
 public class Organizations {
     final RepositoryService repositoryService;
     final JpaSupportService jpaSupportService;
     final OrganizationRepository repository;
-
 
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR)
@@ -55,13 +50,13 @@ public class Organizations {
     }
 
     @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+    @ActionLayout()
     public List<Organization> listAll() {
         return repository.findAll();
     }
 
     @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+    @ActionLayout()
     public Organization findByName(final Organization group) {
         return group;
     }
@@ -75,7 +70,7 @@ public class Organizations {
     public Organization getById(String organizationId) {
         return repository.getReferenceById(organizationId);
     }
-    
+
     public Collection<Organization> autoComplete0FindByName(@MinLength(1) final String search) {
         if (Objects.isNull(search) || "".equals(search)) {
             return Collections.emptyList();
@@ -86,13 +81,13 @@ public class Organizations {
     @Programmatic
     public void ping() {
         jpaSupportService.getEntityManager(Organization.class)
-            .ifSuccess(entityManager -> {
-                final TypedQuery<Organization> q = entityManager.get().createQuery(
-                        "SELECT p FROM Organizations p ORDER BY p.name",
-                        Organization.class)
-                    .setMaxResults(1);
-                q.getResultList();
-            });
+                .ifSuccess(entityManager -> {
+                    final TypedQuery<Organization> q = entityManager.get().createQuery(
+                            "SELECT p FROM Organizations p ORDER BY p.name",
+                            Organization.class)
+                            .setMaxResults(1);
+                    q.getResultList();
+                });
     }
 
 }

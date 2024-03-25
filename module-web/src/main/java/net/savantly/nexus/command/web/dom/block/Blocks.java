@@ -13,8 +13,8 @@ import javax.persistence.TypedQuery;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
-import org.apache.causeway.applib.annotation.BookmarkPolicy;
 import org.apache.causeway.applib.annotation.DomainService;
+import org.apache.causeway.applib.annotation.MemberSupport;
 import org.apache.causeway.applib.annotation.MinLength;
 import org.apache.causeway.applib.annotation.NatureOfService;
 import org.apache.causeway.applib.annotation.PriorityPrecedence;
@@ -30,7 +30,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.val;
 import net.savantly.nexus.command.web.NexusCommandWebModule;
 import net.savantly.nexus.command.web.dom.blockType.BlockType;
-import net.savantly.nexus.command.web.dom.blockType.BlockTypeDto;
 
 @Named(NexusCommandWebModule.NAMESPACE + ".Blocks")
 @DomainService(
@@ -63,17 +62,18 @@ public class Blocks {
 
 
     @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+    @ActionLayout()
     public List<Block> listAll() {
         return repository.findAll();
     }
     
     @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+    @ActionLayout()
     public Block findByName(final Block item) {
         return item;
     }
     
+    @MemberSupport
     public Collection<Block> autoComplete0FindByName(@MinLength(1) final String search) {
         if (Objects.isNull(search) || "".equals(search)) {
             return Collections.emptyList();
@@ -91,7 +91,8 @@ public class Blocks {
         return toDto(findById(id));
     }
 
-    @Action(semantics = SemanticsOf.SAFE, hidden = Where.OBJECT_FORMS)
+    @Action(semantics = SemanticsOf.SAFE)
+    @ActionLayout(hidden = Where.OBJECT_FORMS)
     public Block findById(final String id) {
         return repository.getReferenceById(id);
     }

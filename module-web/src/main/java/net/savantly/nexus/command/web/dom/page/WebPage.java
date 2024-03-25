@@ -167,6 +167,7 @@ public class WebPage implements Comparable<WebPage>  {
         getPageBlocks().remove(pageBlock);
         return this;
     }
+    @MemberSupport
     public Set<PageBlock> choices0RemovePageBlock() {
         return getPageBlocks();
     }

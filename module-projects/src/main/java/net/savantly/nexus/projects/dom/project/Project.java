@@ -27,6 +27,7 @@ import org.apache.causeway.applib.annotation.Collection;
 import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.DomainObjectLayout;
 import org.apache.causeway.applib.annotation.Editing;
+import org.apache.causeway.applib.annotation.MemberSupport;
 import org.apache.causeway.applib.annotation.ParameterLayout;
 import org.apache.causeway.applib.annotation.PromptStyle;
 import org.apache.causeway.applib.annotation.Property;
@@ -162,6 +163,7 @@ public class Project implements Comparable<Project>  {
         });
         return this;
     }
+    @MemberSupport
     public List<String> choices0RemoveMember() {
         return this.getMembers().stream().map(m -> m.getUsername()).collect(Collectors.toList());
     }

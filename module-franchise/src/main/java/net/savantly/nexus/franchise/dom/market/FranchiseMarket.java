@@ -31,13 +31,9 @@ import net.savantly.nexus.franchise.FranchiseModule;
 
 @Named(FranchiseModule.NAMESPACE + ".FranchiseMarket")
 @javax.persistence.Entity
-@javax.persistence.Table(
-	schema=FranchiseModule.SCHEMA,
-	name = "franchise_market",
-		    uniqueConstraints = {
-		            @javax.persistence.UniqueConstraint(name = "franchisemarket__name__UNQ", columnNames = {"name"})
-		        }
-)
+@javax.persistence.Table(schema = FranchiseModule.SCHEMA, name = "franchise_market", uniqueConstraints = {
+        @javax.persistence.UniqueConstraint(name = "franchisemarket__name__UNQ", columnNames = { "name" })
+})
 @javax.persistence.EntityListeners(CausewayEntityListener.class)
 @DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.DISABLED, bounding = Bounding.BOUNDED)
 @DomainObjectLayout(cssClassFa = "globe")
@@ -46,9 +42,15 @@ import net.savantly.nexus.franchise.FranchiseModule;
 @ToString(onlyExplicitlyIncluded = true)
 public class FranchiseMarket {
 
-    @Inject @Transient RepositoryService repositoryService;
-    @Inject @Transient TitleService titleService;
-    @Inject @Transient MessageService messageService;
+    @Inject
+    @Transient
+    RepositoryService repositoryService;
+    @Inject
+    @Transient
+    TitleService titleService;
+    @Inject
+    @Transient
+    MessageService messageService;
 
     public static FranchiseMarket withRequiredFields(String id, String name) {
         val entity = new FranchiseMarket();
@@ -56,23 +58,23 @@ public class FranchiseMarket {
         entity.name = name;
         return entity;
     }
-    
+
     @Id
     @Column(name = "id", nullable = false)
     private String id;
-    
+
     @Name
     @Title
-    @Column(name = "name", nullable = false)
-    @Getter @Setter
+    @Column(name = "name", nullable = false, length = Name.MAX_LEN)
+    @Getter
+    @Setter
     private String name;
-    
 
     @javax.persistence.Version
     @javax.persistence.Column(name = "version", nullable = false)
     @PropertyLayout(fieldSetId = "metadata", sequence = "999")
-    @Getter @Setter
+    @Getter
+    @Setter
     private long version;
-    
 
 }

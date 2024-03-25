@@ -44,7 +44,7 @@ public class PageBlocks {
 
 
     @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+    @ActionLayout()
     public List<PageBlock> listAll() {
         return repository.findAll();
     }

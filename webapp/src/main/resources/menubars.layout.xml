@@ -18,6 +18,14 @@
                     <cpt:named>Find Organization</cpt:named>
                 </mb3:serviceAction>
             </mb3:section>
+            <mb3:section>
+                <mb3:serviceAction objectType="savantly.organizations.OrganizationMemberRoles" id="create">
+                    <cpt:named>New Role</cpt:named>
+                </mb3:serviceAction>
+                <mb3:serviceAction objectType="savantly.organizations.OrganizationMemberRoles" id="listAll">
+                    <cpt:named>List Roles</cpt:named>
+                </mb3:serviceAction>
+            </mb3:section>
         </mb3:menu>
         <mb3:menu>
             <mb3:named>Projects</mb3:named>
@@ -68,9 +76,6 @@
                     <cpt:named>Find Franchisee</cpt:named>
                 </mb3:serviceAction>
             </mb3:section>
-        </mb3:menu>
-        <mb3:menu>
-            <mb3:named>Locations</mb3:named>
             <mb3:section>
                 <mb3:named>Markets</mb3:named>
                 <mb3:serviceAction objectType="savantly.franchise.FranchiseMarkets" id="create"/>
@@ -84,7 +89,7 @@
                 <mb3:serviceAction objectType="savantly.franchise.FranchiseLocations" id="findByNameExact"/>
             </mb3:section>
             <mb3:section>
-                <mb3:named>Member Roles</mb3:named>
+                <mb3:named>Location Roles</mb3:named>
                 <mb3:serviceAction objectType="savantly.franchise.FranchiseLocationMemberRoles" id="create"/>
                 <mb3:serviceAction objectType="savantly.franchise.FranchiseLocationMemberRoles" id="listAll"/>
             </mb3:section>

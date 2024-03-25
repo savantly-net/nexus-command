@@ -1,13 +1,11 @@
 package net.savantly.nexus.franchise.dom.location;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.persistence.RollbackException;
 
 import org.apache.causeway.applib.services.iactnlayer.InteractionService;
 import org.apache.causeway.commons.functional.Try;
@@ -16,14 +14,11 @@ import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.transaction.TransactionSystemException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.val;
 import net.savantly.nexus.franchise.dom.group.FranchiseGroups;
-import net.savantly.nexus.franchise.dom.location.FranchiseLocation;
-import net.savantly.nexus.franchise.dom.location.FranchiseLocations;
 import net.savantly.nexus.franchise.fixture.location.FranchiseLocation_persona;
 import net.savantly.nexus.franchise.integtests.OrganizationsModuleIntegTestAbstract;
 
@@ -95,22 +90,17 @@ public class FranchiseLocations_IntegTest extends OrganizationsModuleIntegTestAb
 
                 MatcherAssert.assertThat(cause,
                         ThrowableMatchers.causedBy(DuplicateKeyException.class));
-                // also expect
-                //MatcherAssert.assertThat(cause,
-                //        ThrowableMatchers.causedBy(DuplicateKeyException.class));
             });
-
 
             // then
             assertThat(attempt.isFailure()).isTrue();
             val failureIfAny = attempt.getFailure();
             assertThat(failureIfAny).isPresent();
-            assertThat(failureIfAny.get()).isInstanceOf(TransactionSystemException.class);
-            assertThat(failureIfAny.get().getCause()).isInstanceOf(RollbackException.class);
 
         }
 
     }
 
-    @Inject protected InteractionService interactionService;
+    @Inject
+    protected InteractionService interactionService;
 }

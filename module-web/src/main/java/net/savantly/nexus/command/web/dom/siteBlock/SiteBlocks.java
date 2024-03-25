@@ -43,7 +43,7 @@ public class SiteBlocks {
 
 
     @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+    @ActionLayout()
     public List<SiteBlock> listAll() {
         return repository.findAll();
     }

@@ -7,7 +7,6 @@ import javax.inject.Named;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
-import org.apache.causeway.applib.annotation.BookmarkPolicy;
 import org.apache.causeway.applib.annotation.DomainService;
 import org.apache.causeway.applib.annotation.NatureOfService;
 import org.apache.causeway.applib.annotation.PriorityPrecedence;
@@ -18,13 +17,11 @@ import net.savantly.nexus.common.types.Name;
 import net.savantly.nexus.projects.ProjectsModule;
 
 @Named(ProjectsModule.NAMESPACE + ".IssueMemberRoles")
-@DomainService(
-        nature = NatureOfService.VIEW
-)
+@DomainService(nature = NatureOfService.VIEW)
 @javax.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = {@Inject} )
+@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
 public class IssueMemberRoles {
-    
+
     private final IssueMemberRoleRepository repository;
 
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
@@ -35,9 +32,9 @@ public class IssueMemberRoles {
     }
 
     @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+    @ActionLayout()
     public List<IssueMemberRole> listAll() {
         return repository.findAll();
     }
-    
+
 }

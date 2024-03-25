@@ -50,13 +50,13 @@ public class BlockTypes {
     }
 
     @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+    @ActionLayout()
     public List<BlockType> listAll() {
         return repository.findAll();
     }
     
     @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+    @ActionLayout()
     public BlockType findByName(final BlockType item) {
         return item;
     }

@@ -7,7 +7,6 @@ import javax.inject.Named;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
-import org.apache.causeway.applib.annotation.BookmarkPolicy;
 import org.apache.causeway.applib.annotation.DomainService;
 import org.apache.causeway.applib.annotation.NatureOfService;
 import org.apache.causeway.applib.annotation.PriorityPrecedence;
@@ -20,11 +19,9 @@ import net.savantly.nexus.common.types.Name;
 import net.savantly.nexus.franchise.FranchiseModule;
 
 @Named(FranchiseModule.NAMESPACE + ".FranchiseMarkets")
-@DomainService(
-        nature = NatureOfService.VIEW
-)
+@DomainService(nature = NatureOfService.VIEW)
 @javax.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = {@Inject} )
+@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
 public class FranchiseMarkets {
     final RepositoryService repositoryService;
     final JpaSupportService jpaSupportService;
@@ -33,15 +30,15 @@ public class FranchiseMarkets {
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR)
     public FranchiseMarket create(
-    		final String id,
+            final String id,
             @Name final String name) {
         return repositoryService.persist(FranchiseMarket.withRequiredFields(id, name));
     }
 
     @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+    @ActionLayout()
     public List<FranchiseMarket> listAll() {
-        return repository.findAll(); 
+        return repository.findAll();
     }
 
 }

@@ -28,6 +28,7 @@ import org.apache.causeway.applib.annotation.CollectionLayout;
 import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.DomainObjectLayout;
 import org.apache.causeway.applib.annotation.Editing;
+import org.apache.causeway.applib.annotation.MemberSupport;
 import org.apache.causeway.applib.annotation.ParameterLayout;
 import org.apache.causeway.applib.annotation.PromptStyle;
 import org.apache.causeway.applib.annotation.Property;
@@ -57,21 +58,25 @@ import net.savantly.nexus.projects.dom.project.Project;
 
 @Named(ProjectsModule.NAMESPACE + ".Issue")
 @javax.persistence.Entity
-@javax.persistence.Table(
-	schema=ProjectsModule.SCHEMA
-)
+@javax.persistence.Table(schema = ProjectsModule.SCHEMA)
 @javax.persistence.EntityListeners(CausewayEntityListener.class)
 @DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.ENABLED, bounding = Bounding.BOUNDED)
 @DomainObjectLayout(cssClassFa = "shapes")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
-public class Issue implements Comparable<Issue>  {
+public class Issue implements Comparable<Issue> {
 
-    @Inject @Transient RepositoryService repositoryService;
-    @Inject @Transient TitleService titleService;
-    @Inject @Transient MessageService messageService;
-    
+    @Inject
+    @Transient
+    RepositoryService repositoryService;
+    @Inject
+    @Transient
+    TitleService titleService;
+    @Inject
+    @Transient
+    MessageService messageService;
+
     public static Issue withRequiredFields(String id, String name, Project project) {
         val entity = new Issue();
         entity.id = id;
@@ -81,7 +86,7 @@ public class Issue implements Comparable<Issue>  {
     }
 
     // *** PROPERTIES ***
-    
+
     @Id
     @Column(name = "id", nullable = false)
     @Getter
@@ -90,47 +95,51 @@ public class Issue implements Comparable<Issue>  {
     @javax.persistence.Version
     @javax.persistence.Column(name = "version", nullable = false)
     @PropertyLayout(fieldSetId = "metadata", sequence = "999")
-    @Getter @Setter
+    @Getter
+    @Setter
     private long version;
 
     @Title(prepend = "Issue: ")
     @Name
-    @Column(name="NAME", length = Name.MAX_LEN, nullable = false)
+    @Column(name = "NAME", length = Name.MAX_LEN, nullable = false)
     @Property(editing = Editing.DISABLED)
-    @Getter @Setter @ToString.Include
+    @Getter
+    @Setter
+    @ToString.Include
     @PropertyLayout(fieldSetId = "name", sequence = "1")
     private String name;
 
-    @JoinColumn(name="project_id")
-    @Getter @Setter @ToString.Include
+    @JoinColumn(name = "project_id")
+    @Getter
+    @Setter
+    @ToString.Include
     @PropertyLayout(fieldSetId = "name", sequence = "2")
     private Project project;
 
     @Description
     @Column(length = Description.MAX_LEN, nullable = true)
     @PropertyLayout(fieldSetId = "name", sequence = "3")
-    @Getter @Setter
-	private String description;
+    @Getter
+    @Setter
+    private String description;
 
-    
     @Collection
     @CollectionLayout(sequence = "1")
-    @Getter @Setter
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "issue")
+    @Getter
+    @Setter
+    @OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, mappedBy = "issue")
     private Set<IssueNote> notes = new HashSet<>();
 
     @Collection
     @CollectionLayout(sequence = "2")
-    @Getter @Setter
-	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "issue")
-	private Set<IssueMember> members = new HashSet<>();
+    @Getter
+    @Setter
+    @OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, mappedBy = "issue")
+    private Set<IssueMember> members = new HashSet<>();
 
+    // *** IMPLEMENTATIONS ****
 
-	
-	// *** IMPLEMENTATIONS ****
-
-    private final static Comparator<Issue> comparator =
-            Comparator.comparing(Issue::getName);
+    private final static Comparator<Issue> comparator = Comparator.comparing(Issue::getName);
 
     @Override
     public int compareTo(final Issue other) {
@@ -140,15 +149,13 @@ public class Issue implements Comparable<Issue>  {
     // *** ACTIONS ***
 
     @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
-    @ActionLayout(
-            describedAs = "Deletes this object from the persistent datastore")
+    @ActionLayout(describedAs = "Deletes this object from the persistent datastore")
     public void delete() {
         final String title = titleService.titleOf(this);
         messageService.informUser(String.format("'%s' deleted", title));
         repositoryService.removeAndFlush(this);
     }
 
-    
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
     @ActionLayout(associateWith = "members", promptStyle = PromptStyle.DIALOG)
     public Issue removeMember(
@@ -158,6 +165,8 @@ public class Issue implements Comparable<Issue>  {
         });
         return this;
     }
+
+    @MemberSupport
     public List<String> choices0RemoveMember() {
         return this.getMembers().stream().map(m -> m.getUserName()).collect(Collectors.toList());
     }
@@ -166,10 +175,10 @@ public class Issue implements Comparable<Issue>  {
     @ActionLayout(associateWith = "notes", promptStyle = PromptStyle.DIALOG)
     public Issue addNote(
             @ParameterLayout(named = "Note", multiLine = 5) final String note) {
-        val newNote = this.repositoryService.persist(IssueNote.withRequiredFields(UUID.randomUUID().toString(), note, this));
+        val newNote = this.repositoryService
+                .persist(IssueNote.withRequiredFields(UUID.randomUUID().toString(), note, this));
         this.notes.add(newNote);
         return this;
     }
 
 }
-

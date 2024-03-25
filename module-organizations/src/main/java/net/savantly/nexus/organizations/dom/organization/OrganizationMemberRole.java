@@ -1,9 +1,9 @@
 package net.savantly.nexus.organizations.dom.organization;
 
+import java.util.UUID;
 
 import javax.inject.Named;
 import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -27,9 +27,7 @@ import net.savantly.nexus.organizations.OrganizationsModule;
 
 @Named(OrganizationsModule.NAMESPACE + ".OrganizationMemberRole")
 @javax.persistence.Entity
-@javax.persistence.Table(
-		schema=OrganizationsModule.SCHEMA, name="organization_member_role"
-	)
+@javax.persistence.Table(schema = OrganizationsModule.SCHEMA, name = "organization_member_role")
 @javax.persistence.EntityListeners(CausewayEntityListener.class)
 @DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.ENABLED, bounding = Bounding.BOUNDED)
 @DomainObjectLayout()
@@ -37,29 +35,37 @@ import net.savantly.nexus.organizations.OrganizationsModule;
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
 public class OrganizationMemberRole {
-	
-	public static OrganizationMemberRole withRequiredFields(String name) {
+
+    public static OrganizationMemberRole withRequiredFields(String id, String name) {
         val entity = new OrganizationMemberRole();
+        entity.id = id;
         entity.setName(name);
         return entity;
     }
 
+    public static OrganizationMemberRole withName(String name) {
+        val id = String.format("%s-%s", name.toLowerCase(), UUID.randomUUID().toString().substring(0, 8));
+        return withRequiredFields(id, name);
+    }
+
     // *** PROPERTIES ***
-    
+
     @Id
-    @GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    private Long id;
+    @Getter
+    private String id;
 
     @javax.persistence.Version
     @javax.persistence.Column(name = "version", nullable = false)
     @PropertyLayout(fieldSetId = "metadata", sequence = "999")
-    @Getter @Setter
+    @Getter
+    @Setter
     private long version;
 
     @Title
-	@PropertyLayout(fieldSetId = "name", sequence = "1")
-	@Getter @Setter
-	private String name;
+    @PropertyLayout(fieldSetId = "name", sequence = "1")
+    @Getter
+    @Setter
+    private String name;
 
 }

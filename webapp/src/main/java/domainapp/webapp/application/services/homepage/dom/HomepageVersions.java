@@ -39,7 +39,7 @@ public class HomepageVersions {
 
 
     @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
+    @ActionLayout()
     public List<HomepageVersion> listAll() {
         return repository.findAll();
     }
