@@ -15,13 +15,12 @@
     </Appenders>
     <Loggers>
 
+
+        <logger name="org.apache.causeway" level="info"/>
+        <logger name="net.savantly" level="info"/>
+
         <!-- silence Wicket -->
         <Logger name="org.apache.wicket.page.PartialPageUpdate" level="error" />
-
-        <Logger name="org.apache.causeway.applib.services.publishing.log.CommandLogger" level="debug" />
-        <Logger name="org.apache.causeway.applib.services.publishing.log.ExecutionLogger" level="debug" />
-        <Logger name="org.apache.causeway.applib.services.publishing.log.EntityChangesLogger" level="debug" />
-        <Logger name="org.apache.causeway.applib.services.publishing.log.EntityPropertyChangeLogger" level="debug" />
 
         <Logger name="org.apache.catalina.startup.DigesterFactory" level="error" />
         <Logger name="org.apache.catalina.util.LifecycleBase" level="error" />
@@ -35,30 +34,25 @@
         <logger name="org.apache.directory" level="warn"/>
         <logger name="org.apache.directory.api.ldap.model.entry.Value" level="off"/>
 
-        <logger name="DataNucleus.Persistence" level="info"/>
-        <logger name="DataNucleus.Transaction" level="info"/>
-        <logger name="DataNucleus.Datastore.Schema" level="info"/>
-        <logger name="DataNucleus.Datastore.Native" level="info"/>
-
-        <logger name="org.apache.causeway.applib.services.publishing.log.CommandLogger" level="debug"/>
-        <logger name="org.apache.causeway.applib.services.publishing.log.EntityChangesLogger" level="debug"/>
-        <logger name="org.apache.causeway.applib.services.publishing.log.EntityPropertyChangeLogger" level="debug"/>
-        <logger name="org.apache.causeway.applib.services.publishing.log.ExecutionLogger" level="debug"/>
-        <logger name="org.apache.causeway.applib.services.publishing.log.PageRenderLogger" level="debug"/>
+        <logger name="org.apache.causeway.applib.services.publishing.log.CommandLogger" level="warn"/>
+        <logger name="org.apache.causeway.applib.services.publishing.log.EntityChangesLogger" level="warn"/>
+        <logger name="org.apache.causeway.applib.services.publishing.log.EntityPropertyChangeLogger" level="warn"/>
+        <logger name="org.apache.causeway.applib.services.publishing.log.ExecutionLogger" level="warn"/>
+        <logger name="org.apache.causeway.applib.services.publishing.log.PageRenderLogger" level="warn"/>
 
         <!-- request scoped -->
         <logger name="org.apache.causeway.viewer.restfulobjects.rendering.service.acceptheader.AcceptHeaderServiceForRest" level="debug"/>
-        <logger name="org.apache.causeway.applib.services.command.CommandContext" level="debug"/>
-        <logger name="org.apache.causeway.applib.services.iactn.InteractionProvider" level="debug"/>
-        <logger name="org.apache.causeway.applib.services.scratchpad.Scratchpad" level="debug"/>
-        <logger name="org.apache.causeway.core.runtimeservices.publish.PublisherDispatchServiceDefault" level="debug"/>
+        <logger name="org.apache.causeway.applib.services.command.CommandContext" level="warn"/>
+        <logger name="org.apache.causeway.applib.services.iactn.InteractionProvider" level="warn"/>
+        <logger name="org.apache.causeway.applib.services.scratchpad.Scratchpad" level="warn"/>
+        <logger name="org.apache.causeway.core.runtimeservices.publish.PublisherDispatchServiceDefault" level="warn"/>
 
         <!-- transaction scoped -->
-        <logger name="org.apache.causeway.core.transaction.changetracking.EntityChangeTrackerDefault" level="debug"/>
-        <logger name="org.apache.causeway.core.runtimeservices.publish.ExecutionPublisherDefault" level="debug"/>
-        <logger name="org.apache.causeway.applib.services.queryresultscache.QueryResultsCache" level="debug"/>
+        <logger name="org.apache.causeway.core.transaction.changetracking.EntityChangeTrackerDefault" level="warn"/>
+        <logger name="org.apache.causeway.core.runtimeservices.publish.ExecutionPublisherDefault" level="warn"/>
+        <logger name="org.apache.causeway.applib.services.queryresultscache.QueryResultsCache" level="warn"/>
 
-        <Root level="info">
+        <Root level="warn">
             <AppenderRef ref="Console" />
         </Root>
     </Loggers>

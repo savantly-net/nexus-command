@@ -1,9 +1,9 @@
-package domainapp.webapp.custom.restapi;
+package net.savantly.nexus.command.web.api.controllers;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -13,39 +13,36 @@ import org.apache.causeway.applib.services.user.UserMemento;
 import org.apache.causeway.applib.services.xactn.TransactionalProcessor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import net.savantly.nexus.command.web.dom.block.BlockDto;
-import net.savantly.nexus.command.web.dom.block.Blocks;
+import net.savantly.nexus.command.web.dom.block.BlockDtoConverter;
+import net.savantly.nexus.command.web.dom.siteBlock.SiteBlocks;
 
 @RestController
-@RequestMapping("/api/blocks")
-@RequiredArgsConstructor(onConstructor_ = {@Inject})
-class BlockController {
+@RequestMapping("/api/site-blocks")
+@RequiredArgsConstructor(onConstructor_ = { @Inject })
+class SiteBlocksController {
 
     private final InteractionService interactionService;
     private final TransactionalProcessor transactionalProcessor;
-    private final Blocks blocks;
+    private final SiteBlocks blocks;
 
-    @GetMapping
-    public List<BlockDto> allBlocks() {
-        return call("sven", blocks::listAllDtos)
-                .orElse(Collections.<BlockDto>emptyList());
-    }
-
-    @GetMapping("/{id}")
-    public BlockDto getBlockById(@PathVariable final String id) {
-        return call("sven", () -> blocks.getDtoById(id))
+    @GetMapping("/by-site/{id}")
+    public List<BlockDto> getBlocksBySiteId(@PathVariable final String id) {
+        return call("sven",
+                () -> blocks.findBySiteId(id).stream().map(b -> BlockDtoConverter.toDto(b.getBlock()))
+                        .collect(Collectors.toList()))
                 .orElse(null);
     }
 
-    @PostMapping("/update")
-    public BlockDto updateBlock(@RequestBody final BlockDto blockDto) {
-        return call("sven", () -> blocks.updateFromDto(blockDto))
+    @GetMapping("/by-site/{id}/type/{type}")
+    public List<BlockDto> getBlocksBySiteIdAndTypeId(@PathVariable final String id, @PathVariable final String typeId) {
+        return call("sven", () -> blocks.findBySiteIdAndBlockTypeId(id, typeId).stream().map(b -> {
+            return BlockDtoConverter.toDto(b.getBlock());
+        }).collect(Collectors.toList()))
                 .orElse(null);
     }
 

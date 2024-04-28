@@ -15,6 +15,7 @@ import org.apache.causeway.extensions.secman.applib.user.fixtures.AbstractUserAn
 import org.apache.causeway.testing.fixtures.applib.fixturescripts.FixtureScript;
 
 import domainapp.webapp.application.ApplicationModule;
+import domainapp.webapp.properties.NexusAppProperties;
 import net.savantly.nexus.command.web.NexusCommandWebModule;
 import net.savantly.nexus.franchise.FranchiseModule;
 import net.savantly.nexus.organizations.OrganizationsModule;
@@ -22,6 +23,12 @@ import net.savantly.nexus.orgweb.OrgWebModule;
 import net.savantly.nexus.projects.ProjectsModule;
 
 public class CustomRolesAndUsers extends FixtureScript {
+
+    private final NexusAppProperties nexusAppProperties;
+
+    public CustomRolesAndUsers(NexusAppProperties nexusAppProperties) {
+        this.nexusAppProperties = nexusAppProperties;
+    }
 
     @Override
     protected void execute(ExecutionContext executionContext) {
@@ -32,9 +39,15 @@ public class CustomRolesAndUsers extends FixtureScript {
                 new NexusCommandWebModuleSuperuserRole(),
                 new FranchiseModuleSuperuserRole(),
                 new ApplicationSuperuserRole(),
-                new ApplicationUserRole(),
-                new SvenUser(),
-                new FranchiseeUser());
+                new ApplicationUserRole());
+        if (nexusAppProperties.getAdminSeed().isEnabled()) {
+            executionContext.executeChildren(this, new AdminUser(nexusAppProperties.getAdminSeed().getUsername(),
+                    nexusAppProperties.getAdminSeed().getPassword()));
+        }
+        if (nexusAppProperties.getUserSeed().isEnabled()) {
+            executionContext.executeChildren(this, new UnprivilegedUser(nexusAppProperties.getUserSeed().getUsername(),
+                    nexusAppProperties.getUserSeed().getPassword()));
+        }
     }
 
     private static class OrganizationsModuleSuperuserRole extends AbstractRoleAndPermissionsFixtureScript {
@@ -50,8 +63,7 @@ public class CustomRolesAndUsers extends FixtureScript {
             newPermissions(
                     ApplicationPermissionRule.ALLOW,
                     ApplicationPermissionMode.CHANGING,
-                    Can.of(ApplicationFeatureId.newNamespace(OrganizationsModule.NAMESPACE))
-            );
+                    Can.of(ApplicationFeatureId.newNamespace(OrganizationsModule.NAMESPACE)));
         }
     }
 
@@ -68,8 +80,7 @@ public class CustomRolesAndUsers extends FixtureScript {
             newPermissions(
                     ApplicationPermissionRule.ALLOW,
                     ApplicationPermissionMode.CHANGING,
-                    Can.of(ApplicationFeatureId.newNamespace(OrgWebModule.NAMESPACE))
-            );
+                    Can.of(ApplicationFeatureId.newNamespace(OrgWebModule.NAMESPACE)));
         }
     }
 
@@ -86,8 +97,7 @@ public class CustomRolesAndUsers extends FixtureScript {
             newPermissions(
                     ApplicationPermissionRule.ALLOW,
                     ApplicationPermissionMode.CHANGING,
-                    Can.of(ApplicationFeatureId.newNamespace(ProjectsModule.NAMESPACE))
-            );
+                    Can.of(ApplicationFeatureId.newNamespace(ProjectsModule.NAMESPACE)));
         }
     }
 
@@ -104,8 +114,7 @@ public class CustomRolesAndUsers extends FixtureScript {
             newPermissions(
                     ApplicationPermissionRule.ALLOW,
                     ApplicationPermissionMode.CHANGING,
-                    Can.of(ApplicationFeatureId.newNamespace(NexusCommandWebModule.NAMESPACE))
-            );
+                    Can.of(ApplicationFeatureId.newNamespace(NexusCommandWebModule.NAMESPACE)));
         }
     }
 
@@ -122,11 +131,9 @@ public class CustomRolesAndUsers extends FixtureScript {
             newPermissions(
                     ApplicationPermissionRule.ALLOW,
                     ApplicationPermissionMode.CHANGING,
-                    Can.of(ApplicationFeatureId.newNamespace(FranchiseModule.NAMESPACE))
-            );
+                    Can.of(ApplicationFeatureId.newNamespace(FranchiseModule.NAMESPACE)));
         }
     }
-
 
     private static class ApplicationSuperuserRole extends AbstractRoleAndPermissionsFixtureScript {
 
@@ -141,11 +148,9 @@ public class CustomRolesAndUsers extends FixtureScript {
             newPermissions(
                     ApplicationPermissionRule.ALLOW,
                     ApplicationPermissionMode.CHANGING,
-                    Can.of(ApplicationFeatureId.newNamespace(ApplicationModule.PUBLIC_NAMESPACE))
-            );
+                    Can.of(ApplicationFeatureId.newNamespace(ApplicationModule.PUBLIC_NAMESPACE)));
         }
     }
-
 
     private static class ApplicationUserRole extends AbstractRoleAndPermissionsFixtureScript {
 
@@ -160,50 +165,51 @@ public class CustomRolesAndUsers extends FixtureScript {
             newPermissions(
                     ApplicationPermissionRule.ALLOW,
                     ApplicationPermissionMode.VIEWING,
-                    Can.of(ApplicationFeatureId.newNamespace(ApplicationModule.PUBLIC_NAMESPACE))
-            );
+                    Can.of(ApplicationFeatureId.newNamespace(ApplicationModule.PUBLIC_NAMESPACE)));
         }
     }
 
-    private static class SvenUser extends AbstractUserAndRolesFixtureScript {
-        public SvenUser() {
-            super(() -> "sven", () -> "pass", () -> AccountType.LOCAL, new RoleSupplier());
+    private static class AdminUser extends AbstractUserAndRolesFixtureScript {
+        public AdminUser(String username, String password) {
+            super(() -> username, () -> password, () -> AccountType.LOCAL, new RoleSupplier());
         }
 
         private static class RoleSupplier implements Supplier<Can<String>> {
             @Override
             public Can<String> get() {
                 return Can.of(
-                        causewayConfiguration.getExtensions().getSecman().getSeed().getRegularUser().getRoleName(), // built-in stuff
+                        causewayConfiguration.getExtensions().getSecman().getSeed().getAdmin().getRoleName(), // built-in
+                                                                                                                    // stuff
                         OrgWebModuleSuperuserRole.ROLE_NAME,
                         OrganizationsModuleSuperuserRole.ROLE_NAME,
                         ProjectsModuleSuperuserRole.ROLE_NAME,
                         FranchiseModuleSuperuserRole.ROLE_NAME,
                         NexusCommandWebModuleSuperuserRole.ROLE_NAME,
-                        ApplicationSuperuserRole.ROLE_NAME
-                        );
+                        ApplicationSuperuserRole.ROLE_NAME);
             }
-            @Inject CausewayConfiguration causewayConfiguration;
+
+            @Inject
+            CausewayConfiguration causewayConfiguration;
         }
     }
 
-
-    private static class FranchiseeUser extends AbstractUserAndRolesFixtureScript {
-        public FranchiseeUser() {
-            super(() -> "franchisee", () -> "pass", () -> AccountType.LOCAL, new RoleSupplier());
+    private static class UnprivilegedUser extends AbstractUserAndRolesFixtureScript {
+        public UnprivilegedUser(String username, String password) {
+            super(() -> username, () -> password, () -> AccountType.LOCAL, new RoleSupplier());
         }
 
         private static class RoleSupplier implements Supplier<Can<String>> {
             @Override
             public Can<String> get() {
                 return Can.of(
-                        causewayConfiguration.getExtensions().getSecman().getSeed().getRegularUser().getRoleName(), // built-in stuff
-                        ApplicationUserRole.ROLE_NAME
-                        );
+                        causewayConfiguration.getExtensions().getSecman().getSeed().getRegularUser().getRoleName(), // built-in
+                                                                                                                    // stuff
+                        ApplicationUserRole.ROLE_NAME);
             }
-            @Inject CausewayConfiguration causewayConfiguration;
+
+            @Inject
+            CausewayConfiguration causewayConfiguration;
         }
     }
-
 
 }

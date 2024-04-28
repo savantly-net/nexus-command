@@ -22,17 +22,23 @@ import org.springframework.context.annotation.PropertySources;
 import org.springframework.test.context.ActiveProfiles;
 
 import domainapp.webapp.application.ApplicationModule;
-import net.savantly.nexus.command.web.NexusCommandWebModule;
-import net.savantly.nexus.franchise.FranchiseModule;
 
 @SpringBootTest(
     classes = {
             // we use a slightly different configuration compared to the production (AppManifest/webapp)
             WebAppIntegTestAbstract.TestApp.class,
             ApplicationModule.class,
+    },
+    properties = {
+            "nexus.modules.organizations.enabled=true",
+            "nexus.modules.projects.enabled=true",
+            "nexus.modules.franchise.enabled=true",
+            "nexus.modules.web.enabled=true",
+            "nexus.modules.org-web.enabled=true",
+            "nexus.modules.security.enabled=false",
     }
 )
-@ActiveProfiles("test")
+@ActiveProfiles({"test"})
 public abstract class WebAppIntegTestAbstract extends CausewayIntegrationTestAbstract {
 
     /**
@@ -48,8 +54,6 @@ public abstract class WebAppIntegTestAbstract extends CausewayIntegrationTestAbs
         CausewayModulePersistenceJpaEclipselink.class,
         CausewayModuleTestingFixturesApplib.class,
 
-        NexusCommandWebModule.class,
-        FranchiseModule.class
     })
     @PropertySources({
         @PropertySource(CausewayPresets.H2InMemory_withUniqueSchema),

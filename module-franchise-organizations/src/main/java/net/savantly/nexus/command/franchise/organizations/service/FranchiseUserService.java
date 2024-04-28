@@ -1,4 +1,4 @@
-package domainapp.webapp.application.services.franchise.users;
+package net.savantly.nexus.command.franchise.organizations.service;
 
 import java.util.List;
 import java.util.stream.Collectors;

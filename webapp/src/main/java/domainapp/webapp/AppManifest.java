@@ -32,8 +32,7 @@ import org.springframework.context.annotation.PropertySources;
 
 import domainapp.webapp.application.ApplicationModule;
 import domainapp.webapp.application.fixture.scenarios.DemoFixtures;
-import domainapp.webapp.custom.CustomModule;
-import domainapp.webapp.quartz.QuartzModule;
+import domainapp.webapp.properties.NexusAppProperties;
 
 @Configuration
 @Import({
@@ -65,9 +64,8 @@ import domainapp.webapp.quartz.QuartzModule;
         CausewayModuleValAsciidocMetaModel.class, // for pretty rendering of DTO objects such as CommandDto, InteractionDto
         CausewayModuleValAsciidocUiWkt.class,
 
+        NexusAppProperties.class,
         ApplicationModule.class,
-        CustomModule.class,
-        QuartzModule.class,
 
 
         // Metamodel

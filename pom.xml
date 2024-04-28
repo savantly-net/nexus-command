@@ -19,7 +19,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
     </properties>
 
     <dependencyManagement>
@@ -50,6 +50,11 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
+                <artifactId>web-module-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>organizations-module</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -61,6 +66,16 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>franchise-module</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>franchise-organizations-module</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>nexus-security-module</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -92,8 +107,11 @@
         <module>module-projects</module>
         <module>module-organizations</module>
         <module>module-web</module>
+        <module>module-web-api</module>
         <module>module-organizations-web</module>
+        <module>module-security</module>
         <module>module-franchise</module>
+        <module>module-franchise-organizations</module>
         <module>module-franchise-tests</module>
         <module>webapp</module>
     </modules>

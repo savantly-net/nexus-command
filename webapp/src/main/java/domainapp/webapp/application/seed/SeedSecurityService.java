@@ -6,6 +6,8 @@ import javax.inject.Inject;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
+import domainapp.webapp.properties.NexusAppProperties;
+
 import org.apache.causeway.applib.annotation.PriorityPrecedence;
 import org.apache.causeway.applib.events.metamodel.MetamodelEvent;
 import org.apache.causeway.applib.services.xactn.TransactionService;
@@ -22,6 +24,7 @@ public class SeedSecurityService {
     private final FixtureScripts fixtureScripts;
     private final TransactionService transactionService;
     private final CausewaySystemEnvironment causewaySystemEnvironment;
+    private final NexusAppProperties nexusAppProperties;
 
     @EventListener(MetamodelEvent.class)
     public void onMetamodelEvent(final MetamodelEvent event) {
@@ -32,6 +35,6 @@ public class SeedSecurityService {
     }
 
     private void runScripts() {
-        fixtureScripts.run(new CustomRolesAndUsers());
+        fixtureScripts.run(new CustomRolesAndUsers(nexusAppProperties));
     }
 }

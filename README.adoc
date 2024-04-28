@@ -12,7 +12,7 @@ docker run -p 8080:8080 savantly/nexus-command
 == Overview
 
 Nexus Command is a multi-tenant application that provides a platform for managing all types of business data.  
-It'ss built on top of the link:https://causeway.apache.org[Apache Causeway] framework, and provides a starting point for managing your own data and creating custom applications/integrations.
+It's built on top of the link:https://causeway.apache.org[Apache Causeway] framework, and provides a starting point for managing your own data and creating custom applications/integrations.
 
 
 image::docs/overview.png[Overview]

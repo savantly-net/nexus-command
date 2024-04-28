@@ -1,4 +1,4 @@
-package domainapp.webapp.custom.restapi;
+package net.savantly.nexus.command.web.api.controllers;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,33 +19,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import net.savantly.nexus.command.web.dom.blockType.BlockTypeDto;
-import net.savantly.nexus.command.web.dom.blockType.BlockTypes;
+import net.savantly.nexus.command.web.dom.block.BlockDto;
+import net.savantly.nexus.command.web.dom.block.Blocks;
 
 @RestController
-@RequestMapping("/api/block-types")
-@RequiredArgsConstructor(onConstructor_ = { @Inject })
-class BlockTypesController {
+@RequestMapping("/api/blocks")
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
+class BlockController {
 
     private final InteractionService interactionService;
     private final TransactionalProcessor transactionalProcessor;
-    private final BlockTypes blockTypes;
+    private final Blocks blocks;
 
     @GetMapping
-    public List<BlockTypeDto> allBlockTypes() {
-        return call("sven", blockTypes::listAllDtos)
-                .orElse(Collections.<BlockTypeDto>emptyList());
+    public List<BlockDto> allBlocks() {
+        return call("sven", blocks::listAllDtos)
+                .orElse(Collections.<BlockDto>emptyList());
     }
 
     @GetMapping("/{id}")
-    public BlockTypeDto allBlockTypeById(@PathVariable final String id) {
-        return call("sven", () -> blockTypes.getDtoById(id))
+    public BlockDto getBlockById(@PathVariable final String id) {
+        return call("sven", () -> blocks.getDtoById(id))
                 .orElse(null);
     }
 
     @PostMapping("/update")
-    public BlockTypeDto updateBlock(@RequestBody final BlockTypeDto blockDto) {
-        return call("sven", () -> blockTypes.updateFromDto(blockDto))
+    public BlockDto updateBlock(@RequestBody final BlockDto blockDto) {
+        return call("sven", () -> blocks.updateFromDto(blockDto))
                 .orElse(null);
     }
 

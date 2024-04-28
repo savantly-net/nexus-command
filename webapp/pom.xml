@@ -72,6 +72,11 @@
         
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>web-module-api</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>organizations-web-module</artifactId>
         </dependency>
 
@@ -87,8 +92,19 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>franchise-organizations-module</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>projects-module</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>nexus-security-module</artifactId>
+        </dependency>
+
 
         <!-- causeway -->
         <dependency>

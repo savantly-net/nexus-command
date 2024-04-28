@@ -45,10 +45,14 @@ causeway:
           password: "pass"
           role-name: "causeway-ext-secman-admin"
           namespace-permissions:
-            sticky: "savantly,nc_web"
+            sticky: "public,nc_web"
 #            additional: ...
-        regular-user:
-          role-name: "causeway-ext-secman-user"
+#        regular-user:
+#          role-name: "causeway-ext-secman-user"
+      user-registration:
+        initial-roles:
+          - "application-user"
+          - "causeway-ext-secman-user"
       permissions-evaluation-policy: allow_beats_veto
       user-menu-me-action-policy: hide
 
@@ -102,6 +106,7 @@ eclipselink:
   # if weaving subproperties are required, then specify all eclipselink.weaving
   # properties using application.properties instead (it's not possible to
   # specify both eclipselink.weaving property and its subproperties using yaml syntax)
+
 
 resteasy:
   jaxrs:

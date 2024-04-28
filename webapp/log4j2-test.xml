@@ -36,7 +36,7 @@
         <logger name="DataNucleus.Datastore.Schema" level="info"/>
         <logger name="DataNucleus.Datastore.Native" level="info"/>
 
-        <Root level="info">
+        <Root level="warn">
             <AppenderRef ref="Console" />
         </Root>
 
