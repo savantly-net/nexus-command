@@ -1,3 +1,19 @@
 services:
   nexus-command:
     image: savantly/nexus-command:latest
+    ports:
+      - "8080:8080"
+    environment:
+    - LOGGING_LEVEL_ROOT=WARN
+    - ECLIPSELINK_LOGGING_LEVEL=WARNING
+    - JDBC_LOGGING=false
+    - nexus.modules.organizations.enabled=true
+    - nexus.modules.projects.enabled=true
+    - nexus.modules.franchise.enabled=true
+    - nexus.modules.web.enabled=true
+    - nexus.modules.org-web.enabled=true
+    - nexus.modules.security.enabled=true
+    - app.security.enabled=false
+
+    volumes:
+      - ./webapp/log4j2-test.xml:/app/BOOT-INF/classes/log4j2.xml
