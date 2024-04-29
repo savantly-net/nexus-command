@@ -44,51 +44,6 @@ The modules are maintained in this repo, and published to Maven Central.
 image::docs/customization.png[Customization]
 
 
-== Use Cases
-
-Nexus Command has countless use-cases.  
-Although, a generalized use-case is to provide a platform for managing your core business data, and integrate with third party systems.  
-By using Nexus as the "source of truth" for your business data, you can easily create custom applications and integrations that are specific to your business needs, without being tied to a specific vendor or platform.  
-
-The following features are (or will be) included in the default webapp:  
-
-* Website management (beta)
-* Organization management (beta)
-* Franchisee management (beta)
-* Content management (beta)
-* SEO (beta)
-* Employee management (alpha)
-* Product management (planned)
-* Inventory management (planned)
-* Customer management (planned)
-* Sales management (planned)
-* Reporting (planned)
-* Analytics (planned)
-* Marketing (planned)
-* Advertising Integration (planned)
-* Social media Integration (planned)
-* E-commerce (considering)
-
-
-=== Franchise Management
-As a franchise operator or owner, fine-grained control of content and data can facilitate a consistent brand experience across all locations.  
-Nexus Command faciliates granular content management delegation to a franchisee or agency, while maintaining control of the brand.  
-
-image::docs/franchise-use-case.png[Franchise Use Case]
-
-
-=== Organization Management
-
-Organization Manager  
-
-image::docs/org-manager.jpg[Organization Manager]
-
-
-=== Website Management  
-This is a prrof of concept that allows delegating content management to a franchisee or agency.  
-
-image::docs/website-manager.png[Website Manager]  
-
 == Introduction
 
 This is an link:https://causeway.apache.org[Apache Causeway] application, using best practices and conventions.  
@@ -298,3 +253,48 @@ The Spring Boot profile is also used to add the dependency to the POSTGRES Serve
 
 The prerequisites to try this out are a POSTGRES Server database running on `localhost` and with the credentials as specified in `config/application-POSTGRESQL.properties`; adjust as necessary.
 
+
+== Use Cases
+
+Nexus Command has countless use-cases.  
+Although, a generalized use-case is to provide a platform for managing your core business data, and integrate with third party systems.  
+By using Nexus as the "source of truth" for your business data, you can easily create custom applications and integrations that are specific to your business needs, without being tied to a specific vendor or platform.  
+
+The following features are (or will be) included in the default webapp:  
+
+* Website management (beta)
+* Organization management (beta)
+* Franchisee management (beta)
+* Content management (beta)
+* SEO (beta)
+* Employee management (alpha)
+* Product management (planned)
+* Inventory management (planned)
+* Customer management (planned)
+* Sales management (planned)
+* Reporting (planned)
+* Analytics (planned)
+* Marketing (planned)
+* Advertising Integration (planned)
+* Social media Integration (planned)
+* E-commerce (considering)
+
+
+=== Franchise Management
+As a franchise operator or owner, fine-grained control of content and data can facilitate a consistent brand experience across all locations.  
+Nexus Command faciliates granular content management delegation to a franchisee or agency, while maintaining control of the brand.  
+
+image::docs/franchise-use-case.png[Franchise Use Case]
+
+
+=== Organization Management
+
+Organization Manager  
+
+image::docs/org-manager.jpg[Organization Manager]
+
+
+=== Website Management  
+This is a prrof of concept that allows delegating content management to a franchisee or agency.  
+
+image::docs/website-manager.png[Website Manager]  
