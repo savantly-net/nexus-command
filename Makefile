@@ -4,6 +4,7 @@ export PROJECT_ROOT := $(shell pwd)
 
 .PHONY: run
 run:
+	$(call setup_env, .env)
 	@echo "Running the program"
 	mvn install -DskipTests
 	mvn -pl webapp spring-boot:run
@@ -35,3 +36,11 @@ build:
 .PHONY: run-image
 run-image:
 	docker compose up
+
+
+define setup_env
+	$(eval ENV_FILE := $(1))
+	@echo " - setup env $(ENV_FILE)"
+	$(eval include $(1))
+	$(eval export)
+endef
