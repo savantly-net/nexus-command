@@ -40,6 +40,11 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
+                <artifactId>nexus-ai-module</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>projects-module</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -104,6 +109,7 @@
 
     <modules>
         <module>module-common-types</module>
+        <module>module-ai</module>
         <module>module-projects</module>
         <module>module-organizations</module>
         <module>module-web</module>

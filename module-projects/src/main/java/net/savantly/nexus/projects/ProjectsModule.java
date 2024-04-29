@@ -26,7 +26,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan(basePackageClasses = {ProjectsModule.class})
 public class ProjectsModule implements ModuleWithFixtures {
 
-    public static final String NAMESPACE = "savantly.projects";
+    public static final String NAMESPACE = "projects";
     public static final String SCHEMA = "projects";
 
     @Override
