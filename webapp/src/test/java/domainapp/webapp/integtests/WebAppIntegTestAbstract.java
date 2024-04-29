@@ -22,6 +22,7 @@ import org.springframework.context.annotation.PropertySources;
 import org.springframework.test.context.ActiveProfiles;
 
 import domainapp.webapp.application.ApplicationModule;
+import domainapp.webapp.properties.NexusAppProperties;
 
 @SpringBootTest(
     classes = {
@@ -35,7 +36,7 @@ import domainapp.webapp.application.ApplicationModule;
             "nexus.modules.franchise.enabled=true",
             "nexus.modules.web.enabled=true",
             "nexus.modules.org-web.enabled=true",
-            "nexus.modules.security.enabled=false",
+            "nexus.modules.security.enabled=true",
     }
 )
 @ActiveProfiles({"test"})
@@ -53,6 +54,8 @@ public abstract class WebAppIntegTestAbstract extends CausewayIntegrationTestAbs
         CausewayModuleSecurityBypass.class,
         CausewayModulePersistenceJpaEclipselink.class,
         CausewayModuleTestingFixturesApplib.class,
+
+        NexusAppProperties.class,
 
     })
     @PropertySources({

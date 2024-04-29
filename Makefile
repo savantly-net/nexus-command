@@ -11,7 +11,7 @@ run:
 .PHONY: test
 test:
 	@echo "Running the tests"
-	mvn test
+	mvn test integration-test
 
 .PHONY: clean
 clean:
