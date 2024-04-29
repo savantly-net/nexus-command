@@ -9,10 +9,28 @@ toc::[]
 docker run -p 8080:8080 savantly/nexus-command
 ```
 
+=== Common Configurations
+You can set these as properties or environment variables.
+
+```yaml
+nexus.modules.organizations.enabled: true # enable the organizations module
+nexus.modules.projects.enabled: true # enable the projects module
+nexus.modules.franchise.enabled: true # enable the franchise module
+nexus.modules.web.enabled: true # enable the web module
+nexus.modules.org-web.enabled: true # enable the org-web module
+nexus.modules.security.enabled: true # enable the security module
+```
+
+See the application properties for more configuration options.  
+
+link:./src/main/resources/application.yml[]
+
 == Overview
 
 Nexus Command is a multi-tenant application that provides a platform for managing all types of business data.  
 It's built on top of the link:https://causeway.apache.org[Apache Causeway] framework, and provides a starting point for managing your own data and creating custom applications/integrations.
+
+One typical use-case is to provide a platform for managing business data, providing the data as content, and integrating with third party systems.
 
 
 image::docs/overview.png[Overview]
@@ -20,7 +38,7 @@ image::docs/overview.png[Overview]
 
 === Levels of customization:  
 
-You can use the default webapp which includes all the modules, or you can create your own webapp and include only the modules you need.  
+You can use the default webapp which includes all the modules, or you can create your own webapp and include any modules you need.  
 The modules are maintained in this repo, and published to Maven Central.  
 
 image::docs/customization.png[Customization]
@@ -35,7 +53,7 @@ By using Nexus as the "source of truth" for your business data, you can easily c
 The following features are (or will be) included in the default webapp:  
 
 * Website management (beta)
-* Brand management (beta)
+* Organization management (beta)
 * Franchisee management (beta)
 * Content management (beta)
 * SEO (beta)
@@ -59,13 +77,15 @@ Nexus Command faciliates granular content management delegation to a franchisee 
 image::docs/franchise-use-case.png[Franchise Use Case]
 
 
-== Screenshots
+=== Organization Management
 
-Brand Manager  
+Organization Manager  
 
-image::docs/brand-manager.png[Brand Manager]
+image::docs/org-manager.jpg[Organization Manager]
 
-Website Manager  
+
+=== Website Management  
+This is a prrof of concept that allows delegating content management to a franchisee or agency.  
 
 image::docs/website-manager.png[Website Manager]  
 
@@ -74,36 +94,10 @@ image::docs/website-manager.png[Website Manager]
 This is an link:https://causeway.apache.org[Apache Causeway] application, using best practices and conventions.  
 It takes advantage of the rapid development capabilities of Causeway, and provides enterprise-grade features.  
 
-* a domain-driven design
-* a layered architecture
-* a modular architecture
-* a security model
-* a command pattern
-* a repository pattern
-* a service layer
-* a view model layer
-* a view model factory
-* a view model repository
-* a view model service
-* an event bus
-* scheduled jobs
-* rich domain APIs
-* a REST API
-* auditing
-* exection logging
-* sql logging
-* session logging
-* sql migrations
-* automated testing
-* a Docker image
+It consists of several modules that provide a starting point for building your own application.  
 
-
-It consists of:
-
-* a "Franchise Module", which contains the domain objects and services for managing the data for a multi-site and/or franchise business.
-* a "Webapp" module, which contains the bootstrapping classes, along with application-level scoped services and home page.
-
-You can use the webapp as a starting point for your own application, or you can use the Franchise Module in your own Webapp project and customize it to your needs.  The Franchise Module is a standalone module that can be used in any webapp project.
+You can use the webapp directly, or you can use the modules in your own Webapp project and customize it to your needs.  
+The default webapp is configurable to include or exclude modules as needed.  
 
 
 [TIP]
@@ -116,7 +110,7 @@ TODO: add a link to the demo site here
 
 * install prereqs:
 
-** Java 11 LTS (eg link:https://adoptopenjdk.net/[Adopt OpenJDK] distribution)
+** Java 17 LTS (eg link:https://adoptopenjdk.net/[Adopt OpenJDK] distribution)
 ** Maven 3.6 or later (http://maven.apache.org/download.cgi[download])
 * Clone the repository:
 +
@@ -136,6 +130,27 @@ cd nexus-command
 mvn clean install
 ----
 
+* Run using Maven:
++
+[source,bash]
+----
+mvn -pl webapp spring-boot:run
+----
+
+=== Build the docker image
+[source,bash]
+----
+make build
+----
+
+=== Run the docker image
+[source,bash]
+----
+make run-image
+----
+
+
+=== Load-time weaving
 * Download the `spring-instrument.jar` for load-time weaving (discussed in more detail xref:#orm-support[below]):
 +
 [source,bash]
@@ -152,6 +167,9 @@ Change "XXX" to the value that `${spring-framework.version}` resolves to in the 
 mvn -pl webapp spring-boot:run
 ----
 
+=== Access the application
+The application will be available at http://localhost:8080.  
+
 * Browse to http://localhost:8080.
 
 * Login using:
@@ -161,67 +179,23 @@ mvn -pl webapp spring-boot:run
 *** username: `secman-admin`
 *** password: `pass`
 
-** as a Nexus Command user:
+** as a Nexus Command admin:
 
-*** username: `sven`
-*** password: `pass`
+*** username: `admin`
+*** password: `admin`
 
-** or as a franchisee user:
+** or as an unprivileged user:
 
-*** username: `franchisee`
-*** password: `pass`
+*** username: `user`
+*** password: `user`
 
 +
 The app runs with H2 running in-memory, with sample data set up using fixture scripts.
 
-* Build a Docker image
-+
-[source,bash]
-----
-export REVISION=...                 #<.>
-export DOCKER_REGISTRY_USERNAME     #<.>
-export DOCKER_REGISTRY_PASSWORD     #<.>
-
-mvn -pl webapp -Ddocker jib:build
-----
-<.> used as the image tag
-<.> Docker Hub registry username
-<.> Docker Hub registry password
-+
-To push to another container registry, change the `<image>` tag in the pom.xml
 
 == Application Structure
 
 The following table explains the contents of each of the directories:
-
-[width="100%",options="header,footer",stripes="none",cols="2a,4a"]
-|====================
-|Directory
-|Description
-
-|`module-franchise`
-|Holds the "franchise" module, consisting of the `FranchiseLocation` entity and supporting services, among several other related entities.
-
-[TIP]
-====
-Larger applications should consist of multiple modules; each such module can be copied from this starter module.
-====
-
-|`module-franchise-tests`
-|Holds the unit- and integration tests for `module-franchise`.
-
-
-|`webapp`
-|Holds the bootstrapping classes, along with application-level scoped services and home page.
-
-The `pom.xml` also provides goals to run the app from the command line, or to be assembled into a Docker image.
-
-|`webapp-tests`
-|Contains application-wide integration tests.
-
-|====================
-
-It's more common for tests to reside within the same module, but we moved them into their own Maven modules because it makes them easier to be temporarily excluded, eg during initial explorations/prototyping.
 
 
 [#orm-support]
@@ -319,12 +293,8 @@ The presence of these is enough to enable the Flyway integration
 +
 This is explicitly set to `true`, to override the value in the default `config/application.properties`.
 
-* `causeway.persistence.jdo-datanucleus.impl.datanucleus.schema.autoCreateAll`
-+
-This is set to `false`, also overriding the value in the default `config/application.properties`.
-It instructs the JDO/DataNucleus object store not to automatically create any tables etc.
 
-The Spring Boot profile is also used to add the dependency to the SQL Server driver is included (it is hidden behind a Maven profile).
+The Spring Boot profile is also used to add the dependency to the POSTGRES Server driver is included (it is hidden behind a Maven profile).
 
-The prerequisites to try this out are a SQL Server database running on `localhost` and with the credentials as specified in `config/application-SQLSERVER.properties`; adjust as necessary.
+The prerequisites to try this out are a POSTGRES Server database running on `localhost` and with the credentials as specified in `config/application-POSTGRESQL.properties`; adjust as necessary.
 
