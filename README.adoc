@@ -285,12 +285,15 @@ Manage projects and tasks, and track progress.
 Generate personas with AI to help generate better user stories and acceptance criteria.  
 
 Persona Generation  
+
 image::docs/images/projects/persona-main.jpg[Generating a persona]
 
 Persona Psychographics  
+
 image::docs/images/projects/persona-psy.jpg[Persona psychographics]
 
 Persona Professional Background
+
 image::docs/images/projects/persona-pro.jpg[Persona professional background]
 
 === Franchise Management
