@@ -280,6 +280,19 @@ The following features are (or will be) included in the default webapp:
 * E-commerce (considering)
 
 
+=== Project Management
+Manage projects and tasks, and track progress.  
+Generate personas with AI to help generate better user stories and acceptance criteria.  
+
+Persona Generation  
+image::docs/images/projects/persona-main.jpg[Generating a persona]
+
+Persona Psychographics  
+image::docs/images/projects/persona-psy.jpg[Persona psychographics]
+
+Persona Professional Background
+image::docs/images/projects/persona-pro.jpg[Persona professional background]
+
 === Franchise Management
 As a franchise operator or owner, fine-grained control of content and data can facilitate a consistent brand experience across all locations.  
 Nexus Command faciliates granular content management delegation to a franchisee or agency, while maintaining control of the brand.  
