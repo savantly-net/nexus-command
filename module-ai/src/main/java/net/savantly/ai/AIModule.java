@@ -8,5 +8,5 @@ import net.savantly.ai.config.AIConfig;
 @Configuration
 @Import(AIConfig.class)
 public class AIModule {
-    
+
 }
