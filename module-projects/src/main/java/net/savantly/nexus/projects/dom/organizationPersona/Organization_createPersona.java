@@ -12,6 +12,7 @@ import org.apache.causeway.applib.services.repository.RepositoryService;
 
 import net.savantly.nexus.organizations.dom.organization.Organization;
 import net.savantly.nexus.projects.dom.persona.Persona;
+import net.savantly.nexus.projects.dom.persona.PersonaDTO;
 import net.savantly.nexus.projects.dom.personaGenerator.PersonaGenerator;
 
 @Action
@@ -33,12 +34,13 @@ public class Organization_createPersona {
     RepositoryService repositoryService;
 
     @ActionLayout(named = "Create Persona", associateWith = "personas", promptStyle = PromptStyle.DIALOG)
-    public OrganizationPersona act(
+    public Persona act(
             @ParameterLayout(named = "Description") final String description) {
-        final Persona persona = personaGenerator.generatePersona(formatContext(description));
+        final PersonaDTO personaDto = personaGenerator.generatePersona(formatContext(description));
+        final Persona persona = Persona.fromDto(personaDto);
         OrganizationPersona organizationPersona = OrganizationPersona.withRequiredFields(persona, organization);
         repositoryService.persist(organizationPersona);
-        return organizationPersona;
+        return persona;
     }
 
     private String formatContext(String description) {

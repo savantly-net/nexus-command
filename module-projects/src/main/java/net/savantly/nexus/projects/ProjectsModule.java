@@ -7,19 +7,23 @@ import org.apache.causeway.testing.fakedata.applib.CausewayModuleTestingFakeData
 import org.apache.causeway.testing.fixtures.applib.fixturescripts.FixtureScript;
 import org.apache.causeway.testing.fixtures.applib.modules.ModuleWithFixtures;
 import org.apache.causeway.testing.fixtures.applib.teardown.jpa.TeardownFixtureJpaAbstract;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.service.AiServices;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.savantly.ai.languagetools.LanguageToolModel;
 import net.savantly.nexus.projects.dom.persona.Persona;
+import net.savantly.nexus.projects.dom.persona.PersonaDTO;
 import net.savantly.nexus.projects.dom.personaGenerator.PersonaGenerator;
 
 @Configuration
@@ -33,6 +37,8 @@ import net.savantly.nexus.projects.dom.personaGenerator.PersonaGenerator;
 @EnableJpaRepositories
 @Slf4j
 @EntityScan(basePackageClasses = { ProjectsModule.class })
+@RequiredArgsConstructor
+@DependsOn("aiConfig")
 public class ProjectsModule implements ModuleWithFixtures {
 
     public static final String NAMESPACE = "projects";
@@ -49,22 +55,23 @@ public class ProjectsModule implements ModuleWithFixtures {
     }
 
     @Bean
-    @ConditionalOnBean(ChatLanguageModel.class)
-    public PersonaGenerator aiPersonaGenerator(ChatLanguageModel model) {
+    @Primary
+    @ConditionalOnProperty("langchain4j.open-ai.chat-model.api-key")
+    public PersonaGenerator personaGenerator(LanguageToolModel model) {
         log.info("Creating persona generator with model: {}", model);
         return AiServices.builder(PersonaGenerator.class)
-                .chatLanguageModel(model)
+                .chatLanguageModel(model.asChatLanguageModel())
                 .build();
     }
 
     @Bean
-    @ConditionalOnMissingBean(ChatLanguageModel.class)
+    @ConditionalOnMissingBean
     public PersonaGenerator defaultPersonaGenerator() {
         log.info("Creating default persona generator");
         return new PersonaGenerator() {
             @Override
-            public Persona generatePersona(String context) {
-                return Persona.withName("generated-persona");
+            public PersonaDTO generatePersona(String context) {
+                return new PersonaDTO().setName("Generated Persona").setDescription(context);
             }
         };
     }

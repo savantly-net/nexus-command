@@ -4,10 +4,13 @@ import java.util.Comparator;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -81,9 +84,10 @@ public class OrganizationPersona implements Comparable<OrganizationPersona> {
 
     @Property
     @PropertyLayout(fieldSetId = "content", sequence = "3")
-    @JoinColumn(name = "website_id", nullable = false)
+    @JoinColumn(name = "persona_id", nullable = false)
     @Getter
     @Setter
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Persona persona;
 
     @Property

@@ -145,3 +145,16 @@ management:
     health:
       enabled: true
 
+app:
+  security:
+    enabled: false #  disable spring auto-configuration of security
+
+nexus:
+  modules:
+    organizations.enabled: true
+    projects.enabled: true
+    franchise.enabled: true
+    web.enabled: true
+    org-web.enabled: true
+    security.enabled: true
+    ai.enabled: true

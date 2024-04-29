@@ -59,6 +59,7 @@ import net.savantly.nexus.projects.dom.projectMember.ProjectMember;
 @javax.persistence.Entity
 @javax.persistence.Table(
 	schema=ProjectsModule.SCHEMA,
+    name = "project",
     uniqueConstraints = {
         @javax.persistence.UniqueConstraint(name = "project__name__UNQ", columnNames = {"NAME"})
     }

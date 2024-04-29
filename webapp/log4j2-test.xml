@@ -19,6 +19,11 @@
         </File>
     </Appenders>
     <Loggers>
+
+        <logger name="org.apache.causeway" level="warn"/>
+        <logger name="net.savantly" level="info"/>
+        <logger name="langchain4j" level="info"/>
+
         <Logger name="org.apache.catalina.startup.DigesterFactory" level="error" />
         <Logger name="org.apache.catalina.util.LifecycleBase" level="error" />
         <Logger name="org.apache.coyote.http11.Http11NioProtocol" level="warn" />
