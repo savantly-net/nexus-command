@@ -12,6 +12,7 @@ import org.apache.causeway.applib.services.repository.RepositoryService;
 
 import net.savantly.nexus.organizations.dom.organization.Organization;
 import net.savantly.nexus.projects.dom.persona.Persona;
+import net.savantly.nexus.projects.dom.personaGenerator.PersonaGenerator;
 
 @Action
 @javax.annotation.Priority(PriorityPrecedence.EARLY)
@@ -26,14 +27,21 @@ public class Organization_createPersona {
 
     @Inject
     @Transient
+    PersonaGenerator personaGenerator;
+    @Inject
+    @Transient
     RepositoryService repositoryService;
 
     @ActionLayout(named = "Create Persona", associateWith = "personas", promptStyle = PromptStyle.DIALOG)
     public OrganizationPersona act(
-            @ParameterLayout(named = "Persona Name") final String name) {
-        final Persona persona = Persona.withName(name);
+            @ParameterLayout(named = "Description") final String description) {
+        final Persona persona = personaGenerator.generatePersona(formatContext(description));
         OrganizationPersona organizationPersona = OrganizationPersona.withRequiredFields(persona, organization);
         repositoryService.persist(organizationPersona);
         return organizationPersona;
+    }
+
+    private String formatContext(String description) {
+        return "Organization: " + organization.getName() + ", Description: " + description;
     }
 }

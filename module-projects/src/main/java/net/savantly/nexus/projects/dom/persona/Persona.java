@@ -40,7 +40,7 @@ import net.savantly.nexus.projects.ProjectsModule;
 
 @Named(ProjectsModule.NAMESPACE + ".Persona")
 @javax.persistence.Entity
-@javax.persistence.Table(schema = ProjectsModule.SCHEMA)
+@javax.persistence.Table(schema = ProjectsModule.SCHEMA, name = "persona")
 @javax.persistence.EntityListeners(CausewayEntityListener.class)
 @DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.ENABLED, bounding = Bounding.BOUNDED)
 @DomainObjectLayout(cssClassFa = "user")
@@ -124,7 +124,6 @@ public class Persona implements Comparable<Persona> {
     private List<String> scenarios;
 
     @ElementCollection
-    @Column(name = "technology_use", length = Name.MAX_LEN, nullable = false)
     private List<String> technologyUse;
 
     // *** IMPLEMENTATIONS ****
