@@ -36,19 +36,8 @@ One typical use-case is to provide a platform for managing business data, provid
 image::docs/overview.png[Overview]
 
 == AI Powered 
-
-++++
-<div style="position: relative; padding-top: 55.86734693877551%;">
-  <iframe
-    src="https://customer-xaod80vucf91n11z.cloudflarestream.com/890f241bc493cf7278ecdbbc96d4c77e/iframe?poster=https%3A%2F%2Fcustomer-xaod80vucf91n11z.cloudflarestream.com%2F890f241bc493cf7278ecdbbc96d4c77e%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
-    loading="lazy"
-    style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;"
-    allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
-    allowfullscreen="true"
-  ></iframe>
-</div>
-++++
-
+https://customer-xaod80vucf91n11z.cloudflarestream.com/890f241bc493cf7278ecdbbc96d4c77e/iframe?poster=https%3A%2F%2Fcustomer-xaod80vucf91n11z.cloudflarestream.com%2F890f241bc493cf7278ecdbbc96d4c77e%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600
+https://www.youtube.com/watch?v=3J1zv1J1J6A
 
 === Levels of customization:  
 
