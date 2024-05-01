@@ -11,7 +11,6 @@ import javax.persistence.TypedQuery;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
-import org.apache.causeway.applib.annotation.BookmarkPolicy;
 import org.apache.causeway.applib.annotation.DomainService;
 import org.apache.causeway.applib.annotation.DomainServiceLayout;
 import org.apache.causeway.applib.annotation.MinLength;
@@ -28,9 +27,7 @@ import net.savantly.nexus.projects.ProjectsModule;
 
 
 @Named(ProjectsModule.NAMESPACE + ".Projects")
-@DomainService(
-        nature = NatureOfService.VIEW
-)
+@DomainService
 @DomainServiceLayout()
 @javax.annotation.Priority(PriorityPrecedence.EARLY)
 @lombok.RequiredArgsConstructor(onConstructor_ = {@Inject} )

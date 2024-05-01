@@ -7,6 +7,7 @@ import org.apache.causeway.testing.fakedata.applib.CausewayModuleTestingFakeData
 import org.apache.causeway.testing.fixtures.applib.fixturescripts.FixtureScript;
 import org.apache.causeway.testing.fixtures.applib.modules.ModuleWithFixtures;
 import org.apache.causeway.testing.fixtures.applib.teardown.jpa.TeardownFixtureJpaAbstract;
+import org.apache.causeway.valuetypes.markdown.applib.CausewayModuleValMarkdownApplib;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -22,9 +23,9 @@ import dev.langchain4j.service.AiServices;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.savantly.ai.languagetools.LanguageToolModel;
-import net.savantly.nexus.projects.dom.persona.Persona;
-import net.savantly.nexus.projects.dom.persona.PersonaDTO;
-import net.savantly.nexus.projects.dom.personaGenerator.PersonaGenerator;
+import net.savantly.nexus.projects.dom.generator.GeneralGenerator;
+import net.savantly.nexus.projects.dom.generator.IssueGenerator;
+import net.savantly.nexus.projects.dom.generator.PersonaGenerator;
 
 @Configuration
 @Import({
@@ -32,6 +33,7 @@ import net.savantly.nexus.projects.dom.personaGenerator.PersonaGenerator;
         CausewayModuleExtFullCalendarApplib.class,
         CausewayModuleTestingFakeDataApplib.class,
         CausewayModulePersistenceJpaApplib.class,
+        CausewayModuleValMarkdownApplib.class,
 })
 @ComponentScan
 @EnableJpaRepositories
@@ -41,7 +43,7 @@ import net.savantly.nexus.projects.dom.personaGenerator.PersonaGenerator;
 @DependsOn("aiConfig")
 public class ProjectsModule implements ModuleWithFixtures {
 
-    public static final String NAMESPACE = "projects";
+    public static final String NAMESPACE = "nexus.projects";
     public static final String SCHEMA = "projects";
 
     @Override
@@ -69,10 +71,42 @@ public class ProjectsModule implements ModuleWithFixtures {
     public PersonaGenerator defaultPersonaGenerator() {
         log.info("Creating default persona generator");
         return new PersonaGenerator() {
-            @Override
-            public PersonaDTO generatePersona(String context) {
-                return new PersonaDTO().setName("Generated Persona").setDescription(context);
-            }
+        };
+    }
+
+    @Bean
+    @Primary
+    @ConditionalOnProperty("langchain4j.open-ai.chat-model.api-key")
+    public GeneralGenerator llmGeneralGenerator(LanguageToolModel model) {
+        log.info("Creating issue generator with model: {}", model);
+        return AiServices.builder(GeneralGenerator.class)
+                .chatLanguageModel(model.asChatLanguageModel())
+                .build();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public GeneralGenerator defaultGeneralGenerator() {
+        log.info("Creating default issue generator");
+        return new GeneralGenerator() {
+        };
+    }
+
+    @Bean
+    @Primary
+    @ConditionalOnProperty("langchain4j.open-ai.chat-model.api-key")
+    public IssueGenerator llmIssueGenerator(LanguageToolModel model) {
+        log.info("Creating issue generator with model: {}", model);
+        return AiServices.builder(IssueGenerator.class)
+                .chatLanguageModel(model.asChatLanguageModel())
+                .build();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public IssueGenerator defaultIssueGenerator() {
+        log.info("Creating default issue generator");
+        return new IssueGenerator() {
         };
     }
 }

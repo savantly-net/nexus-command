@@ -40,6 +40,7 @@ import org.apache.causeway.applib.services.message.MessageService;
 import org.apache.causeway.applib.services.repository.RepositoryService;
 import org.apache.causeway.applib.services.title.TitleService;
 import org.apache.causeway.persistence.jpa.applib.integration.CausewayEntityListener;
+import org.apache.causeway.valuetypes.markdown.applib.value.Markdown;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -47,6 +48,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
+import net.savantly.ai.languagetools.HasPrompt;
 import net.savantly.nexus.common.types.Description;
 import net.savantly.nexus.common.types.Name;
 import net.savantly.nexus.organizations.dom.organization.Organization;
@@ -65,12 +67,12 @@ import net.savantly.nexus.projects.dom.projectMember.ProjectMember;
     }
 )
 @javax.persistence.EntityListeners(CausewayEntityListener.class)
-@DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.ENABLED, bounding = Bounding.BOUNDED)
+@DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.DISABLED, bounding = Bounding.BOUNDED)
 @DomainObjectLayout(cssClassFa = "shapes")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
-public class Project implements Comparable<Project>  {
+public class Project implements Comparable<Project>, HasPrompt  {
 
     @Inject @Transient RepositoryService repositoryService;
     @Inject @Transient TitleService titleService;
@@ -114,11 +116,31 @@ public class Project implements Comparable<Project>  {
     @PropertyLayout(fieldSetId = "name", sequence = "2")
     private Organization organization;
 
-    @Description
-    @Column(length = Description.MAX_LEN, nullable = true)
-    @PropertyLayout(fieldSetId = "name", sequence = "3")
+    @Column(length = 2000, nullable = true)
+    @PropertyLayout(fieldSetId = "name", sequence = "3", multiLine = 10)
     @Getter @Setter
 	private String description;
+    
+    @Action
+    @ActionLayout(named = "Update Description", associateWith = "description", describedAs = "Update the project description", promptStyle = PromptStyle.DIALOG)
+    public Project updateDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+
+    @Column(nullable = true, columnDefinition = "TEXT")
+    @Property(editing = Editing.DISABLED)
+    @PropertyLayout(fieldSetId = "plan", sequence = "3", multiLine = 8)
+    @Getter @Setter
+	private Markdown plan;
+
+    @Action
+    @ActionLayout(named = "Update Plan", associateWith = "plan", describedAs = "Update the project plan", promptStyle = PromptStyle.DIALOG)
+    public Project updatePlan(String plan) {
+        this.plan = Markdown.valueOf(plan);
+        return this;
+    }
 
     
     @Collection
@@ -176,6 +198,16 @@ public class Project implements Comparable<Project>  {
         val issue = Issue.withRequiredFields(UUID.randomUUID().toString(), name, this);
         this.issues.add(issue);
         return repositoryService.persistAndFlush(issue);
+    }
+
+    @Override
+    public String getPrompt() {
+        var sb = new StringBuilder();
+        sb
+            .append("Project: ")
+            .append(this.getName())
+            .append(description != null ? " - " + description : "");
+        return sb.toString();
     }
 
 }

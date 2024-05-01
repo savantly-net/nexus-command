@@ -7,7 +7,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.causeway.applib.annotation.DomainService;
-import org.apache.causeway.applib.annotation.NatureOfService;
 import org.apache.causeway.applib.annotation.PriorityPrecedence;
 import org.apache.causeway.applib.annotation.Programmatic;
 import org.apache.causeway.extensions.secman.applib.user.dom.ApplicationUserRepository;
@@ -18,13 +17,10 @@ import net.savantly.nexus.franchise.FranchiseModule;
 import net.savantly.nexus.organizations.dom.organizationUser.OrganizationUser;
 import net.savantly.nexus.organizations.dom.organizationUser.OrganizationUsers;
 
-
 @Named(FranchiseModule.NAMESPACE + ".OrganizationUsers")
-@DomainService(
-        nature = NatureOfService.VIEW
-)
+@DomainService
 @javax.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = {@Inject} )
+@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
 public class FranchiseUserService implements OrganizationUsers {
 
     private static final Logger logger = LogManager.getLogger(FranchiseUserService.class);

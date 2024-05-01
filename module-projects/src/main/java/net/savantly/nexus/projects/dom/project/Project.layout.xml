@@ -37,6 +37,13 @@
         </bs:col>
         <bs:col span="7">
             <bs:tabGroup unreferencedCollections="true">
+                <bs:tab name="Project Plan">
+                    <bs:row>
+                        <bs:col span="12">
+                            <cpt:fieldSet id="plan" />
+                        </bs:col>
+                    </bs:row>
+                </bs:tab>
             </bs:tabGroup>
         </bs:col>
     </bs:row>

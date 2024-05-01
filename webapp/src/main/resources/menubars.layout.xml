@@ -8,21 +8,21 @@
         <mb3:menu>
             <mb3:named>Organizations</mb3:named>
             <mb3:section>
-                <mb3:serviceAction objectType="savantly.organizations.Organizations" id="create">
+                <mb3:serviceAction objectType="nexus.organizations.Organizations" id="create">
                     <cpt:named>New Organization</cpt:named>
                 </mb3:serviceAction>
-                <mb3:serviceAction objectType="savantly.organizations.Organizations" id="listAll">
+                <mb3:serviceAction objectType="nexus.organizations.Organizations" id="listAll">
                     <cpt:named>List Organizations</cpt:named>
                 </mb3:serviceAction>
-                <mb3:serviceAction objectType="savantly.organizations.Organizations" id="findByName">
+                <mb3:serviceAction objectType="nexus.organizations.Organizations" id="findByName">
                     <cpt:named>Find Organization</cpt:named>
                 </mb3:serviceAction>
             </mb3:section>
             <mb3:section>
-                <mb3:serviceAction objectType="savantly.organizations.OrganizationMemberRoles" id="create">
+                <mb3:serviceAction objectType="nexus.organizations.OrganizationMemberRoles" id="create">
                     <cpt:named>New Role</cpt:named>
                 </mb3:serviceAction>
-                <mb3:serviceAction objectType="savantly.organizations.OrganizationMemberRoles" id="listAll">
+                <mb3:serviceAction objectType="nexus.organizations.OrganizationMemberRoles" id="listAll">
                     <cpt:named>List Roles</cpt:named>
                 </mb3:serviceAction>
             </mb3:section>
@@ -30,68 +30,79 @@
         <mb3:menu>
             <mb3:named>Projects</mb3:named>
             <mb3:section>
-                <mb3:serviceAction objectType="savantly.projects.Projects" id="create">
+                <mb3:serviceAction objectType="nexus.projects.Projects" id="create">
                     <cpt:named>New Project</cpt:named>
                 </mb3:serviceAction>
-                <mb3:serviceAction objectType="savantly.projects.Projects" id="listAll">
+                <mb3:serviceAction objectType="nexus.projects.Projects" id="listAll">
                     <cpt:named>List Projects</cpt:named>
                 </mb3:serviceAction>
-                <mb3:serviceAction objectType="savantly.projects.Projects" id="findByName">
+                <mb3:serviceAction objectType="nexus.projects.Projects" id="findByName">
                     <cpt:named>Find Project</cpt:named>
                 </mb3:serviceAction>
             </mb3:section>
             <mb3:section>
+                <mb3:serviceAction objectType="nexus.projects.Personas" id="create">
+                    <cpt:named>New Persona</cpt:named>
+                </mb3:serviceAction>
+                <mb3:serviceAction objectType="nexus.projects.Personas" id="listAll">
+                    <cpt:named>List Personas</cpt:named>
+                </mb3:serviceAction>
+                <mb3:serviceAction objectType="nexus.projects.Personas" id="findByName">
+                    <cpt:named>Find Personas</cpt:named>
+                </mb3:serviceAction>
+            </mb3:section>
+            <mb3:section>
                 <mb3:named>Project Member Roles</mb3:named>
-                <mb3:serviceAction objectType="savantly.projects.ProjectMemberRoles" id="create"/>
-                <mb3:serviceAction objectType="savantly.projects.ProjectMemberRoles" id="listAll"/>
+                <mb3:serviceAction objectType="nexus.projects.ProjectMemberRoles" id="create"/>
+                <mb3:serviceAction objectType="nexus.projects.ProjectMemberRoles" id="listAll"/>
             </mb3:section>
             <mb3:section>
                 <mb3:named>Issues</mb3:named>
-                <mb3:serviceAction objectType="savantly.projects.Issues" id="create">
+                <mb3:serviceAction objectType="nexus.projects.Issues" id="create">
                     <cpt:named>New Issue</cpt:named>
                 </mb3:serviceAction>
-                <mb3:serviceAction objectType="savantly.projects.Issues" id="listAll">
+                <mb3:serviceAction objectType="nexus.projects.Issues" id="listAll">
                     <cpt:named>List Issues</cpt:named>
                 </mb3:serviceAction>
-                <mb3:serviceAction objectType="savantly.projects.Issues" id="findByName">
+                <mb3:serviceAction objectType="nexus.projects.Issues" id="findByName">
                     <cpt:named>Find Issue</cpt:named>
                 </mb3:serviceAction>
             </mb3:section>
             <mb3:section>
                 <mb3:named>Issue Member Roles</mb3:named>
-                <mb3:serviceAction objectType="savantly.projects.IssueMemberRoles" id="create"/>
-                <mb3:serviceAction objectType="savantly.projects.IssueMemberRoles" id="listAll"/>
+                <mb3:serviceAction objectType="nexus.projects.IssueMemberRoles" id="create"/>
+                <mb3:serviceAction objectType="nexus.projects.IssueMemberRoles" id="listAll"/>
             </mb3:section>
         </mb3:menu>
         <mb3:menu>
             <mb3:named>Franchisees</mb3:named>
             <mb3:section>
-                <mb3:serviceAction objectType="savantly.franchise.FranchiseGroups" id="create">
+                <mb3:serviceAction objectType="nexus.franchise.FranchiseGroups" id="create">
                     <cpt:named>New Franchisee</cpt:named>
                 </mb3:serviceAction>
-                <mb3:serviceAction objectType="savantly.franchise.FranchiseGroups" id="listAll">
+                <mb3:serviceAction objectType="nexus.franchise.FranchiseGroups" id="listAll">
                     <cpt:named>List Franchisees</cpt:named>
                 </mb3:serviceAction>
-                <mb3:serviceAction objectType="savantly.franchise.FranchiseGroups" id="findByName">
+                <mb3:serviceAction objectType="nexus.franchise.FranchiseGroups" id="findByName">
                     <cpt:named>Find Franchisee</cpt:named>
                 </mb3:serviceAction>
             </mb3:section>
             <mb3:section>
                 <mb3:named>Markets</mb3:named>
-                <mb3:serviceAction objectType="savantly.franchise.FranchiseMarkets" id="create"/>
-                <mb3:serviceAction objectType="savantly.franchise.FranchiseMarkets" id="listAll"/>
+                <mb3:serviceAction objectType="nexus.franchise.FranchiseMarkets" id="create"/>
+                <mb3:serviceAction objectType="nexus.franchise.FranchiseMarkets" id="listAll"/>
             </mb3:section>
             <mb3:section>
                 <mb3:named>Locations</mb3:named>
-                <mb3:serviceAction objectType="savantly.franchise.FranchiseLocations" id="create"/>
-                <mb3:serviceAction objectType="savantly.franchise.FranchiseLocations" id="listAll"/>
-                <mb3:serviceAction objectType="savantly.franchise.FranchiseLocations" id="findByName"/>
-                <mb3:serviceAction objectType="savantly.franchise.FranchiseLocations" id="findByNameExact"/>
+                <mb3:serviceAction objectType="nexus.franchise.FranchiseLocations" id="create"/>
+                <mb3:serviceAction objectType="nexus.franchise.FranchiseLocations" id="listAll"/>
+                <mb3:serviceAction objectType="nexus.franchise.FranchiseLocations" id="findByName"/>
+                <mb3:serviceAction objectType="nexus.franchise.FranchiseLocations" id="findByNameExact"/>
             </mb3:section>
             <mb3:section>
                 <mb3:named>Location Roles</mb3:named>
-                <mb3:serviceAction objectType="savantly.franchise.FranchiseLocationMemberRoles" id="create"/>
-                <mb3:serviceAction objectType="savantly.franchise.FranchiseLocationMemberRoles" id="listAll"/>
+                <mb3:serviceAction objectType="nexus.franchise.FranchiseLocationMemberRoles" id="create"/>
+                <mb3:serviceAction objectType="nexus.franchise.FranchiseLocationMemberRoles" id="listAll"/>
             </mb3:section>
         </mb3:menu>
         <mb3:menu>

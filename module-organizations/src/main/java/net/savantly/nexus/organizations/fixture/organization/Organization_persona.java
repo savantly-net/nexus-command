@@ -45,6 +45,12 @@ implements Persona<Organization, Organization_persona.Builder> {
         protected Organization buildResult(final ExecutionContext ec) {
             val object = service.create(persona.getId(), persona.name);
             object.setEmailAddress("support@savantly.net");
+            object.setCity("Fort Worth");
+            object.setState("TX");
+            object.setCountry("USA");
+            object.setNotes("Savantly LLC is a software development company specializing in AI and enterprise software." +
+                    " LOBs, ERPs, CRMs, Web Sites, and more. " +
+                    "They are especially good at scaled architecture and process automation.");
             return object;
         }
 

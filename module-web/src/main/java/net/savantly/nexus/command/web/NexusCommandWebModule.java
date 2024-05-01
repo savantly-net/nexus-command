@@ -5,7 +5,6 @@ import org.apache.causeway.extensions.pdfjs.applib.CausewayModuleExtPdfjsApplib;
 import org.apache.causeway.persistence.jpa.applib.CausewayModulePersistenceJpaApplib;
 import org.apache.causeway.testing.fakedata.applib.CausewayModuleTestingFakeDataApplib;
 import org.apache.causeway.testing.fixtures.applib.fixturescripts.FixtureScript;
-import org.apache.causeway.testing.fixtures.applib.fixturescripts.FixtureScript.ExecutionContext;
 import org.apache.causeway.testing.fixtures.applib.modules.ModuleWithFixtures;
 import org.apache.causeway.testing.fixtures.applib.teardown.jpa.TeardownFixtureJpaAbstract;
 import org.springframework.boot.autoconfigure.domain.EntityScan;

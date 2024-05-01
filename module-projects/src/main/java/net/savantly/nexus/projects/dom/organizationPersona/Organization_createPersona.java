@@ -1,5 +1,7 @@
 package net.savantly.nexus.projects.dom.organizationPersona;
 
+import java.util.UUID;
+
 import javax.inject.Inject;
 import javax.persistence.Transient;
 
@@ -11,9 +13,9 @@ import org.apache.causeway.applib.annotation.PromptStyle;
 import org.apache.causeway.applib.services.repository.RepositoryService;
 
 import net.savantly.nexus.organizations.dom.organization.Organization;
+import net.savantly.nexus.projects.dom.generator.PersonaGenerator;
 import net.savantly.nexus.projects.dom.persona.Persona;
 import net.savantly.nexus.projects.dom.persona.PersonaDTO;
-import net.savantly.nexus.projects.dom.personaGenerator.PersonaGenerator;
 
 @Action
 @javax.annotation.Priority(PriorityPrecedence.EARLY)
@@ -37,6 +39,7 @@ public class Organization_createPersona {
     public Persona act(
             @ParameterLayout(named = "Description") final String description) {
         final PersonaDTO personaDto = personaGenerator.generatePersona(formatContext(description));
+        personaDto.setId(UUID.randomUUID().toString());
         final Persona persona = Persona.fromDto(personaDto);
         OrganizationPersona organizationPersona = OrganizationPersona.withRequiredFields(persona, organization);
         repositoryService.persist(organizationPersona);

@@ -30,6 +30,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
+import net.savantly.ai.languagetools.HasPrompt;
 import net.savantly.nexus.common.types.Name;
 import net.savantly.nexus.projects.ProjectsModule;
 
@@ -42,7 +43,7 @@ import net.savantly.nexus.projects.ProjectsModule;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
-public class Persona implements Comparable<Persona> {
+public class Persona implements Comparable<Persona>, HasPrompt {
 
     @Inject
     @Transient
@@ -72,6 +73,10 @@ public class Persona implements Comparable<Persona> {
         entity.version = dto.getVersion();
         entity.setName(dto.getName());
         entity.setDescription(dto.getDescription());
+        entity.setGoals(dto.getGoals());
+        entity.setPainPoints(dto.getPainPoints());
+        entity.setBehaviors(dto.getBehaviors());
+        entity.setTechnologyUse(dto.getTechnologyUse());
         entity.setAge(dto.getAge());
         entity.setGender(dto.getGender());
         entity.setEducationLevel(dto.getEducationLevel());
@@ -110,10 +115,10 @@ public class Persona implements Comparable<Persona> {
     @Setter
     private long version;
 
-    @Title(prepend = "Persona: ")
+    @Title(prepend = "P: ")
     @Name
     @Column(name = "NAME", length = Name.MAX_LEN, nullable = false)
-    @Property(editing = Editing.DISABLED)
+    @Property
     @Getter
     @Setter
     @ToString.Include
@@ -130,6 +135,31 @@ public class Persona implements Comparable<Persona> {
     @Setter
     private String description;
 
+
+    @Column(name = "goals", length = 255, nullable = true)
+    @PropertyLayout(fieldSetId = "name", sequence = "2")
+    @Getter
+    @Setter
+    private String goals;
+
+    @Column(name = "pain_points", length = 255, nullable = true)
+    @PropertyLayout(fieldSetId = "name", sequence = "2")
+    @Getter
+    @Setter
+    private String painPoints;
+
+    @Column(name = "behaviors", length = 255, nullable = true)
+    @PropertyLayout(fieldSetId = "name", sequence = "2")
+    @Getter
+    @Setter
+    private String behaviors;
+
+    @Column(name = "technology_use", length = 255, nullable = true)
+    @PropertyLayout(fieldSetId = "name", sequence = "2")
+    @Getter
+    @Setter
+    private String technologyUse;
+
     /****************
      * DEMOGRAPHICS *
      ****************/
@@ -140,24 +170,29 @@ public class Persona implements Comparable<Persona> {
     @PropertyLayout(fieldSetId = "demographics", sequence = "2")
     @Column(name = "demographic_age", nullable = false)
     private int age = 40;
+
     @Getter
     @Setter
     @Property
     @PropertyLayout(fieldSetId = "demographics", sequence = "2")
     @Column(name = "demographic_gender", nullable = true)
     private String gender;
+
     @Getter
     @Setter
     @Property
     @PropertyLayout(fieldSetId = "demographics", sequence = "2")
     @Column(name = "demographic_education_level", nullable = true)
     private String educationLevel;
+
+    @Title(prepend = " (", append = ")", sequence = "2")
     @Getter
     @Setter
     @Property
     @PropertyLayout(fieldSetId = "demographics", sequence = "2")
     @Column(name = "demographic_occupation", nullable = true)
     private String occupation;
+
     @Getter
     @Setter
     @Property
@@ -226,22 +261,6 @@ public class Persona implements Comparable<Persona> {
     @Column(name = "psy_frustrations", nullable = true, length = 500)
     private String frustrations;
 
-    /*
-     * @ElementCollection
-     * private List<String> goals;
-     * 
-     * @ElementCollection
-     * private List<String> painPoints;
-     * 
-     * @ElementCollection
-     * private List<String> behaviors;
-     * 
-     * @ElementCollection
-     * private List<String> scenarios;
-     * 
-     * @ElementCollection
-     * private List<String> technologyUse;
-     */
 
     // *** IMPLEMENTATIONS ****
 
@@ -250,6 +269,67 @@ public class Persona implements Comparable<Persona> {
     @Override
     public int compareTo(final Persona other) {
         return comparator.compare(this, other);
+    }
+
+    @Override
+    public String getPrompt() {
+        var sb = new StringBuilder();
+        sb.append("Persona: ").append(getName());
+        if (getDescription() != null) {
+            sb.append(" - ").append(getDescription()).append("\n");
+        }
+        if (getGoals() != null) {
+            sb.append("Goals: ").append(getGoals()).append("\n");
+        }
+        if (getPainPoints() != null) {
+            sb.append("Pain Points: ").append(getPainPoints()).append("\n");
+        }
+        if (getBehaviors() != null) {
+            sb.append("Behaviors: ").append(getBehaviors()).append("\n");
+        }
+        if (getTechnologyUse() != null) {
+            sb.append("Technology Use: ").append(getTechnologyUse()).append("\n");
+        }
+        if (getAge() != 0) {
+            sb.append("Age: ").append(getAge()).append("\n");
+        }
+        if (getGender() != null) {
+            sb.append("Gender: ").append(getGender()).append("\n");
+        }
+        if (getEducationLevel() != null) {
+            sb.append("Education Level: ").append(getEducationLevel()).append("\n");
+        }
+        if (getOccupation() != null) {
+            sb.append("Occupation: ").append(getOccupation()).append("\n");
+        }
+        if (getLocation() != null) {
+            sb.append("Location: ").append(getLocation()).append("\n");
+        }
+        if (getIndustry() != null) {
+            sb.append("Industry: ").append(getIndustry()).append("\n");
+        }
+        if (getJobRole() != null) {
+            sb.append("Job Role: ").append(getJobRole()).append("\n");
+        }
+        if (getCareerPath() != null) {
+            sb.append("Career Path: ").append(getCareerPath()).append("\n");
+        }
+        if (getSkills() != null) {
+            sb.append("Skills: ").append(getSkills()).append("\n");
+        }
+        if (getPersonalityTraits() != null) {
+            sb.append("Personality Traits: ").append(getPersonalityTraits()).append("\n");
+        }
+        if (getPersonalValues() != null) {
+            sb.append("Personal Values: ").append(getPersonalValues()).append("\n");
+        }
+        if (getMotivations() != null) {
+            sb.append("Motivations: ").append(getMotivations()).append("\n");
+        }
+        if (getFrustrations() != null) {
+            sb.append("Frustrations: ").append(getFrustrations()).append("\n");
+        }
+        return sb.toString();
     }
 
 }

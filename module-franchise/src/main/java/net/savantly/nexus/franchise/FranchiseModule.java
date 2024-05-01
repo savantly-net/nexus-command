@@ -28,7 +28,7 @@ import net.savantly.nexus.franchise.dom.location.FranchiseLocation;
 @EntityScan(basePackageClasses = {FranchiseModule.class})
 public class FranchiseModule implements ModuleWithFixtures {
 
-    public static final String NAMESPACE = "savantly.franchise";
+    public static final String NAMESPACE = "nexus.franchise";
     public static final String SCHEMA = "franchise";
 
     

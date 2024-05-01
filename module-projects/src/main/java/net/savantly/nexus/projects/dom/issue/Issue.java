@@ -29,6 +29,7 @@ import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.DomainObjectLayout;
 import org.apache.causeway.applib.annotation.Editing;
 import org.apache.causeway.applib.annotation.MemberSupport;
+import org.apache.causeway.applib.annotation.Navigable;
 import org.apache.causeway.applib.annotation.ParameterLayout;
 import org.apache.causeway.applib.annotation.PromptStyle;
 import org.apache.causeway.applib.annotation.Property;
@@ -36,6 +37,7 @@ import org.apache.causeway.applib.annotation.PropertyLayout;
 import org.apache.causeway.applib.annotation.Publishing;
 import org.apache.causeway.applib.annotation.SemanticsOf;
 import org.apache.causeway.applib.annotation.Title;
+import org.apache.causeway.applib.annotation.Where;
 import org.apache.causeway.applib.jaxb.PersistentEntityAdapter;
 import org.apache.causeway.applib.services.message.MessageService;
 import org.apache.causeway.applib.services.repository.RepositoryService;
@@ -48,7 +50,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
-import net.savantly.nexus.common.types.Description;
 import net.savantly.nexus.common.types.Name;
 import net.savantly.nexus.organizations.dom.organizationUser.OrganizationUser;
 import net.savantly.nexus.projects.ProjectsModule;
@@ -61,7 +62,7 @@ import net.savantly.nexus.projects.dom.project.Project;
 @javax.persistence.Table(schema = ProjectsModule.SCHEMA)
 @javax.persistence.EntityListeners(CausewayEntityListener.class)
 @DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.ENABLED, bounding = Bounding.BOUNDED)
-@DomainObjectLayout(cssClassFa = "shapes")
+@DomainObjectLayout(cssClassFa = "note-sticky")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
@@ -85,6 +86,11 @@ public class Issue implements Comparable<Issue> {
         return entity;
     }
 
+    public static Issue withRequiredFields(String name, Project project) {
+        val id = UUID.randomUUID().toString();
+        return withRequiredFields(id, name, project);
+    }
+
     // *** PROPERTIES ***
 
     @Id
@@ -102,7 +108,7 @@ public class Issue implements Comparable<Issue> {
     @Title(prepend = "Issue: ")
     @Name
     @Column(name = "NAME", length = Name.MAX_LEN, nullable = false)
-    @Property(editing = Editing.DISABLED)
+    @Property
     @Getter
     @Setter
     @ToString.Include
@@ -113,21 +119,33 @@ public class Issue implements Comparable<Issue> {
     @Getter
     @Setter
     @ToString.Include
-    @PropertyLayout(fieldSetId = "name", sequence = "2")
+    @PropertyLayout(fieldSetId = "name", sequence = "2", navigable = Navigable.PARENT, hidden = Where.ALL_TABLES)
     private Project project;
 
-    @Description
-    @Column(length = Description.MAX_LEN, nullable = true)
+    @Column(length = 1000, nullable = true)
     @PropertyLayout(fieldSetId = "name", sequence = "3")
     @Getter
     @Setter
     private String description;
+
+    @Column(length = 500, nullable = true)
+    @PropertyLayout(fieldSetId = "name", sequence = "4")
+    @Getter
+    @Setter
+    private String labels;
+
+    @Column(name="issue_order", nullable = true)
+    @PropertyLayout(fieldSetId = "name", sequence = "4", named = "Order")
+    @Getter
+    @Setter
+    private int issueOrder;
 
     @Collection
     @CollectionLayout(sequence = "1")
     @Getter
     @Setter
     @OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, mappedBy = "issue")
+    @PropertyLayout(fieldSetId = "notes", sequence = "1", multiLine = 5)
     private Set<IssueNote> notes = new HashSet<>();
 
     @Collection
@@ -175,8 +193,7 @@ public class Issue implements Comparable<Issue> {
     @ActionLayout(associateWith = "notes", promptStyle = PromptStyle.DIALOG)
     public Issue addNote(
             @ParameterLayout(named = "Note", multiLine = 5) final String note) {
-        val newNote = this.repositoryService
-                .persist(IssueNote.withRequiredFields(UUID.randomUUID().toString(), note, this));
+        val newNote = IssueNote.withRequiredFields(UUID.randomUUID().toString(), note, this);
         this.notes.add(newNote);
         return this;
     }

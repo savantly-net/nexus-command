@@ -22,6 +22,8 @@ import org.apache.causeway.applib.annotation.DomainObjectLayout;
 import org.apache.causeway.applib.annotation.Editing;
 import org.apache.causeway.applib.annotation.PropertyLayout;
 import org.apache.causeway.applib.annotation.Publishing;
+import org.apache.causeway.applib.annotation.Title;
+import org.apache.causeway.applib.annotation.Where;
 import org.apache.causeway.applib.jaxb.PersistentEntityAdapter;
 import org.apache.causeway.applib.services.message.MessageService;
 import org.apache.causeway.applib.services.repository.RepositoryService;
@@ -45,7 +47,7 @@ import net.savantly.nexus.projects.dom.issue.Issue;
 )
 @javax.persistence.EntityListeners(CausewayEntityListener.class)
 @DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.ENABLED, bounding = Bounding.BOUNDED)
-@DomainObjectLayout(cssClassFa = "text")
+@DomainObjectLayout(cssClassFa = "comment")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
@@ -58,6 +60,7 @@ public class IssueNote implements Comparable<IssueNote>  {
     public static IssueNote withRequiredFields(String id, String notes, Issue issue) {
         val entity = new IssueNote();
         entity.id = id;
+        entity.issue = issue;
         entity.setNotes(notes);
         return entity;
     }
@@ -72,6 +75,7 @@ public class IssueNote implements Comparable<IssueNote>  {
     @Id
     @Column(name = "id", nullable = false)
     @Getter
+    @Title
     private String id;
 
     @javax.persistence.Version
@@ -87,12 +91,12 @@ public class IssueNote implements Comparable<IssueNote>  {
 
     @JoinColumn(name="issue_id")
     @Getter @Setter @ToString.Include
-    @PropertyLayout(fieldSetId = "name", sequence = "2")
+    @PropertyLayout(fieldSetId = "name", sequence = "2", hidden = Where.PARENTED_TABLES)
     private Issue issue;
 
     @Notes
     @Column(length = Notes.MAX_LEN, nullable = true)
-    @PropertyLayout(fieldSetId = "name", sequence = "3")
+    @PropertyLayout(fieldSetId = "name", sequence = "3", hidden = Where.NOWHERE)
     @Getter @Setter
 	private String notes;
 

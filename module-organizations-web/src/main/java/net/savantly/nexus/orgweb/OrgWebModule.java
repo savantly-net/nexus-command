@@ -26,7 +26,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan(basePackageClasses = {OrgWebModule.class})
 public class OrgWebModule implements ModuleWithFixtures {
 
-    public static final String NAMESPACE = "savantly.orgweb";
+    public static final String NAMESPACE = "nexus.orgweb";
     public static final String SCHEMA = "orgweb";
 
     

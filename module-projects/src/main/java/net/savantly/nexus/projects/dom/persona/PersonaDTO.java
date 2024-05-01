@@ -15,6 +15,10 @@ public class PersonaDTO implements Serializable {
     private long version;
     private String name;
     private String description;
+    private String goals;
+    private String painPoints;
+    private String behaviors;
+    private String technologyUse;
     private int age;
     private String gender;
     private String educationLevel;

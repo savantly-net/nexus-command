@@ -16,5 +16,5 @@ import org.apache.causeway.applib.annotation.Property;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Name {
 
-    int MAX_LEN = 60;
+    int MAX_LEN = 120;
 }
