@@ -123,7 +123,7 @@ public class Project implements Comparable<Project>, HasPrompt  {
     
     @Action
     @ActionLayout(named = "Update Description", associateWith = "description", describedAs = "Update the project description", promptStyle = PromptStyle.DIALOG)
-    public Project updateDescription(String description) {
+    public Project updateDescription(@ParameterLayout(multiLine = 5) String description) {
         this.description = description;
         return this;
     }
