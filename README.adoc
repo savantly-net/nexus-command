@@ -37,15 +37,9 @@ image::docs/overview.png[Overview]
 
 == AI Powered 
 
-++++
-  <video
-    src="https://customer-xaod80vucf91n11z.cloudflarestream.com/890f241bc493cf7278ecdbbc96d4c77e/iframe?poster=https%3A%2F%2Fcustomer-xaod80vucf91n11z.cloudflarestream.com%2F890f241bc493cf7278ecdbbc96d4c77e%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
-  ></video>
-++++
+link:https://customer-xaod80vucf91n11z.cloudflarestream.com/890f241bc493cf7278ecdbbc96d4c77e/iframe?poster=https%3A%2F%2Fcustomer-xaod80vucf91n11z.cloudflarestream.com%2F890f241bc493cf7278ecdbbc96d4c77e%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600[Video Preview]
 
-link:https://customer-xaod80vucf91n11z.cloudflarestream.com/890f241bc493cf7278ecdbbc96d4c77e/iframe?poster=https%3A%2F%2Fcustomer-xaod80vucf91n11z.cloudflarestream.com%2F890f241bc493cf7278ecdbbc96d4c77e%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600[Preview]
-
-=== Levels of customization:  
+== Levels of customization:  
 
 You can use the default webapp which includes all the modules, or you can create your own webapp and include any modules you need.  
 The modules are maintained in this repo, and published to Maven Central.  
