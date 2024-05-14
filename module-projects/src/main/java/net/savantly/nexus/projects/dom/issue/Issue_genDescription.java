@@ -1,7 +1,7 @@
 package net.savantly.nexus.projects.dom.issue;
 
-import javax.inject.Inject;
-import javax.persistence.Transient;
+import jakarta.inject.Inject;
+import jakarta.persistence.Transient;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
@@ -13,7 +13,7 @@ import net.savantly.ai.languagetools.PromptBuilder;
 import net.savantly.nexus.projects.dom.generator.GeneralGenerator;
 
 @Action
-@javax.annotation.Priority(PriorityPrecedence.EARLY)
+@jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
 public class Issue_genDescription {
 

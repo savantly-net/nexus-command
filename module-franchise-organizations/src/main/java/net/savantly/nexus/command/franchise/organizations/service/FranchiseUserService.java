@@ -3,8 +3,8 @@ package net.savantly.nexus.command.franchise.organizations.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.apache.causeway.applib.annotation.DomainService;
 import org.apache.causeway.applib.annotation.PriorityPrecedence;
@@ -19,7 +19,7 @@ import net.savantly.nexus.organizations.dom.organizationUser.OrganizationUsers;
 
 @Named(FranchiseModule.NAMESPACE + ".OrganizationUsers")
 @DomainService
-@javax.annotation.Priority(PriorityPrecedence.EARLY)
+@jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
 public class FranchiseUserService implements OrganizationUsers {
 

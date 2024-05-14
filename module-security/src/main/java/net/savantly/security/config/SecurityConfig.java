@@ -71,9 +71,9 @@ public class SecurityConfig implements ApplicationContextAware {
 	public WebSecurityCustomizer webSecurityCustomizer() {
 		return (web) -> {
 			web.debug(debug);
-			web.ignoring().antMatchers("/");
+			web.ignoring().requestMatchers("/");
 			if (!enabled) {
-				web.ignoring().antMatchers("/**");
+				web.ignoring().requestMatchers("/**");
 			}
 		};
 	}
@@ -111,7 +111,7 @@ public class SecurityConfig implements ApplicationContextAware {
 				http.addFilter(new PreAuthFilter(preauth, authenticationManager));
 			}
 		} else {
-			http.authorizeHttpRequests(authz -> authz.antMatchers("/**").permitAll());
+			http.authorizeHttpRequests(authz -> authz.requestMatchers("/**").permitAll());
 		}
 
 		if (!useCsrf) {

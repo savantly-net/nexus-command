@@ -3,14 +3,14 @@ package net.savantly.nexus.orgweb.dom.organizationWebSite;
 import java.time.ZonedDateTime;
 import java.util.Comparator;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Transient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Transient;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.DomainObjectLayout;
@@ -36,12 +36,12 @@ import net.savantly.nexus.organizations.dom.organization.Organization;
 import net.savantly.nexus.orgweb.OrgWebModule;
 
 @Named(OrgWebModule.NAMESPACE + ".OrganizationWebSite")
-@javax.persistence.Entity
-@javax.persistence.Table(
+@jakarta.persistence.Entity
+@jakarta.persistence.Table(
     name = "org_site",
     schema = OrgWebModule.SCHEMA
 )
-@javax.persistence.EntityListeners(CausewayEntityListener.class)
+@jakarta.persistence.EntityListeners(CausewayEntityListener.class)
 @DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.ENABLED)
 @DomainObjectLayout(cssClassFa = "cube")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
@@ -64,15 +64,15 @@ public class OrganizationWebSite implements Comparable<OrganizationWebSite>  {
     // *** PROPERTIES ***
     
     @Id
-    @GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
+    @GeneratedValue(strategy = jakarta.persistence.GenerationType.AUTO)
     @Property(editing = Editing.DISABLED)
     @PropertyLayout(fieldSetId = "metadata", sequence = "1")
     @Column(name = "id", nullable = false)
     @Getter
     private Long id;
 
-    @javax.persistence.Version
-    @javax.persistence.Column(name = "version", nullable = false)
+    @jakarta.persistence.Version
+    @jakarta.persistence.Column(name = "version", nullable = false)
     @PropertyLayout(fieldSetId = "metadata", sequence = "999")
     @Getter @Setter
     private long version;

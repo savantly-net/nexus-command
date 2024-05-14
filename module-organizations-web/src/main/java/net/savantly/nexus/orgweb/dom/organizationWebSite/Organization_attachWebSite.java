@@ -3,8 +3,8 @@ package net.savantly.nexus.orgweb.dom.organizationWebSite;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.inject.Inject;
-import javax.persistence.Transient;
+import jakarta.inject.Inject;
+import jakarta.persistence.Transient;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
@@ -18,7 +18,7 @@ import net.savantly.nexus.organizations.dom.organization.Organization;
 
 
 @Action
-@javax.annotation.Priority(PriorityPrecedence.EARLY)
+@jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @lombok.RequiredArgsConstructor(onConstructor_ = {@Inject} )
 public class Organization_attachWebSite {
 

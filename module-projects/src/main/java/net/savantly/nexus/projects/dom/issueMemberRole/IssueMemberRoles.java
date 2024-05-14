@@ -2,8 +2,8 @@ package net.savantly.nexus.projects.dom.issueMemberRole;
 
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
@@ -18,7 +18,7 @@ import net.savantly.nexus.projects.ProjectsModule;
 
 @Named(ProjectsModule.NAMESPACE + ".IssueMemberRoles")
 @DomainService(nature = NatureOfService.VIEW)
-@javax.annotation.Priority(PriorityPrecedence.EARLY)
+@jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
 public class IssueMemberRoles {
 

@@ -2,10 +2,10 @@ package net.savantly.nexus.organizations.dom.organization;
 
 import java.util.UUID;
 
-import javax.inject.Named;
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.inject.Named;
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.causeway.applib.annotation.Bounding;
 import org.apache.causeway.applib.annotation.DomainObject;
@@ -26,9 +26,9 @@ import lombok.val;
 import net.savantly.nexus.organizations.OrganizationsModule;
 
 @Named(OrganizationsModule.NAMESPACE + ".OrganizationMemberRole")
-@javax.persistence.Entity
-@javax.persistence.Table(schema = OrganizationsModule.SCHEMA, name = "organization_member_role")
-@javax.persistence.EntityListeners(CausewayEntityListener.class)
+@jakarta.persistence.Entity
+@jakarta.persistence.Table(schema = OrganizationsModule.SCHEMA, name = "organization_member_role")
+@jakarta.persistence.EntityListeners(CausewayEntityListener.class)
 @DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.ENABLED, bounding = Bounding.BOUNDED)
 @DomainObjectLayout()
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
@@ -55,8 +55,8 @@ public class OrganizationMemberRole {
     @Getter
     private String id;
 
-    @javax.persistence.Version
-    @javax.persistence.Column(name = "version", nullable = false)
+    @jakarta.persistence.Version
+    @jakarta.persistence.Column(name = "version", nullable = false)
     @PropertyLayout(fieldSetId = "metadata", sequence = "999")
     @Getter
     @Setter

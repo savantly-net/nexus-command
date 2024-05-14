@@ -6,9 +6,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.persistence.TypedQuery;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.persistence.TypedQuery;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
@@ -30,7 +30,7 @@ import net.savantly.nexus.command.web.dom.site.WebSite;
 @DomainService(
         nature = NatureOfService.VIEW
 )
-@javax.annotation.Priority(PriorityPrecedence.EARLY)
+@jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @lombok.RequiredArgsConstructor(onConstructor_ = {@Inject} )
 public class WebPages {
 	

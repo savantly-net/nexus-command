@@ -1,6 +1,6 @@
 package net.savantly.nexus.projects.dom.persona;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
@@ -11,7 +11,7 @@ import org.apache.causeway.applib.annotation.SemanticsOf;
 import org.apache.causeway.applib.services.message.MessageService;
 import org.apache.causeway.applib.services.title.TitleService;
 
-@javax.annotation.Priority(PriorityPrecedence.EARLY)
+@jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @Action(semantics = SemanticsOf.IDEMPOTENT_ARE_YOU_SURE, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
 @ActionLayout(describedAs = "Deletes the persona permanently")
 @lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })

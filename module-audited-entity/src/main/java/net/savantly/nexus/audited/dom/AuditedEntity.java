@@ -2,7 +2,7 @@ package net.savantly.nexus.audited.dom;
 
 import java.time.ZonedDateTime;
 
-import javax.persistence.MappedSuperclass;
+import jakarta.persistence.MappedSuperclass;
 
 import org.apache.causeway.applib.annotation.PropertyLayout;
 import org.apache.causeway.applib.annotation.Where;

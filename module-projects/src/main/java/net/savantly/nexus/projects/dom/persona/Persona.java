@@ -3,12 +3,12 @@ package net.savantly.nexus.projects.dom.persona;
 import java.util.Comparator;
 import java.util.UUID;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Transient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.causeway.applib.annotation.Bounding;
 import org.apache.causeway.applib.annotation.DomainObject;
@@ -35,9 +35,9 @@ import net.savantly.nexus.common.types.Name;
 import net.savantly.nexus.projects.ProjectsModule;
 
 @Named(ProjectsModule.NAMESPACE + ".Persona")
-@javax.persistence.Entity
-@javax.persistence.Table(schema = ProjectsModule.SCHEMA, name = "persona")
-@javax.persistence.EntityListeners(CausewayEntityListener.class)
+@jakarta.persistence.Entity
+@jakarta.persistence.Table(schema = ProjectsModule.SCHEMA, name = "persona")
+@jakarta.persistence.EntityListeners(CausewayEntityListener.class)
 @DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.ENABLED, bounding = Bounding.BOUNDED)
 @DomainObjectLayout(cssClassFa = "user")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
@@ -108,8 +108,8 @@ public class Persona implements Comparable<Persona>, HasPrompt {
     @Getter
     private String id;
 
-    @javax.persistence.Version
-    @javax.persistence.Column(name = "version", nullable = false)
+    @jakarta.persistence.Version
+    @jakarta.persistence.Column(name = "version", nullable = false)
     @PropertyLayout(fieldSetId = "metadata", sequence = "999")
     @Getter
     @Setter

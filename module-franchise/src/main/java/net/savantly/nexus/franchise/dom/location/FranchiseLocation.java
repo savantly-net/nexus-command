@@ -11,17 +11,17 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
@@ -60,15 +60,15 @@ import net.savantly.nexus.franchise.dom.group.FranchiseGroupRepository;
 import net.savantly.nexus.franchise.dom.market.FranchiseMarket;
 
 @Named(FranchiseModule.NAMESPACE + ".FranchiseLocation")
-@javax.persistence.Entity
-@javax.persistence.Table(
+@jakarta.persistence.Entity
+@jakarta.persistence.Table(
 	schema=FranchiseModule.SCHEMA,
     name="franchise_location",
     uniqueConstraints = {
-        @javax.persistence.UniqueConstraint(name = "franchise_location__name__UNQ", columnNames = {"NAME"})
+        @jakarta.persistence.UniqueConstraint(name = "franchise_location__name__UNQ", columnNames = {"NAME"})
     }
 )
-@javax.persistence.EntityListeners(CausewayEntityListener.class)
+@jakarta.persistence.EntityListeners(CausewayEntityListener.class)
 @DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.ENABLED)
 @DomainObjectLayout(cssClassFa = "location-dot")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
@@ -99,14 +99,14 @@ public class FranchiseLocation implements Comparable<FranchiseLocation>  {
     // *** PROPERTIES ***
     
     @Id
-    @GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
+    @GeneratedValue(strategy = jakarta.persistence.GenerationType.AUTO)
     @Property(editing = Editing.DISABLED)
     @Column(name = "id", nullable = false)
     @Getter
     private Long id;
 
-    @javax.persistence.Version
-    @javax.persistence.Column(name = "version", nullable = false)
+    @jakarta.persistence.Version
+    @jakarta.persistence.Column(name = "version", nullable = false)
     @PropertyLayout(fieldSetId = "metadata", sequence = "999")
     @Getter @Setter
     private long version;

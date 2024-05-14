@@ -3,7 +3,7 @@ package net.savantly.nexus.command.web.api.controllers;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.apache.causeway.applib.services.iactnlayer.InteractionContext;
 import org.apache.causeway.applib.services.iactnlayer.InteractionService;

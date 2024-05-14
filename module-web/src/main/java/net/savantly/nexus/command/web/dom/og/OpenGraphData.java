@@ -1,8 +1,8 @@
 package net.savantly.nexus.command.web.dom.og;
 
-import javax.inject.Named;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import jakarta.inject.Named;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 
 import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.Property;

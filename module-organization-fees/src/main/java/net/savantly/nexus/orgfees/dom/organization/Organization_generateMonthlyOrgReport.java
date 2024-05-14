@@ -2,8 +2,8 @@ package net.savantly.nexus.orgfees.dom.organization;
 
 import java.util.Calendar;
 
-import javax.inject.Inject;
-import javax.persistence.Transient;
+import jakarta.inject.Inject;
+import jakarta.persistence.Transient;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
@@ -18,7 +18,7 @@ import net.savantly.nexus.organizations.dom.organization.Organization;
 import net.savantly.nexus.orgfees.dom.invoice.MonthlyOrgReport;
 
 @Action
-@javax.annotation.Priority(PriorityPrecedence.EARLY)
+@jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
 public class Organization_generateMonthlyOrgReport {
 

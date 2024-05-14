@@ -5,7 +5,7 @@ package net.savantly.nexus.command.web.fixture.blockType;
 import java.io.IOException;
 import java.time.ZonedDateTime;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.apache.causeway.applib.services.registry.ServiceRegistry;
 import org.apache.causeway.testing.fixtures.applib.personas.BuilderScriptWithResult;

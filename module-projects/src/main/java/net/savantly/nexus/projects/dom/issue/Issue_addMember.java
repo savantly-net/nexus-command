@@ -2,7 +2,7 @@ package net.savantly.nexus.projects.dom.issue;
 
 import java.util.Set;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
@@ -18,7 +18,7 @@ import net.savantly.nexus.projects.dom.IssueMember.IssueMember;
 import net.savantly.nexus.projects.dom.issueMemberRole.IssueMemberRole;
 
 
-@javax.annotation.Priority(PriorityPrecedence.EARLY)
+@jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
 @ActionLayout(associateWith = "members", promptStyle = PromptStyle.DIALOG)
 @lombok.RequiredArgsConstructor(onConstructor_ = {@Inject} )

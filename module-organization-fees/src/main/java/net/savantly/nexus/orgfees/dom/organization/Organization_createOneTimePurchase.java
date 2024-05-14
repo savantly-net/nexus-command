@@ -1,7 +1,7 @@
 package net.savantly.nexus.orgfees.dom.organization;
 
-import javax.inject.Inject;
-import javax.persistence.Transient;
+import jakarta.inject.Inject;
+import jakarta.persistence.Transient;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
@@ -15,7 +15,7 @@ import net.savantly.nexus.orgfees.dom.onetime.OneTimePurchase;
 import net.savantly.nexus.products.dom.product.Product;
 
 @Action
-@javax.annotation.Priority(PriorityPrecedence.EARLY)
+@jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
 public class Organization_createOneTimePurchase {
 

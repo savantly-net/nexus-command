@@ -6,13 +6,13 @@ import static org.apache.causeway.applib.annotation.SemanticsOf.NON_IDEMPOTENT_A
 import java.util.Comparator;
 import java.util.UUID;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Transient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Transient;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
@@ -41,11 +41,11 @@ import net.savantly.nexus.projects.ProjectsModule;
 import net.savantly.nexus.projects.dom.issue.Issue;
 
 @Named(ProjectsModule.NAMESPACE + ".IssueNote")
-@javax.persistence.Entity
-@javax.persistence.Table(
+@jakarta.persistence.Entity
+@jakarta.persistence.Table(
 	schema=ProjectsModule.SCHEMA
 )
-@javax.persistence.EntityListeners(CausewayEntityListener.class)
+@jakarta.persistence.EntityListeners(CausewayEntityListener.class)
 @DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.ENABLED, bounding = Bounding.BOUNDED)
 @DomainObjectLayout(cssClassFa = "comment")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
@@ -78,8 +78,8 @@ public class IssueNote implements Comparable<IssueNote>  {
     @Title
     private String id;
 
-    @javax.persistence.Version
-    @javax.persistence.Column(name = "version", nullable = false)
+    @jakarta.persistence.Version
+    @jakarta.persistence.Column(name = "version", nullable = false)
     @PropertyLayout(fieldSetId = "metadata", sequence = "999")
     @Getter @Setter
     private long version;

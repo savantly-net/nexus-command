@@ -1,7 +1,7 @@
 package net.savantly.nexus.franchise.fixture.location;
 
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.apache.causeway.applib.services.clock.ClockService;
 import org.apache.causeway.applib.services.registry.ServiceRegistry;

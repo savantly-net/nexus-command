@@ -1,6 +1,6 @@
 package net.savantly.nexus.projects.fixture.project;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.apache.causeway.applib.services.registry.ServiceRegistry;
 import org.apache.causeway.testing.fixtures.applib.personas.BuilderScriptWithResult;

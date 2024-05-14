@@ -5,16 +5,16 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
@@ -46,12 +46,12 @@ import net.savantly.nexus.command.web.dom.og.OpenGraphData;
 import net.savantly.nexus.command.web.dom.page.WebPage;
 
 @Named(NexusCommandWebModule.NAMESPACE + ".WebSite")
-@javax.persistence.Entity
-@javax.persistence.Table(
+@jakarta.persistence.Entity
+@jakarta.persistence.Table(
     name = "web_site",
     schema = NexusCommandWebModule.SCHEMA
 )
-@javax.persistence.EntityListeners(CausewayEntityListener.class)
+@jakarta.persistence.EntityListeners(CausewayEntityListener.class)
 @DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.ENABLED)
 @DomainObjectLayout(cssClassFa = "cloud")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
@@ -90,8 +90,8 @@ public class WebSite implements Comparable<WebSite>  {
     @Getter
     private String id;
 
-    @javax.persistence.Version
-    @javax.persistence.Column(name = "version", nullable = false)
+    @jakarta.persistence.Version
+    @jakarta.persistence.Column(name = "version", nullable = false)
     @PropertyLayout(fieldSetId = "metadata", sequence = "999")
     @Getter @Setter
     private long version;

@@ -2,9 +2,9 @@ package net.savantly.nexus.products.dom.product;
 
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.persistence.TypedQuery;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.persistence.TypedQuery;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
@@ -27,7 +27,7 @@ import net.savantly.nexus.products.dom.billing.BillingIntervalType;
 @DomainServiceLayout(
     menuBar = DomainServiceLayout.MenuBar.PRIMARY
 )
-@javax.annotation.Priority(PriorityPrecedence.EARLY)
+@jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
 public class Products {
     final RepositoryService repositoryService;

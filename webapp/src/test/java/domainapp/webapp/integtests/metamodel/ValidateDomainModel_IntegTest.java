@@ -1,6 +1,6 @@
 package domainapp.webapp.integtests.metamodel;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.apache.causeway.applib.services.registry.ServiceRegistry;
 import org.apache.causeway.testing.integtestsupport.applib.validate.DomainModelValidator;

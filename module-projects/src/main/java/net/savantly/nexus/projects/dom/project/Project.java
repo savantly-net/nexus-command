@@ -9,16 +9,16 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
@@ -58,15 +58,15 @@ import net.savantly.nexus.projects.dom.issue.Issue;
 import net.savantly.nexus.projects.dom.projectMember.ProjectMember;
 
 @Named(ProjectsModule.NAMESPACE + ".Project")
-@javax.persistence.Entity
-@javax.persistence.Table(
+@jakarta.persistence.Entity
+@jakarta.persistence.Table(
 	schema=ProjectsModule.SCHEMA,
     name = "project",
     uniqueConstraints = {
-        @javax.persistence.UniqueConstraint(name = "project__name__UNQ", columnNames = {"NAME"})
+        @jakarta.persistence.UniqueConstraint(name = "project__name__UNQ", columnNames = {"NAME"})
     }
 )
-@javax.persistence.EntityListeners(CausewayEntityListener.class)
+@jakarta.persistence.EntityListeners(CausewayEntityListener.class)
 @DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.DISABLED, bounding = Bounding.BOUNDED)
 @DomainObjectLayout(cssClassFa = "shapes")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
@@ -97,8 +97,8 @@ public class Project implements Comparable<Project>, HasPrompt  {
     @Getter
     private String id;
 
-    @javax.persistence.Version
-    @javax.persistence.Column(name = "version", nullable = false)
+    @jakarta.persistence.Version
+    @jakarta.persistence.Column(name = "version", nullable = false)
     @PropertyLayout(fieldSetId = "metadata", sequence = "999")
     @Getter @Setter
     private long version;

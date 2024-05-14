@@ -1,11 +1,11 @@
 package net.savantly.nexus.franchise.dom.market;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Transient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.causeway.applib.annotation.Bounding;
 import org.apache.causeway.applib.annotation.DomainObject;
@@ -30,11 +30,11 @@ import net.savantly.nexus.common.types.Name;
 import net.savantly.nexus.franchise.FranchiseModule;
 
 @Named(FranchiseModule.NAMESPACE + ".FranchiseMarket")
-@javax.persistence.Entity
-@javax.persistence.Table(schema = FranchiseModule.SCHEMA, name = "franchise_market", uniqueConstraints = {
-        @javax.persistence.UniqueConstraint(name = "franchisemarket__name__UNQ", columnNames = { "name" })
+@jakarta.persistence.Entity
+@jakarta.persistence.Table(schema = FranchiseModule.SCHEMA, name = "franchise_market", uniqueConstraints = {
+        @jakarta.persistence.UniqueConstraint(name = "franchisemarket__name__UNQ", columnNames = { "name" })
 })
-@javax.persistence.EntityListeners(CausewayEntityListener.class)
+@jakarta.persistence.EntityListeners(CausewayEntityListener.class)
 @DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.DISABLED, bounding = Bounding.BOUNDED)
 @DomainObjectLayout(cssClassFa = "globe")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
@@ -70,8 +70,8 @@ public class FranchiseMarket {
     @Setter
     private String name;
 
-    @javax.persistence.Version
-    @javax.persistence.Column(name = "version", nullable = false)
+    @jakarta.persistence.Version
+    @jakarta.persistence.Column(name = "version", nullable = false)
     @PropertyLayout(fieldSetId = "metadata", sequence = "999")
     @Getter
     @Setter

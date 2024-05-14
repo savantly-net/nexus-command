@@ -2,8 +2,8 @@ package net.savantly.nexus.projects.dom.project;
 
 import java.util.Objects;
 
-import javax.inject.Inject;
-import javax.persistence.Transient;
+import jakarta.inject.Inject;
+import jakarta.persistence.Transient;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
@@ -15,7 +15,7 @@ import org.apache.causeway.applib.services.repository.RepositoryService;
 import net.savantly.nexus.projects.dom.generator.GeneralGenerator;
 
 @Action
-@javax.annotation.Priority(PriorityPrecedence.EARLY)
+@jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
 public class Project_genDescription {
 

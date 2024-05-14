@@ -2,13 +2,13 @@ package net.savantly.nexus.projects.dom.IssueMember;
 
 import static org.apache.causeway.applib.annotation.SemanticsOf.NON_IDEMPOTENT_ARE_YOU_SURE;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Transient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
@@ -36,11 +36,11 @@ import net.savantly.nexus.projects.dom.issue.Issue;
 import net.savantly.nexus.projects.dom.issueMemberRole.IssueMemberRole;
 
 @Named(ProjectsModule.NAMESPACE + ".IssueMember")
-@javax.persistence.Entity
-@javax.persistence.Table(
+@jakarta.persistence.Entity
+@jakarta.persistence.Table(
 		schema=ProjectsModule.SCHEMA
 	)
-	@javax.persistence.EntityListeners(CausewayEntityListener.class)
+	@jakarta.persistence.EntityListeners(CausewayEntityListener.class)
 	@DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.ENABLED)
 	@DomainObjectLayout()
 	@NoArgsConstructor(access = AccessLevel.PUBLIC)
@@ -63,12 +63,12 @@ public class IssueMember {
     // *** PROPERTIES ***
     
     @Id
-    @GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
+    @GeneratedValue(strategy = jakarta.persistence.GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @javax.persistence.Version
-    @javax.persistence.Column(name = "version", nullable = false)
+    @jakarta.persistence.Version
+    @jakarta.persistence.Column(name = "version", nullable = false)
     @PropertyLayout(fieldSetId = "metadata", sequence = "999")
     @Getter @Setter
     private long version;

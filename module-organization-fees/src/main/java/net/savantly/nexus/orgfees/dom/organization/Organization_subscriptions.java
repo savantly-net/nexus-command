@@ -2,9 +2,9 @@ package net.savantly.nexus.orgfees.dom.organization;
 
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.persistence.Transient;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.persistence.Transient;
 
 import org.apache.causeway.applib.annotation.Collection;
 import org.apache.causeway.applib.annotation.CollectionLayout;
@@ -15,7 +15,7 @@ import net.savantly.nexus.orgfees.dom.subscription.Subscription;
 import net.savantly.nexus.orgfees.dom.subscription.SubscriptionRepository;
 
 @Collection
-@javax.annotation.Priority(PriorityPrecedence.EARLY)
+@jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
 @Named("Organization_subscriptions")
 public class Organization_subscriptions {

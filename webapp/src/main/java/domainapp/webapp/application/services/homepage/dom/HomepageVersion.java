@@ -2,13 +2,13 @@ package domainapp.webapp.application.services.homepage.dom;
 
 import java.util.Comparator;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Transient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.DomainObjectLayout;
@@ -33,12 +33,12 @@ import lombok.ToString;
 import lombok.val;
 
 @Named(ApplicationModule.PUBLIC_NAMESPACE + ".HomepageVersion")
-@javax.persistence.Entity
-@javax.persistence.Table(
+@jakarta.persistence.Entity
+@jakarta.persistence.Table(
     name = "homepage_version",
     schema = ApplicationModule.PUBLIC_NAMESPACE
 )
-@javax.persistence.EntityListeners(CausewayEntityListener.class)
+@jakarta.persistence.EntityListeners(CausewayEntityListener.class)
 @DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.ENABLED)
 @DomainObjectLayout(cssClassFa = "home")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
@@ -59,7 +59,7 @@ public class HomepageVersion implements Comparable<HomepageVersion>  {
     // *** PROPERTIES ***
     
     @Id
-    @GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
+    @GeneratedValue(strategy = jakarta.persistence.GenerationType.AUTO)
     @Property(editing = Editing.DISABLED)
     @PropertyLayout(fieldSetId = "metadata", sequence = "1")
     @Column(name = "id", nullable = false)
@@ -67,8 +67,8 @@ public class HomepageVersion implements Comparable<HomepageVersion>  {
     @Title(prepend = "Homepage Version: ")
     private Long id;
 
-    @javax.persistence.Version
-    @javax.persistence.Column(name = "version", nullable = false)
+    @jakarta.persistence.Version
+    @jakarta.persistence.Column(name = "version", nullable = false)
     @PropertyLayout(fieldSetId = "metadata", sequence = "999")
     @Getter @Setter
     private long version;

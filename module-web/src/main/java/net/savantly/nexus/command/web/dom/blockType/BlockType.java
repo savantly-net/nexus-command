@@ -4,12 +4,12 @@ package net.savantly.nexus.command.web.dom.blockType;
 import java.time.ZonedDateTime;
 import java.util.Comparator;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Transient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.causeway.applib.annotation.Bounding;
 import org.apache.causeway.applib.annotation.DomainObject;
@@ -34,12 +34,12 @@ import lombok.val;
 import net.savantly.nexus.command.web.NexusCommandWebModule;
 
 @Named(NexusCommandWebModule.NAMESPACE + ".BlockType")
-@javax.persistence.Entity
-@javax.persistence.Table(
+@jakarta.persistence.Entity
+@jakarta.persistence.Table(
     name = "block_type",
     schema = NexusCommandWebModule.SCHEMA
 )
-@javax.persistence.EntityListeners(CausewayEntityListener.class)
+@jakarta.persistence.EntityListeners(CausewayEntityListener.class)
 @DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.ENABLED, bounding = Bounding.BOUNDED)
 @DomainObjectLayout(cssClassFa = "code", describedAs = "A block type defines the schema for a block")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
@@ -70,8 +70,8 @@ public class BlockType implements Comparable<BlockType>  {
     @Getter
     private String id;
 
-    @javax.persistence.Version
-    @javax.persistence.Column(name = "version", nullable = false)
+    @jakarta.persistence.Version
+    @jakarta.persistence.Column(name = "version", nullable = false)
     @PropertyLayout(fieldSetId = "metadata", sequence = "999")
     @Getter @Setter
     private long version;
