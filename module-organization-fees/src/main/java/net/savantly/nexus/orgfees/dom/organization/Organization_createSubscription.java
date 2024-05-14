@@ -29,7 +29,7 @@ public class Organization_createSubscription {
     @Transient
     RepositoryService repositoryService;
 
-    @ActionLayout(named = "Create Subscription", associateWith = "Organization_subscriptions", promptStyle = PromptStyle.DIALOG)
+    @ActionLayout(named = "Create Subscription", associateWith = "subscriptions", promptStyle = PromptStyle.DIALOG)
     public Subscription act(
             @ParameterLayout(named = "Product") final Product product) {
         final Subscription subscription = Subscription.withRequiredFields(product, organization);

@@ -30,7 +30,7 @@ public class Organization_createOneTimePurchase {
     @Transient
     RepositoryService repositoryService;
 
-    @ActionLayout(named = "Create One Time Purchase", associateWith = "Purchases", promptStyle = PromptStyle.DIALOG)
+    @ActionLayout(named = "Create OTP", associateWith = "purchases", promptStyle = PromptStyle.DIALOG)
     public OneTimePurchase act(
             @ParameterLayout(named = "Product") final Product product) {
         final OneTimePurchase obj = OneTimePurchase.withRequiredFields(product, organization);

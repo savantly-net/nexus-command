@@ -4,18 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Transient;
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
-import jakarta.xml.bind.annotation.XmlTransient;
-import jakarta.xml.bind.annotation.XmlType;
-
 import org.apache.causeway.applib.annotation.Bounding;
 import org.apache.causeway.applib.annotation.Collection;
 import org.apache.causeway.applib.annotation.CollectionLayout;
@@ -27,6 +15,17 @@ import org.apache.causeway.applib.annotation.Property;
 import org.apache.causeway.applib.annotation.PropertyLayout;
 import org.apache.causeway.applib.annotation.Title;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Transient;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlTransient;
+import jakarta.xml.bind.annotation.XmlType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -103,11 +102,18 @@ public class MonthlyOrgReport {
     @XmlElement(required = true)
     private int year;
 
+    @Getter
+    @Setter
+    @Property
+    @PropertyLayout(fieldSetId = "identity")
+    @XmlElement(required = true)
+    private double totalAmount;
+
     @XmlTransient
     @Transient
     @Collection
-    @CollectionLayout(named = "lineItems", describedAs = "The line items for this report")
-    public List<MonthlyOrgReportItem> getLineItems() {
+    @CollectionLayout(named = "Line Items", describedAs = "The line items for this report")
+    public java.util.Collection<MonthlyOrgReportItem> getLineItems() {
         List<MonthlyOrgReportItem> items = new ArrayList<>();
 
         LocalDate startDate = LocalDate.of(year, month.getValue(), 1);

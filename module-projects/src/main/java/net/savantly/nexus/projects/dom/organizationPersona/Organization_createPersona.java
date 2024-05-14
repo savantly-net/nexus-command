@@ -35,7 +35,7 @@ public class Organization_createPersona {
     @Transient
     RepositoryService repositoryService;
 
-    @ActionLayout(named = "Create Persona", associateWith = "personas", promptStyle = PromptStyle.DIALOG)
+    @ActionLayout(named = "Create Persona", associateWith = "personas", promptStyle = PromptStyle.DIALOG, position = ActionLayout.Position.PANEL)
     public Persona act(
             @ParameterLayout(named = "Description") final String description) {
         final PersonaDTO personaDto = personaGenerator.generatePersona(formatContext(description));

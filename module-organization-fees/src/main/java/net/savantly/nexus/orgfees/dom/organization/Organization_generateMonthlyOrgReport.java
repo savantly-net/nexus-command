@@ -33,7 +33,7 @@ public class Organization_generateMonthlyOrgReport {
     @Transient
     RepositoryService repositoryService;
 
-    @ActionLayout(named = "Get Invoice Report", promptStyle = PromptStyle.DIALOG)
+    @ActionLayout(named = "Generate Monthly Invoice", promptStyle = PromptStyle.DIALOG)
     public MonthlyOrgReport act(
             @ParameterLayout(named = "Month") final MonthType month,
             @ParameterLayout(named = "Year") final int year) {

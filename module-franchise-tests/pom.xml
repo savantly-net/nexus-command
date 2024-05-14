@@ -42,6 +42,11 @@
             <artifactId>franchise-module</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>organizations-module</artifactId>
+        </dependency>
+
 
         <!-- TESTS -->
 

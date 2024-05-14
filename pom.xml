@@ -22,6 +22,7 @@
     <properties>
         <java.version>17</java.version>
         <maven.compiler.release>17</maven.compiler.release>
+        <langchain4j.version>0.30.0</langchain4j.version>
     </properties>
     
 
@@ -121,6 +122,19 @@
                 <scope>import</scope>
                 <type>pom</type>
                 <version>${project.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>dev.langchain4j</groupId>
+                <artifactId>langchain4j</artifactId>
+                <version>${langchain4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>dev.langchain4j</groupId>
+                <artifactId>langchain4j-open-ai-spring-boot-starter</artifactId>
+                <version>${langchain4j.version}</version>
             </dependency>
 
         </dependencies>
