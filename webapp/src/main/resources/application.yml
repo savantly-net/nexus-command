@@ -133,6 +133,7 @@ resteasy:
 
 server:
   max-http-header-size: 16KB
+  port: ${PORT:8080}
 
 spring:
   banner:
