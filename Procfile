@@ -1,0 +1,1 @@
+web: java -jar webapp/target/nexus-command-webapp-3.0.0.jar
