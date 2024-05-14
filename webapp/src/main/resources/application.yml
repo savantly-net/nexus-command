@@ -11,12 +11,12 @@ causeway:
         explicit: true
         command-publishing: all
         execution-publishing: all
-      action-layout:
-        css-class:
-          patterns:
-            delete.*:btn-danger,
-            discard.*:btn-warning,
-            remove.*:btn-warning
+      #action-layout:
+      #  css-class:
+      #    patterns:
+      #      delete.*:btn-danger,
+      #      discard.*:btn-warning,
+      #      remove.*:btn-warning
       property:
         command-publishing: all
         execution-publishing: all
@@ -41,6 +41,7 @@ causeway:
     schema:
       auto-create-schemas:
       - public
+      - products
       - projects
       - nc_web
       - organizations
@@ -151,10 +152,13 @@ app:
 
 nexus:
   modules:
+    products.enabled: true
     organizations.enabled: true
     projects.enabled: true
     franchise.enabled: true
     web.enabled: true
     org-web.enabled: true
+    org-fees.enabled: true
     security.enabled: true
+    audited-entity.enabled: true
     ai.enabled: true

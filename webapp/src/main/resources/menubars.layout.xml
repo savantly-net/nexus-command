@@ -28,6 +28,17 @@
             </mb3:section>
         </mb3:menu>
         <mb3:menu>
+            <mb3:named>Products</mb3:named>
+            <mb3:section>
+                <mb3:serviceAction objectType="nexus.products.Products" id="create">
+                    <cpt:named>New Product</cpt:named>
+                </mb3:serviceAction>
+                <mb3:serviceAction objectType="nexus.products.Products" id="listAll">
+                    <cpt:named>List Products</cpt:named>
+                </mb3:serviceAction>
+            </mb3:section>
+        </mb3:menu>
+        <mb3:menu>
             <mb3:named>Projects</mb3:named>
             <mb3:section>
                 <mb3:serviceAction objectType="nexus.projects.Projects" id="create">

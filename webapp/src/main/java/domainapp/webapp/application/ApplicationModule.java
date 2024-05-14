@@ -2,22 +2,23 @@ package domainapp.webapp.application;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import net.savantly.ai.AIModule;
+import net.savantly.nexus.audited.AuditedEntityModule;
 import net.savantly.nexus.command.franchise.organizations.FranchiseOrganizationsModule;
 import net.savantly.nexus.command.web.NexusCommandWebModule;
 import net.savantly.nexus.command.web.api.WebApiModule;
 import net.savantly.nexus.franchise.FranchiseModule;
 import net.savantly.nexus.organizations.OrganizationsModule;
+import net.savantly.nexus.orgfees.OrganizationFeesModule;
 import net.savantly.nexus.orgweb.OrgWebModule;
+import net.savantly.nexus.products.ProductsModule;
 import net.savantly.nexus.projects.ProjectsModule;
 import net.savantly.security.SecurityModule;
-import net.savantly.ai.AIModule;
 
 @Configuration
 @ComponentScan
@@ -26,6 +27,11 @@ import net.savantly.ai.AIModule;
 public class ApplicationModule {
 
     public static final String PUBLIC_NAMESPACE = "public";
+
+    @ConditionalOnProperty(value = "nexus.modules.audited-entity.enabled", havingValue = "true")
+    @Import(AuditedEntityModule.class)
+    static class AuditedEntityModuleConfigurer {
+    }
 
     @ConditionalOnProperty(value = "nexus.modules.security.enabled", havingValue = "true")
     @Import(SecurityModule.class)
@@ -57,9 +63,19 @@ public class ApplicationModule {
     static class NexusCommandWebModuleConfigurer {
     }
 
+    @ConditionalOnProperty(value = "nexus.modules.products.enabled", havingValue = "true")
+    @Import({ ProductsModule.class })
+    static class NexusCommandProductsModuleConfigurer {
+    }
+
     @ConditionalOnProperty(value = "nexus.modules.org-web.enabled", havingValue = "true")
     @Import(OrgWebModule.class)
     static class OrgWebModuleConfigurer {
+    }
+
+    @ConditionalOnProperty(value = "nexus.modules.org-fees.enabled", havingValue = "true")
+    @Import(OrganizationFeesModule.class)
+    static class OrgFeesModuleConfigurer {
     }
 
 }

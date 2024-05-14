@@ -43,6 +43,16 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
+                <artifactId>nexus-audited-entity-module</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>nexus-products-module</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>nexus-ai-module</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -64,6 +74,11 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>organizations-module</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>organization-fees-module</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -121,12 +136,15 @@
 
     <modules>
         <module>module-common-types</module>
+        <module>module-audited-entity</module>
+        <module>module-products</module>
         <module>module-ai</module>
         <module>module-projects</module>
         <module>module-organizations</module>
         <module>module-web</module>
         <module>module-web-api</module>
         <module>module-organizations-web</module>
+        <module>module-organization-fees</module>
         <module>module-security</module>
         <module>module-franchise</module>
         <module>module-franchise-organizations</module>

@@ -1,6 +1,7 @@
 package net.savantly.security.config;
 
 import org.springframework.beans.BeansException;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -24,6 +25,8 @@ import net.savantly.security.jwt.ProxyBearerTokenResolver;
 import net.savantly.security.listener.LoginSuccessListener;
 import net.savantly.security.preauthenticated.PreAuthConfigProperties;
 import net.savantly.security.preauthenticated.PreAuthFilter;
+import net.savantly.security.users.UserProvider;
+import net.savantly.security.users.UserProviderImpl;
 
 /**
  * This class represents a configuration class that is used to configure the
@@ -118,6 +121,12 @@ public class SecurityConfig implements ApplicationContextAware {
 		log.info("", http);
 
 		return http.build();
+	}
+
+	@Bean
+	@ConditionalOnMissingBean
+	public UserProvider userProvider() {
+		return new UserProviderImpl();
 	}
 
 	@Bean

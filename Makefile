@@ -2,8 +2,8 @@ export DOCKER_TAG_NAME := savantly/nexus-command
 export DOCKER_TAG_VERSION := 2.0.0
 export PROJECT_ROOT := $(shell pwd)
 
-.PHONY: run
-run:
+.PHONY: dev
+dev:
 	$(call setup_env, .env)
 	@echo "Running the program"
 	mvn install -DskipTests

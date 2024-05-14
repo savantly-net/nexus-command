@@ -20,6 +20,7 @@ import net.savantly.nexus.command.web.NexusCommandWebModule;
 import net.savantly.nexus.franchise.FranchiseModule;
 import net.savantly.nexus.organizations.OrganizationsModule;
 import net.savantly.nexus.orgweb.OrgWebModule;
+import net.savantly.nexus.products.ProductsModule;
 import net.savantly.nexus.projects.ProjectsModule;
 
 public class CustomRolesAndUsers extends FixtureScript {
@@ -35,6 +36,7 @@ public class CustomRolesAndUsers extends FixtureScript {
         executionContext.executeChildren(this,
                 new OrganizationsModuleSuperuserRole(),
                 new OrgWebModuleSuperuserRole(),
+                new ProductsModuleSuperuserRole(),
                 new ProjectsModuleSuperuserRole(),
                 new NexusCommandWebModuleSuperuserRole(),
                 new FranchiseModuleSuperuserRole(),
@@ -81,6 +83,23 @@ public class CustomRolesAndUsers extends FixtureScript {
                     ApplicationPermissionRule.ALLOW,
                     ApplicationPermissionMode.CHANGING,
                     Can.of(ApplicationFeatureId.newNamespace(OrgWebModule.NAMESPACE)));
+        }
+    }
+
+    private static class ProductsModuleSuperuserRole extends AbstractRoleAndPermissionsFixtureScript {
+
+        public static final String ROLE_NAME = "products-superuser";
+
+        public ProductsModuleSuperuserRole() {
+            super(ROLE_NAME, "Permission to use everything in the 'Products' module");
+        }
+
+        @Override
+        protected void execute(ExecutionContext executionContext) {
+            newPermissions(
+                    ApplicationPermissionRule.ALLOW,
+                    ApplicationPermissionMode.CHANGING,
+                    Can.of(ApplicationFeatureId.newNamespace(ProductsModule.NAMESPACE)));
         }
     }
 
@@ -140,7 +159,7 @@ public class CustomRolesAndUsers extends FixtureScript {
         public static final String ROLE_NAME = "application-superuser";
 
         public ApplicationSuperuserRole() {
-            super(ROLE_NAME, "Permission to use everything in the 'application' module");
+            super(ROLE_NAME, "Permission to use everything in the application");
         }
 
         @Override
@@ -148,7 +167,7 @@ public class CustomRolesAndUsers extends FixtureScript {
             newPermissions(
                     ApplicationPermissionRule.ALLOW,
                     ApplicationPermissionMode.CHANGING,
-                    Can.of(ApplicationFeatureId.newNamespace(ApplicationModule.PUBLIC_NAMESPACE)));
+                    Can.of(ApplicationFeatureId.newNamespace("*")));
         }
     }
 
@@ -182,6 +201,7 @@ public class CustomRolesAndUsers extends FixtureScript {
                                                                                                                     // stuff
                         OrgWebModuleSuperuserRole.ROLE_NAME,
                         OrganizationsModuleSuperuserRole.ROLE_NAME,
+                        ProductsModuleSuperuserRole.ROLE_NAME,
                         ProjectsModuleSuperuserRole.ROLE_NAME,
                         FranchiseModuleSuperuserRole.ROLE_NAME,
                         NexusCommandWebModuleSuperuserRole.ROLE_NAME,
