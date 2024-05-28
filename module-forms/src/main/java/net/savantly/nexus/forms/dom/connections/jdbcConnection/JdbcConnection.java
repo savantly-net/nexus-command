@@ -25,7 +25,6 @@ import org.apache.causeway.persistence.jpa.applib.integration.CausewayEntityList
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Transient;
@@ -112,17 +111,29 @@ public class JdbcConnection implements Comparable<JdbcConnection> {
     @Setter
     private String username;
 
+
     @Column(length = 255, nullable = true)
+    @Property(editing = Editing.DISABLED)
     @PropertyLayout(fieldSetId = "identity", sequence = "1.7")
     @Setter
     private String password;
     public String getPassword() {
-        return "********";
+        if (password == null) {
+            return "No password set";
+        }
+        return String.format("%s characters", password.length());
     }
     @Programmatic
     public String getRawPassword() {
         return password;
     }
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout(associateWith = "password", describedAs = "Update the password")
+    public JdbcConnection updatePassword(String password) {
+        this.password = password;
+        return this;
+    }
+
 
     @Column(length = 255, nullable = true)
     @PropertyLayout(fieldSetId = "identity", sequence = "1.8")
