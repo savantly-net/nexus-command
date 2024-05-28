@@ -61,10 +61,7 @@ import net.savantly.nexus.projects.dom.projectMember.ProjectMember;
 @jakarta.persistence.Entity
 @jakarta.persistence.Table(
 	schema=ProjectsModule.SCHEMA,
-    name = "project",
-    uniqueConstraints = {
-        @jakarta.persistence.UniqueConstraint(name = "project__name__UNQ", columnNames = {"NAME"})
-    }
+    name = "project"
 )
 @jakarta.persistence.EntityListeners(CausewayEntityListener.class)
 @DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.DISABLED, bounding = Bounding.BOUNDED)
@@ -111,10 +108,25 @@ public class Project implements Comparable<Project>, HasPrompt  {
     @PropertyLayout(fieldSetId = "name", sequence = "1")
     private String name;
 
+    @Action
+    @ActionLayout(named = "Update Name", associateWith = "name", describedAs = "Update the project name", promptStyle = PromptStyle.DIALOG)
+    public Project updateName(@ParameterLayout(named = "Name") String name) {
+        this.name = name;
+        return this;
+    }
+
+
     @JoinColumn(name="organization_id")
     @Getter @Setter @ToString.Include
     @PropertyLayout(fieldSetId = "name", sequence = "2")
     private Organization organization;
+
+    @Action
+    @ActionLayout(named = "Update Organization", associateWith = "organization", describedAs = "Update the project organization", promptStyle = PromptStyle.DIALOG)
+    public Project updateOrganization(@ParameterLayout(named = "Organization") Organization organization) {
+        this.organization = organization;
+        return this;
+    }
 
     @Column(length = 2000, nullable = true)
     @PropertyLayout(fieldSetId = "name", sequence = "3", multiLine = 10)

@@ -2,21 +2,17 @@ package net.savantly.nexus.projects.dom.project;
 
 import java.util.Set;
 
-import jakarta.inject.Inject;
-import jakarta.persistence.Transient;
-
-import org.apache.causeway.applib.annotation.ActionLayout;
 import org.apache.causeway.applib.annotation.Collection;
 import org.apache.causeway.applib.annotation.CollectionLayout;
 import org.apache.causeway.applib.annotation.PriorityPrecedence;
-import org.apache.causeway.applib.annotation.Where;
 
+import jakarta.inject.Inject;
+import jakarta.persistence.Transient;
 import net.savantly.nexus.projects.dom.projectPersona.ProjectPersona;
 import net.savantly.nexus.projects.dom.projectPersona.ProjectPersonaRepository;
 
 
 @Collection
-@CollectionLayout(hidden = Where.NOWHERE)
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
 public class Project_personas {
@@ -31,7 +27,7 @@ public class Project_personas {
     @Transient
     ProjectPersonaRepository repository;
 
-    @ActionLayout(named = "List Personas", describedAs = "Personas for this project")
+    @CollectionLayout(named = "Personas", describedAs = "Personas for this project")
     public Set<ProjectPersona> coll() {
         return repository.findByProjectId(obj.getId());
     }

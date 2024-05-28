@@ -43,7 +43,7 @@ import net.savantly.nexus.products.dom.billing.BillingIntervalType;
 @jakarta.persistence.Table(schema = ProductsModule.SCHEMA)
 @jakarta.persistence.EntityListeners(CausewayEntityListener.class)
 @DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.DISABLED, bounding = Bounding.BOUNDED)
-@DomainObjectLayout(cssClassFa = "redhat")
+@DomainObjectLayout(cssClassFa = "gift")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
@@ -97,11 +97,13 @@ public class Product implements Comparable<Product> {
     @PropertyLayout(fieldSetId = "identity", sequence = "1")
     private String name;
 
+
     @Column(length = 1000, nullable = true)
     @PropertyLayout(fieldSetId = "identity", sequence = "3")
     @Getter
     @Setter
     private String description;
+
 
     @Column(name = "price", nullable = false)
     @Property
@@ -109,6 +111,7 @@ public class Product implements Comparable<Product> {
     @Setter
     @PropertyLayout(fieldSetId = "identity", sequence = "3")
     private double price;
+
 
     @Column(name = "billing_period", nullable = false)
     @Property
@@ -119,6 +122,28 @@ public class Product implements Comparable<Product> {
 
 
     // *** ACTIONS ***
+
+
+    @Action
+    @ActionLayout(named = "Update Name", associateWith = "name")
+    public Product updateName(final String name) {
+        this.name = name;
+        return this;
+    }
+
+    @Action
+    @ActionLayout(named = "Update Description", associateWith = "description")
+    public Product updateDescription(final String description) {
+        this.description = description;
+        return this;
+    }
+
+    @Action
+    @ActionLayout(named = "Update Price", associateWith = "price")
+    public Product updatePrice(final double price) {
+        this.price = price;
+        return this;
+    }
 
     @Action
     @ActionLayout(named = "Update Billing Interval" , associateWith = "billingInterval")
