@@ -86,6 +86,29 @@
             </mb3:section>
         </mb3:menu>
         <mb3:menu>
+            <mb3:named>Forms</mb3:named>
+            <mb3:section>
+                <mb3:named>Forms</mb3:named>
+                <mb3:serviceAction objectType="nexus.forms.Forms" id="create"/>
+                <mb3:serviceAction objectType="nexus.forms.Forms" id="listAll"/>
+            </mb3:section>
+            <mb3:section>
+                <mb3:named>JDBC Connections</mb3:named>
+                <mb3:serviceAction objectType="nexus.forms.JdbcConnections" id="create"/>
+                <mb3:serviceAction objectType="nexus.forms.JdbcConnections" id="listAll"/>
+            </mb3:section>
+            <mb3:section>
+                <mb3:named>Webhook Connections</mb3:named>
+                <mb3:serviceAction objectType="nexus.forms.Webhooks" id="create"/>
+                <mb3:serviceAction objectType="nexus.forms.Webhooks" id="listAll"/>
+            </mb3:section>
+            <mb3:section>
+                <mb3:named>Destinations</mb3:named>
+                <mb3:serviceAction objectType="nexus.forms.Destinations" id="create"/>
+                <mb3:serviceAction objectType="nexus.forms.Destinations" id="listAll"/>
+            </mb3:section>
+        </mb3:menu>
+        <mb3:menu>
             <mb3:named>Franchisees</mb3:named>
             <mb3:section>
                 <mb3:serviceAction objectType="nexus.franchise.FranchiseGroups" id="create">

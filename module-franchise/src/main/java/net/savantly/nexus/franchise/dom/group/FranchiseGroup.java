@@ -9,18 +9,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Transient;
-import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
 import org.apache.causeway.applib.annotation.Collection;
@@ -41,6 +29,17 @@ import org.apache.causeway.applib.services.repository.RepositoryService;
 import org.apache.causeway.applib.services.title.TitleService;
 import org.apache.causeway.persistence.jpa.applib.integration.CausewayEntityListener;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -58,7 +57,6 @@ import net.savantly.nexus.franchise.dom.location.FranchiseLocation;
 import net.savantly.nexus.franchise.dom.location.FranchiseLocations;
 import net.savantly.nexus.organizations.dom.organization.Organization;
 import net.savantly.nexus.organizations.dom.organizationUser.OrganizationUser;
-import net.savantly.nexus.organizations.dom.organizationUser.OrganizationUsers;
 
 @Named(FranchiseModule.NAMESPACE + ".FranchiseGroup")
 @jakarta.persistence.Entity
@@ -80,7 +78,6 @@ public class FranchiseGroup implements Comparable<FranchiseGroup>  {
     @Inject @Transient RepositoryService repositoryService;
     @Inject @Transient TitleService titleService;
     @Inject @Transient MessageService messageService;
-    @Inject @Transient OrganizationUsers userRepository;
     @Inject @Transient FranchiseLocations franchiseLocations;
     
     public static FranchiseGroup withName(Organization organization, String name) {

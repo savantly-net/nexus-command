@@ -12,6 +12,7 @@ import net.savantly.nexus.audited.AuditedEntityModule;
 import net.savantly.nexus.command.franchise.organizations.FranchiseOrganizationsModule;
 import net.savantly.nexus.command.web.NexusCommandWebModule;
 import net.savantly.nexus.command.web.api.WebApiModule;
+import net.savantly.nexus.forms.FormsModule;
 import net.savantly.nexus.franchise.FranchiseModule;
 import net.savantly.nexus.organizations.OrganizationsModule;
 import net.savantly.nexus.orgfees.OrganizationFeesModule;
@@ -51,6 +52,11 @@ public class ApplicationModule {
     @ConditionalOnProperty(value = "nexus.modules.projects.enabled", havingValue = "true")
     @Import(ProjectsModule.class)
     static class ProjectsModuleConfigurer {
+    }
+
+    @ConditionalOnProperty(value = "nexus.modules.forms.enabled", havingValue = "true")
+    @Import(FormsModule.class)
+    static class FormsModuleConfigurer {
     }
 
     @ConditionalOnProperty(value = "nexus.modules.franchise.enabled", havingValue = "true")

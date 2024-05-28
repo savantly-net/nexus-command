@@ -17,6 +17,7 @@ import org.apache.causeway.testing.fixtures.applib.fixturescripts.FixtureScript;
 import domainapp.webapp.application.ApplicationModule;
 import domainapp.webapp.properties.NexusAppProperties;
 import net.savantly.nexus.command.web.NexusCommandWebModule;
+import net.savantly.nexus.forms.FormsModule;
 import net.savantly.nexus.franchise.FranchiseModule;
 import net.savantly.nexus.organizations.OrganizationsModule;
 import net.savantly.nexus.orgweb.OrgWebModule;
@@ -38,6 +39,7 @@ public class CustomRolesAndUsers extends FixtureScript {
                 new OrgWebModuleSuperuserRole(),
                 new ProductsModuleSuperuserRole(),
                 new ProjectsModuleSuperuserRole(),
+                new FormsModuleSuperuserRole(),
                 new NexusCommandWebModuleSuperuserRole(),
                 new FranchiseModuleSuperuserRole(),
                 new ApplicationSuperuserRole(),
@@ -117,6 +119,24 @@ public class CustomRolesAndUsers extends FixtureScript {
                     ApplicationPermissionRule.ALLOW,
                     ApplicationPermissionMode.CHANGING,
                     Can.of(ApplicationFeatureId.newNamespace(ProjectsModule.NAMESPACE)));
+        }
+    }
+
+
+    private static class FormsModuleSuperuserRole extends AbstractRoleAndPermissionsFixtureScript {
+
+        public static final String ROLE_NAME = "forms-superuser";
+
+        public FormsModuleSuperuserRole() {
+            super(ROLE_NAME, "Permission to use everything in the 'Forms' module");
+        }
+
+        @Override
+        protected void execute(ExecutionContext executionContext) {
+            newPermissions(
+                    ApplicationPermissionRule.ALLOW,
+                    ApplicationPermissionMode.CHANGING,
+                    Can.of(ApplicationFeatureId.newNamespace(FormsModule.NAMESPACE)));
         }
     }
 
@@ -203,6 +223,7 @@ public class CustomRolesAndUsers extends FixtureScript {
                         OrganizationsModuleSuperuserRole.ROLE_NAME,
                         ProductsModuleSuperuserRole.ROLE_NAME,
                         ProjectsModuleSuperuserRole.ROLE_NAME,
+                        FormsModuleSuperuserRole.ROLE_NAME,
                         FranchiseModuleSuperuserRole.ROLE_NAME,
                         NexusCommandWebModuleSuperuserRole.ROLE_NAME,
                         ApplicationSuperuserRole.ROLE_NAME);

@@ -107,6 +107,11 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>forms-module</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>nexus-security-module</artifactId>
         </dependency>
 
@@ -319,6 +324,7 @@
         <profile>
             <id>jdbc-postgresql</id>
             <activation>
+                <activeByDefault>true</activeByDefault>
                 <property>
                     <name>spring.profiles.active</name>
                     <value>POSTGRESQL</value>

@@ -7,14 +7,12 @@ import org.apache.causeway.applib.annotation.CollectionLayout;
 import org.apache.causeway.applib.annotation.PriorityPrecedence;
 
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.persistence.Transient;
 import net.savantly.nexus.organizations.dom.organization.Organization;
 
 @Collection
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
-@Named("Organization_personas")
 public class Organization_personas {
 
     final Organization organization;
