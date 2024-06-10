@@ -20,7 +20,7 @@ clean:
 	mvn clean
 
 .PHONY: build-image
-build:
+build-image:
 	@echo "Building the project"
 	mvn install -DskipTests
 	docker build \
@@ -36,6 +36,10 @@ build:
 .PHONY: run-image
 run-image:
 	docker compose up
+
+.PHONY: run-image-postgres
+run-image-postgres:
+	docker compose -f docker-compose.postgres.yml up
 
 
 define setup_env

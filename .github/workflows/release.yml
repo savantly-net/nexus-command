@@ -58,10 +58,12 @@ jobs:
         run: |
           IMAGE_URL=$IMAGE_REPOSITORY:$GITHUB_REF_NAME.${{ github.sha }}
           LATEST_TAG=$IMAGE_REPOSITORY:latest
-          TAGS=$IMAGE_URL,$LATEST_TAG
+          BRANCH_TAG=$IMAGE_REPOSITORY:$GITHUB_REF_NAME
+          TAGS=$IMAGE_URL,$LATEST_TAG,$BRANCH_TAG
           echo "::set-output name=image::$IMAGE_URL"
           echo ::set-output name=version::${VERSION}
           echo ::set-output name=latest_tag::${LATEST_TAG}
+          echo ::set-output name=branch_tag::${BRANCH_TAG}
           echo ::set-output name=tags::${TAGS}
           echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
       
@@ -72,7 +74,9 @@ jobs:
 
       # Build the docker image
       - name: Build Server Projects
-        run: mvn -pl webapp jib:dockerBuild -Dimage=${{ steps.prep_docker.outputs.image }} -Dspring.profiles.active=POSTGRESQL
+        env:
+          SPRING_PROFILES_ACTIVE: POSTGRESQL
+        run: docker build -f docker/Dockerfile -t ${{ steps.prep_docker.outputs.image }} .
 
       - name: Log in to Docker Hub
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
@@ -84,6 +88,7 @@ jobs:
         id: push-image
         run:  |
           docker tag ${{ steps.prep_docker.outputs.image }} ${{ steps.prep_docker.outputs.latest_tag }}
+          docker tag ${{ steps.prep_docker.outputs.image }} ${{ steps.prep_docker.outputs.branch_tag }}
           docker push ${{ steps.prep_docker.outputs.image }}
           docker push ${{ steps.prep_docker.outputs.latest_tag }}
       

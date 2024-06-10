@@ -48,3 +48,5 @@ create-db-schema.sql
 
 .DS_Store
 .env
+
+postgres-data

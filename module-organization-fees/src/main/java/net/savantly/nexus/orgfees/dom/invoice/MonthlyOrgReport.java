@@ -50,7 +50,8 @@ import net.savantly.nexus.orgfees.dom.subscription.SubscriptionRepository;
 @XmlType(propOrder = {
         "organization",
         "year",
-        "month"
+        "month",
+        "totalAmount",
 })
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MonthlyOrgReport {

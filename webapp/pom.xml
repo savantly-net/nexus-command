@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -9,7 +11,7 @@
     </parent>
 
     <artifactId>nexus-command-webapp</artifactId>
-    <name>SimpleApp (JPA) - Webapp</name>
+    <name>Nexus Command - Webapp</name>
 
     <description>
     	Assembles and runs both the Wicket viewer and the Restfulobjects viewer
@@ -50,7 +52,8 @@
                 <configuration>
                     <classifier>exec</classifier>
                     <agents>
-                        <agent>${env.HOME}/.m2/repository/org/springframework/spring-instrument/${spring-framework.version}/spring-instrument-${spring-framework.version}.jar</agent>
+                        <agent>
+                            ${env.HOME}/.m2/repository/org/springframework/spring-instrument/${spring-framework.version}/spring-instrument-${spring-framework.version}.jar</agent>
                     </agents>
                     <requiresUnpack>
                         <dependency>
@@ -69,12 +72,12 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>web-module</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>web-module-api</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>organizations-web-module</artifactId>
@@ -141,7 +144,7 @@
             <groupId>org.apache.causeway.viewer</groupId>
             <artifactId>causeway-viewer-wicket-applib</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>org.apache.causeway.testing</groupId>
             <artifactId>causeway-testing-h2console-ui</artifactId>
@@ -156,7 +159,8 @@
             <groupId>org.apache.causeway.valuetypes</groupId>
             <artifactId>causeway-valuetypes-markdown-metamodel</artifactId>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.causeway.valuetypes/causeway-valuetypes-markdown-ui -->
+        <!--
+        https://mvnrepository.com/artifact/org.apache.causeway.valuetypes/causeway-valuetypes-markdown-ui -->
         <dependency>
             <groupId>org.apache.causeway.valuetypes</groupId>
             <artifactId>causeway-valuetypes-markdown-ui-wkt</artifactId>
@@ -171,7 +175,6 @@
             <artifactId>flexmark-all</artifactId>
             <version>0.64.0</version>
         </dependency>
-
 
 
         <dependency>
@@ -270,7 +273,7 @@
         </dependency>
 
 
-         <dependency>
+        <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-webmvc-core</artifactId>
             <version>1.6.14</version>
@@ -283,7 +286,7 @@
         </dependency>
 
         <!-- TESTING -->
-        
+
         <dependency>
             <groupId>org.apache.causeway.testing</groupId>
             <artifactId>causeway-testing-integtestsupport-applib</artifactId>
@@ -333,8 +336,8 @@
             <dependencies>
                 <dependency>
                     <groupId>org.postgresql</groupId>
-		    		<artifactId>postgresql</artifactId>
-					<!-- <version>42.2.12</version> ... version already managed -->
+                    <artifactId>postgresql</artifactId>
+                    <!-- <version>42.2.12</version> ... version already managed -->
                 </dependency>
             </dependencies>
         </profile>
@@ -384,4 +387,5 @@
             </build>
         </profile>
     </profiles>
+
 </project>

@@ -8,4 +8,4 @@ ls -al
 sleep 2
 
 
-java ${JAVA_OPTS} -cp /app -Dserver.port=${PORT:-8080} -javaagent:/app/spring-instrument.jar -Djava.security.disableSystemPropertiesFile=true --add-opens java.base/sun.net=ALL-UNNAMED org.springframework.boot.loader.JarLauncher
+java ${JAVA_OPTS} -cp /app -Dserver.port=${PORT:-8080} -javaagent:/app/spring-instrument.jar -Djava.security.disableSystemPropertiesFile=true --add-opens java.base/sun.net=ALL-UNNAMED org.springframework.boot.loader.launch.JarLauncher
