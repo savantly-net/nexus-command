@@ -64,7 +64,7 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>forms-module</artifactId>
+                <artifactId>flow-module</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -159,7 +159,7 @@
         <module>module-products</module>
         <module>module-ai</module>
         <module>module-projects</module>
-        <module>module-forms</module>
+        <module>module-flow</module>
         <module>module-organizations</module>
         <module>module-web</module>
         <module>module-web-api</module>

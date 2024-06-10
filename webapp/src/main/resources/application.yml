@@ -43,7 +43,7 @@ causeway:
       - public
       - products
       - projects
-      - forms
+      - flow
       - nc_web
       - organizations
       - orgweb
@@ -157,7 +157,7 @@ nexus:
     products.enabled: true
     organizations.enabled: true
     projects.enabled: true
-    forms.enabled: true
+    flow.enabled: true
     franchise.enabled: true
     web.enabled: true
     org-web.enabled: true

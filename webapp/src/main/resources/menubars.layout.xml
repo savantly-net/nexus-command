@@ -86,26 +86,54 @@
             </mb3:section>
         </mb3:menu>
         <mb3:menu>
-            <mb3:named>Forms</mb3:named>
+            <mb3:named>Flow</mb3:named>
             <mb3:section>
-                <mb3:named>Forms</mb3:named>
-                <mb3:serviceAction objectType="nexus.forms.Forms" id="create"/>
-                <mb3:serviceAction objectType="nexus.forms.Forms" id="listAll"/>
+                <mb3:serviceAction objectType="nexus.flow.Flows" id="create">
+                    <cpt:named>New Flow</cpt:named>
+                </mb3:serviceAction>
+                <mb3:serviceAction objectType="nexus.flow.Flows" id="listAll">
+                    <cpt:named>List Flows</cpt:named>
+                </mb3:serviceAction>
             </mb3:section>
             <mb3:section>
-                <mb3:named>JDBC Connections</mb3:named>
-                <mb3:serviceAction objectType="nexus.forms.JdbcConnections" id="create"/>
-                <mb3:serviceAction objectType="nexus.forms.JdbcConnections" id="listAll"/>
+                <mb3:serviceAction objectType="nexus.flow.FlowSecrets" id="create">
+                    <cpt:named>New Secret</cpt:named>
+                </mb3:serviceAction>
+                <mb3:serviceAction objectType="nexus.flow.FlowSecrets" id="listAll">
+                    <cpt:named>List Secrets</cpt:named>
+                </mb3:serviceAction>
             </mb3:section>
             <mb3:section>
-                <mb3:named>Webhook Connections</mb3:named>
-                <mb3:serviceAction objectType="nexus.forms.Webhooks" id="create"/>
-                <mb3:serviceAction objectType="nexus.forms.Webhooks" id="listAll"/>
+                <mb3:serviceAction objectType="nexus.flow.Forms" id="create">
+                    <cpt:named>New Form</cpt:named>
+                </mb3:serviceAction>
+                <mb3:serviceAction objectType="nexus.flow.Forms" id="listAll">
+                    <cpt:named>List Forms</cpt:named>
+                </mb3:serviceAction>
             </mb3:section>
             <mb3:section>
-                <mb3:named>Destinations</mb3:named>
-                <mb3:serviceAction objectType="nexus.forms.Destinations" id="create"/>
-                <mb3:serviceAction objectType="nexus.forms.Destinations" id="listAll"/>
+                <mb3:serviceAction objectType="nexus.flow.JdbcConnections" id="create">
+                    <cpt:named>New JDBC Connection</cpt:named>
+                </mb3:serviceAction>
+                <mb3:serviceAction objectType="nexus.flow.JdbcConnections" id="listAll">
+                    <cpt:named>List JDBC Connections</cpt:named>
+                </mb3:serviceAction>
+            </mb3:section>
+            <mb3:section>
+                <mb3:serviceAction objectType="nexus.flow.Webhooks" id="create">
+                    <cpt:named>New Webhook</cpt:named>
+                </mb3:serviceAction>
+                <mb3:serviceAction objectType="nexus.flow.Webhooks" id="listAll">
+                    <cpt:named>List Webhooks</cpt:named>
+                </mb3:serviceAction>
+            </mb3:section>
+            <mb3:section>
+                <mb3:serviceAction objectType="nexus.flow.Destinations" id="create">
+                    <cpt:named>New Destination</cpt:named>
+                </mb3:serviceAction>
+                <mb3:serviceAction objectType="nexus.flow.Destinations" id="listAll">
+                    <cpt:named>List Destinations</cpt:named>
+                </mb3:serviceAction>
             </mb3:section>
         </mb3:menu>
         <mb3:menu>

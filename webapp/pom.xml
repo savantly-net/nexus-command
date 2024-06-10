@@ -107,7 +107,7 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>forms-module</artifactId>
+            <artifactId>flow-module</artifactId>
         </dependency>
 
         <dependency>
