@@ -94,6 +94,7 @@ public class SecurityConfig implements ApplicationContextAware {
 					new AntPathRequestMatcher("/webjars/**"),
 					new AntPathRequestMatcher("/oauth**"),
 					new AntPathRequestMatcher("/api/public/**"),
+					new AntPathRequestMatcher("/actuator/health"),
 			};
 
 			log.info("permitAllMatchers: {}", permitAllMatchers.length);
