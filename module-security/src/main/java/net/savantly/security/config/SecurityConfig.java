@@ -12,6 +12,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
@@ -56,6 +57,9 @@ public class SecurityConfig implements ApplicationContextAware {
 
 	@Setter
 	private String authorityPrefix = "ROLE_";
+
+	@Setter
+	private boolean enableOauth = false;
 
 	@Setter
 	private PreAuthConfigProperties preauth = new PreAuthConfigProperties();
@@ -139,12 +143,24 @@ public class SecurityConfig implements ApplicationContextAware {
 	}
 
 	private void enableOauthIfEnabled(HttpSecurity http) throws Exception {
-		var isOauthEnabled = (applicationContext.getBeansOfType(JwtDecoder.class).size() > 0);
-		if (isOauthEnabled) {
+		if (!enableOauth) {
+			return;
+		}
+		var hasJwtDecoder = (applicationContext.getBeansOfType(JwtDecoder.class).size() > 0);
+		if (hasJwtDecoder) {
 			log.info("OAuth2 is enabled. Configuring OAuth2 security");
 			http.oauth2ResourceServer(oauth2 -> oauth2.bearerTokenResolver(bearerTokenResolver())
 					.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
 			http.oauth2Client(Customizer.withDefaults());
+		} else {
+			log.warn("OAuth2 is enabled but no JwtDecoder bean is available. OAuth2 will not be enabled.");
+		}
+		var hasClientRegistration = (applicationContext.getBeansOfType(ClientRegistration.class).size() > 0);
+		if (hasClientRegistration) {
+			log.info("OAuth2 is enabled. Configuring OAuth2 login");
+			http.oauth2Login(Customizer.withDefaults());
+		} else {
+			log.warn("OAuth2 is enabled but no ClientRegistration bean is available. OAuth2 Login will not be enabled.");
 		}
 	}
 
