@@ -1,6 +1,7 @@
 package net.savantly.security.config;
 
 import org.springframework.beans.BeansException;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
@@ -12,7 +13,10 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
@@ -24,6 +28,8 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.savantly.security.jwt.ProxyBearerTokenResolver;
 import net.savantly.security.listener.LoginSuccessListener;
+import net.savantly.security.oauth.OAuth2ClientService;
+import net.savantly.security.oauth.OauthConfigProperties;
 import net.savantly.security.preauthenticated.PreAuthConfigProperties;
 import net.savantly.security.preauthenticated.PreAuthFilter;
 import net.savantly.security.users.UserProvider;
@@ -58,13 +64,19 @@ public class SecurityConfig implements ApplicationContextAware {
 	@Setter
 	private String authorityPrefix = "ROLE_";
 
-	@Setter
-	private boolean enableOauth = false;
+	//@Setter
+	//private OauthConfigProperties oauth = new OauthConfigProperties();
 
 	@Setter
 	private PreAuthConfigProperties preauth = new PreAuthConfigProperties();
 
 	private ApplicationContext applicationContext;
+
+	@Bean
+	@ConditionalOnBean(OAuth2AuthorizedClientService.class)
+	public OAuth2ClientService oAuth2ClientService(OAuth2AuthorizedClientService authorizedClientService) {
+		return new OAuth2ClientService(authorizedClientService);
+	}
 
 	@Bean
 	public LoginSuccessListener loginSuccessListener() {
@@ -143,24 +155,39 @@ public class SecurityConfig implements ApplicationContextAware {
 	}
 
 	private void enableOauthIfEnabled(HttpSecurity http) throws Exception {
-		if (!enableOauth) {
-			return;
-		}
+
 		var hasJwtDecoder = (applicationContext.getBeansOfType(JwtDecoder.class).size() > 0);
 		if (hasJwtDecoder) {
-			log.info("OAuth2 is enabled. Configuring OAuth2 security");
+			log.info("jwtDecoder bean found. Configuring OAuth2 resource server");
 			http.oauth2ResourceServer(oauth2 -> oauth2.bearerTokenResolver(bearerTokenResolver())
 					.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
+			log.info("OAuth2 is enabled. Configuring OAuth2 client");
 			http.oauth2Client(Customizer.withDefaults());
 		} else {
 			log.warn("OAuth2 is enabled but no JwtDecoder bean is available. OAuth2 will not be enabled.");
 		}
-		var hasClientRegistration = (applicationContext.getBeansOfType(ClientRegistration.class).size() > 0);
-		if (hasClientRegistration) {
+		var hasOauth2Client = (applicationContext.getBeansOfType(OAuth2ClientService.class).size() > 0);
+		if (hasOauth2Client) {
 			log.info("OAuth2 is enabled. Configuring OAuth2 login");
 			http.oauth2Login(Customizer.withDefaults());
 		} else {
 			log.warn("OAuth2 is enabled but no ClientRegistration bean is available. OAuth2 Login will not be enabled.");
+		}
+	}
+
+	private AuthorizationGrantType getGrantType(String grantType) {
+		var lower = grantType.toLowerCase();
+		switch (lower) {
+		case "authorization_code":
+			return AuthorizationGrantType.AUTHORIZATION_CODE;
+		case "client_credentials":
+			return AuthorizationGrantType.CLIENT_CREDENTIALS;
+		case "password":
+			return AuthorizationGrantType.PASSWORD;
+		case "refresh_token":
+			return AuthorizationGrantType.REFRESH_TOKEN;
+		default:
+			return AuthorizationGrantType.AUTHORIZATION_CODE;
 		}
 	}
 
