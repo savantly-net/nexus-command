@@ -51,6 +51,18 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.causeway.extensions</groupId>
+            <artifactId>causeway-extensions-secman-delegated-springoauth2</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.causeway.extensions</groupId>
+            <artifactId>causeway-extensions-spring-security-oauth2</artifactId>
+        </dependency>
+
+        <!-- SPRING -->
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
         </dependency>

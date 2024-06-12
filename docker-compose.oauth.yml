@@ -21,6 +21,7 @@ services:
     - app.security.debug=true
     - logging.level.org.apache.causeway.testing=WARN
     - logging.level.org.springframework.boot.autoconfigure.security.oauth2=DEBUG
+    - logging.level.org.springframework.security=DEBUG
     - spring.security.oauth2.client.registration.test.client-id=my-client
     - spring.security.oauth2.client.registration.test.client-secret=my-secret
     - spring.security.oauth2.client.registration.test.scope=openid,profile,email

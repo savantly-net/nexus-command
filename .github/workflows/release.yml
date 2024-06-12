@@ -6,6 +6,7 @@ on:
 
 env:
   PROJ_NAME: nexus-command
+  DOCKER_IMAGE: savantly/mainbot
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build:
@@ -36,11 +37,12 @@ jobs:
           java-package: jdk # (jre, jdk, or jdk+fx) - defaults to jdk
           architecture: x64 # (x64 or x86) - defaults to x64
 
-      # Setup for Docker build
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+      # Install artifacts locally for the docker build
+      # Also runs unit/integration tests
+      - name: Install artifacts locally
+        run: mvn install
+
+      
       # Cache Docker layers
       - name: Cache Docker layers
         uses: actions/cache@v2
@@ -50,45 +52,37 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
 
-      
-      - name: Prepare Docker
-        id: prep_docker
-        env:
-          IMAGE_REPOSITORY: savantly/${{ env.PROJ_NAME }}
-        run: |
-          IMAGE_URL=$IMAGE_REPOSITORY:$GITHUB_REF_NAME.${{ github.sha }}
-          LATEST_TAG=$IMAGE_REPOSITORY:latest
-          BRANCH_TAG=$IMAGE_REPOSITORY:$GITHUB_REF_NAME
-          TAGS=$IMAGE_URL,$LATEST_TAG,$BRANCH_TAG
-          echo "::set-output name=image::$IMAGE_URL"
-          echo ::set-output name=version::${VERSION}
-          echo ::set-output name=latest_tag::${LATEST_TAG}
-          echo ::set-output name=branch_tag::${BRANCH_TAG}
-          echo ::set-output name=tags::${TAGS}
-          echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
-      
-      # Install artifacts locally for the docker build
-      # Also runs unit/integration tests
-      - name: Install artifacts locally
-        run: mvn install
-
-      # Build the docker image
-      - name: Build Server Projects
-        env:
-          SPRING_PROFILES_ACTIVE: POSTGRESQL
-        run: docker build -f docker/Dockerfile -t ${{ steps.prep_docker.outputs.image }} .
-
       - name: Log in to Docker Hub
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: ${{ env.DOCKER_IMAGE }}
+          tags: |
+            type=schedule
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha
+            type=raw,value=latest,enable={{is_default_branch}}
+      
+      - name: Build and push Docker image
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        env:
+          SPRING_PROFILES_ACTIVE: POSTGRESQL
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Tag and push image to Docker Hub
-        id: push-image
-        run:  |
-          docker tag ${{ steps.prep_docker.outputs.image }} ${{ steps.prep_docker.outputs.latest_tag }}
-          docker tag ${{ steps.prep_docker.outputs.image }} ${{ steps.prep_docker.outputs.branch_tag }}
-          docker push ${{ steps.prep_docker.outputs.image }}
-          docker push ${{ steps.prep_docker.outputs.latest_tag }}
       
