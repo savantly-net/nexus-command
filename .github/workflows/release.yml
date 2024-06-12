@@ -6,7 +6,7 @@ on:
 
 env:
   PROJ_NAME: nexus-command
-  DOCKER_IMAGE: savantly/mainbot
+  DOCKER_IMAGE: savantly/nexus-command
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build:
