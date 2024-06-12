@@ -28,7 +28,7 @@ public class OauthConfigProperties {
     public static class OAuthLogin {
         private boolean enabled = false;
 
-        private String name = "oauth";
+        private String name = "oauth2";
         private String clientId;
         private String clientSecret;
         private String scope = "openid profile email";
