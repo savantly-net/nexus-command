@@ -1,0 +1,52 @@
+services:
+  nexus-command:
+    image: savantly/nexus-command:latest
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    depends_on:
+      - oidc-server-mock
+    environment:
+    - LOGGING_LEVEL_ROOT=WARN
+    - ECLIPSELINK_LOGGING_LEVEL=WARNING
+    - JDBC_LOGGING=false
+    - nexus.modules.organizations.enabled=true
+    - nexus.modules.projects.enabled=true
+    - nexus.modules.franchise.enabled=true
+    - nexus.modules.web.enabled=true
+    - nexus.modules.org-web.enabled=true
+    - nexus.modules.security.enabled=true
+    - nexus.modules.flow.enabled=true
+    - app.security.enabled=true
+    - app.security.debug=true
+    - logging.level.org.apache.causeway.testing=WARN
+    - logging.level.org.springframework.boot.autoconfigure.security.oauth2=DEBUG
+    - spring.security.oauth2.client.registration.test.client-id=my-client
+    - spring.security.oauth2.client.registration.test.client-secret=my-secret
+    - spring.security.oauth2.client.registration.test.scope=openid,profile,email
+    - spring.security.oauth2.client.registration.test.authorization-grant-type=authorization_code
+    - spring.security.oauth2.client.registration.test.redirect-uri=http://localhost:8080/login/oauth2/code/test
+    - spring.security.oauth2.client.registration.test.client-name=test
+    - spring.security.oauth2.client.registration.test.provider=test
+    - spring.security.oauth2.client.provider.test.authorization-uri=http://localhost:9090/auth
+    - spring.security.oauth2.client.provider.test.token-uri=http://oidc-server-mock:9090/token
+    - spring.security.oauth2.client.provider.test.user-info-uri=http://oidc-server-mock:9090/userinfo
+    - spring.security.oauth2.client.provider.test.jwk-set-uri=http://oidc-server-mock:9090/certs
+    #- spring.security.oauth2.client.provider.test.issuer-uri=http://oidc-server-mock:9090
+
+  oidc-server-mock:
+    container_name: oidc-server-mock
+    image: quay.io/appvia/mock-oidc-user-server:v0.0.2
+    environment:
+      - PORT=9090
+      - HOST=localhost
+      - CLIENT_ID=my-client
+      - CLIENT_SECRET=my-secret
+      - CLIENT_REDIRECT_URI=http://localhost:8080/login/oauth2/code/test
+      - CLIENT_LOGOUT_REDIRECT_URI=http://localhost:8080
+    ports:
+      - 9090:9090
+
+    volumes:
+      - ./webapp/log4j2-test.xml:/app/BOOT-INF/classes/log4j2.xml
+  

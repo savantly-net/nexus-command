@@ -9,6 +9,7 @@ public class OauthConfigProperties {
     private OAuthLogin login = new OAuthLogin();
 
 
+    /** NOT USED YET */
     @Data
     public static class ResourceServerProperties {
         private boolean enabled = false;
@@ -20,6 +21,8 @@ public class OauthConfigProperties {
     @Data
     public static class OAuthLogin {
         private boolean enabled = false;
+
+        /** NOT USED YET */
         private String name = "oauth";
         private String clientId;
         private String clientSecret;

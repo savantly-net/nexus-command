@@ -14,8 +14,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
@@ -59,13 +57,13 @@ public class SecurityConfig implements ApplicationContextAware {
 	private boolean useCsrf = false;
 
 	@Setter
-	private boolean enabled = false;
+	private boolean enabled = true;
 
 	@Setter
 	private String authorityPrefix = "ROLE_";
 
-	//@Setter
-	//private OauthConfigProperties oauth = new OauthConfigProperties();
+	@Setter
+	private OauthConfigProperties oauth = new OauthConfigProperties();
 
 	@Setter
 	private PreAuthConfigProperties preauth = new PreAuthConfigProperties();
@@ -87,7 +85,6 @@ public class SecurityConfig implements ApplicationContextAware {
 	public WebSecurityCustomizer webSecurityCustomizer() {
 		return (web) -> {
 			web.debug(debug);
-			web.ignoring().requestMatchers("/");
 			if (!enabled) {
 				web.ignoring().requestMatchers("/**");
 			}
@@ -122,10 +119,14 @@ public class SecurityConfig implements ApplicationContextAware {
 					.requestMatchers(permitAllMatchers).permitAll()
 					.anyRequest().authenticated());
 
-			enableOauthIfEnabled(http);
+			enableResourceServerIfAvailable(http);
 			if (preauth.isEnabled()) {
 				log.info("adding preauth filter");
 				http.addFilter(new PreAuthFilter(preauth, authenticationManager));
+			}
+			if (oauth.getLogin().isEnabled()) {
+				log.info("adding oauth2 login");
+				http.oauth2Login(Customizer.withDefaults());
 			}
 		} else {
 			http.authorizeHttpRequests(authz -> authz.requestMatchers("/**").permitAll());
@@ -135,7 +136,6 @@ public class SecurityConfig implements ApplicationContextAware {
 			http.csrf(c -> c.disable());
 		}
 
-		log.info("", http);
 
 		return http.build();
 	}
@@ -154,24 +154,15 @@ public class SecurityConfig implements ApplicationContextAware {
 		};
 	}
 
-	private void enableOauthIfEnabled(HttpSecurity http) throws Exception {
+	private void enableResourceServerIfAvailable(HttpSecurity http) throws Exception {
 
 		var hasJwtDecoder = (applicationContext.getBeansOfType(JwtDecoder.class).size() > 0);
 		if (hasJwtDecoder) {
 			log.info("jwtDecoder bean found. Configuring OAuth2 resource server");
 			http.oauth2ResourceServer(oauth2 -> oauth2.bearerTokenResolver(bearerTokenResolver())
 					.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
-			log.info("OAuth2 is enabled. Configuring OAuth2 client");
-			http.oauth2Client(Customizer.withDefaults());
 		} else {
-			log.warn("OAuth2 is enabled but no JwtDecoder bean is available. OAuth2 will not be enabled.");
-		}
-		var hasOauth2Client = (applicationContext.getBeansOfType(OAuth2ClientService.class).size() > 0);
-		if (hasOauth2Client) {
-			log.info("OAuth2 is enabled. Configuring OAuth2 login");
-			http.oauth2Login(Customizer.withDefaults());
-		} else {
-			log.warn("OAuth2 is enabled but no ClientRegistration bean is available. OAuth2 Login will not be enabled.");
+			log.warn("OAuth2 is enabled but no JwtDecoder bean is available. OAuth2 Resource Server will not be enabled.");
 		}
 	}
 
