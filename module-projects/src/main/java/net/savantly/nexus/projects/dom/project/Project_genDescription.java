@@ -8,6 +8,7 @@ import jakarta.persistence.Transient;
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
 import org.apache.causeway.applib.annotation.MemberSupport;
+import org.apache.causeway.applib.annotation.ParameterLayout;
 import org.apache.causeway.applib.annotation.PriorityPrecedence;
 import org.apache.causeway.applib.annotation.PromptStyle;
 import org.apache.causeway.applib.services.repository.RepositoryService;
@@ -32,13 +33,18 @@ public class Project_genDescription {
     @Transient
     RepositoryService repositoryService;
 
-    final String system = "Write an improved project description given the context.";
+    final String system = "Write an improved concise project description given the context.";
 
     @ActionLayout(named = "Rewrite", cssClassFa = "magic", associateWith = "description", describedAs = "Improve the description", promptStyle = PromptStyle.DIALOG)
-    public Project act() {
-        var text = generator.generateText(system, project.getDescription());
+    public Project act(@ParameterLayout(named = "Instruction", multiLine = 5) String instruction) {
+        var text = generator.generateText(instruction, project.getDescription());
         project.setDescription(text);
         return project;
+    }
+
+    @MemberSupport
+    public String default0Act() {
+        return system;
     }
 
     @MemberSupport

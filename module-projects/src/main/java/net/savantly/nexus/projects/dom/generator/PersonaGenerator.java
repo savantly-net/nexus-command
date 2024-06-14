@@ -8,15 +8,15 @@ import net.savantly.nexus.projects.dom.projectPersona.ProjectPersonaDetailsDTO;
 
 public interface PersonaGenerator {
 
-    @SystemMessage("Generate a persona based on the provided context")
+    @SystemMessage("Generate a persona based on the provided context. The first name should start with the letter {{firstNameLetter}}.")
     @UserMessage("Context: {{context}}")
-    default PersonaDTO generatePersona(@V("context") String context) {
+    default PersonaDTO generatePersona(@V("context") String context, @V("firstNameLetter") String firstNameLetter){
         return new PersonaDTO().setName("Generated Persona").setDescription(context);
     }
 
     @SystemMessage("Generate details for the persona based on the project information")
-    @UserMessage("Project: {{projectContext}}")
-    default ProjectPersonaDetailsDTO generateProjectPersonaDetails(@V("projectContext") String projectContext) {
+    @UserMessage("Project: {{projectContext}}\n\nPersona: {{persona}}\n\n")
+    default ProjectPersonaDetailsDTO generateProjectPersonaDetails(@V("projectContext") String projectContext, @V("persona") String personaContext) {
         return new ProjectPersonaDetailsDTO();
     }
 

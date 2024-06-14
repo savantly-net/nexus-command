@@ -23,9 +23,11 @@ import dev.langchain4j.service.AiServices;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.savantly.ai.languagetools.LanguageToolModel;
+import net.savantly.nexus.projects.config.ProjectModuleProperties;
 import net.savantly.nexus.projects.dom.generator.GeneralGenerator;
 import net.savantly.nexus.projects.dom.generator.IssueGenerator;
 import net.savantly.nexus.projects.dom.generator.PersonaGenerator;
+import net.savantly.nexus.projects.dom.issue.IssueGenAi;
 
 @Configuration
 @Import({
@@ -54,6 +56,11 @@ public class ProjectsModule implements ModuleWithFixtures {
                 // deleteFrom(FranchiseLocation.class);
             }
         };
+    }
+
+    @Bean
+    public ProjectModuleProperties projectModuleProperties() {
+        return new ProjectModuleProperties();
     }
 
     @Bean
@@ -108,5 +115,10 @@ public class ProjectsModule implements ModuleWithFixtures {
         log.info("Creating default issue generator");
         return new IssueGenerator() {
         };
+    }
+
+    @Bean
+    public IssueGenAi issueGenAi(ProjectModuleProperties properties, GeneralGenerator generator) {
+        return new IssueGenAi(properties, generator);
     }
 }

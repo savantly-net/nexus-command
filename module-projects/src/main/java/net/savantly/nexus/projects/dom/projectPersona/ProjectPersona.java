@@ -2,18 +2,6 @@ package net.savantly.nexus.projects.dom.projectPersona;
 
 import java.util.Comparator;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Transient;
-import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.DomainObjectLayout;
 import org.apache.causeway.applib.annotation.Editing;
@@ -27,17 +15,28 @@ import org.apache.causeway.applib.services.repository.RepositoryService;
 import org.apache.causeway.applib.services.title.TitleService;
 import org.apache.causeway.persistence.jpa.applib.integration.CausewayEntityListener;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Transient;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
-import net.savantly.nexus.projects.dom.project.Project;
 import net.savantly.ai.languagetools.HasPrompt;
 import net.savantly.ai.languagetools.PromptBuilder;
 import net.savantly.nexus.projects.ProjectsModule;
 import net.savantly.nexus.projects.dom.persona.Persona;
+import net.savantly.nexus.projects.dom.project.Project;
 
 @Named(ProjectsModule.NAMESPACE + ".ProjectPersona")
 @jakarta.persistence.Entity
@@ -102,38 +101,25 @@ public class ProjectPersona implements Comparable<ProjectPersona>, HasPrompt {
 
     @Property
     @PropertyLayout(fieldSetId = "content", sequence = "5")
-    @Column(name = "needs", nullable = true)
+    @Column(name = "goal", columnDefinition = "text", nullable = true)
     @Getter
     @Setter
-    private String needs;
+    private String goal;
+
 
     @Property
     @PropertyLayout(fieldSetId = "content", sequence = "5")
-    @Column(name = "tasks", nullable = true)
-    @Getter
-    @Setter
-    private String tasksToAccomplish;
-
-    @Property
-    @PropertyLayout(fieldSetId = "content", sequence = "5")
-    @Column(name = "influence_factors", nullable = true)
+    @Column(name = "influence_factors", columnDefinition = "text", nullable = true)
     @Getter
     @Setter
     private String influenceFactors;
 
     @Property
     @PropertyLayout(fieldSetId = "content", sequence = "5")
-    @Column(name = "trusted_sources", nullable = true)
+    @Column(name = "trusted_sources", columnDefinition = "text", nullable = true)
     @Getter
     @Setter
     private String trustedInformationSources;
-
-    @Property
-    @PropertyLayout(fieldSetId = "content", sequence = "5")
-    @Column(name = "use_cases", nullable = true)
-    @Getter
-    @Setter
-    private String useCases;
 
     // *** IMPLEMENTATIONS ****
 
@@ -151,11 +137,8 @@ public class ProjectPersona implements Comparable<ProjectPersona>, HasPrompt {
     }
 
     public void setDetailsFromDto(ProjectPersonaDetailsDTO personaDetailsDto) {
-        this.setNeeds(personaDetailsDto.getNeeds());
-        this.setTasksToAccomplish(personaDetailsDto.getTasksToAccomplish());
         this.setInfluenceFactors(personaDetailsDto.getInfluenceFactors());
         this.setTrustedInformationSources(personaDetailsDto.getTrustedInformationSources());
-        this.setUseCases(personaDetailsDto.getUseCases());
     }
 
     @Override
@@ -164,16 +147,6 @@ public class ProjectPersona implements Comparable<ProjectPersona>, HasPrompt {
         var sb = new StringBuilder();
         sb.append(basePrompt);
         sb.append("\n");
-        if (this.needs != null) {
-            sb.append("Needs: ");
-            sb.append(this.needs);
-            sb.append("\n");
-        }
-        if (this.tasksToAccomplish != null) {
-            sb.append("Tasks to Accomplish: ");
-            sb.append(this.tasksToAccomplish);
-            sb.append("\n");
-        }
         if (this.influenceFactors != null) {
             sb.append("Influence Factors: ");
             sb.append(this.influenceFactors);
@@ -182,11 +155,6 @@ public class ProjectPersona implements Comparable<ProjectPersona>, HasPrompt {
         if (this.trustedInformationSources != null) {
             sb.append("Trusted Information Sources: ");
             sb.append(this.trustedInformationSources);
-            sb.append("\n");
-        }
-        if (this.useCases != null) {
-            sb.append("Use Cases: ");
-            sb.append(this.useCases);
             sb.append("\n");
         }
         return sb.toString();

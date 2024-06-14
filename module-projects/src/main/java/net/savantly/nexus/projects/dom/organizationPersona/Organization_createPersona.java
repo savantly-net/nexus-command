@@ -11,6 +11,7 @@ import org.apache.causeway.applib.annotation.ParameterLayout;
 import org.apache.causeway.applib.annotation.PriorityPrecedence;
 import org.apache.causeway.applib.annotation.PromptStyle;
 import org.apache.causeway.applib.services.repository.RepositoryService;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import net.savantly.nexus.organizations.dom.organization.Organization;
 import net.savantly.nexus.projects.dom.generator.PersonaGenerator;
@@ -38,7 +39,9 @@ public class Organization_createPersona {
     @ActionLayout(named = "Create Persona", associateWith = "personas", promptStyle = PromptStyle.DIALOG, position = ActionLayout.Position.PANEL)
     public Persona act(
             @ParameterLayout(named = "Description") final String description) {
-        final PersonaDTO personaDto = personaGenerator.generatePersona(formatContext(description));
+
+        final String nameFirstLetter = RandomStringUtils.randomAlphabetic(1).toUpperCase();
+        final PersonaDTO personaDto = personaGenerator.generatePersona(formatContext(description), nameFirstLetter);
         personaDto.setId(UUID.randomUUID().toString());
         final Persona persona = Persona.fromDto(personaDto);
         OrganizationPersona organizationPersona = OrganizationPersona.withRequiredFields(persona, organization);

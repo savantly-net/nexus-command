@@ -15,8 +15,9 @@ public interface IssueGenerator {
     @SystemMessage("""
             Generate a list of issues based on the provided context.
             It should be in the format - 
+            ```
             {
-                "tasks": [
+                "issues": [
                     {
                         "name": "Task 1",
                         "description": "Task 1 description",
@@ -31,6 +32,8 @@ public interface IssueGenerator {
                     }
                 ]
             }
+            ```
+            only respond with the JSON object
             """)
     @UserMessage("{{projectContext}}")
     default ListOfIssueDTOs generateIssues(@V("projectContext") String projectContext) {
@@ -40,7 +43,7 @@ public interface IssueGenerator {
     @Data
     public static class ListOfIssueDTOs {
         @Description("The list of issues to be generated")
-        private List<IssueDTO> tasks = Collections.emptyList();
+        private List<IssueDTO> issues = Collections.emptyList();
     }
 
 }

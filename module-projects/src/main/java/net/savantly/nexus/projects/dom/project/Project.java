@@ -121,22 +121,22 @@ public class Project implements Comparable<Project>, HasPrompt  {
     @PropertyLayout(fieldSetId = "name", sequence = "2")
     private Organization organization;
 
-    @Action
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT_ARE_YOU_SURE)
     @ActionLayout(named = "Update Organization", associateWith = "organization", describedAs = "Update the project organization", promptStyle = PromptStyle.DIALOG)
     public Project updateOrganization(@ParameterLayout(named = "Organization") Organization organization) {
         this.organization = organization;
         return this;
     }
 
-    @Column(length = 2000, nullable = true)
+    @Column(columnDefinition = "text", nullable = true)
     @PropertyLayout(fieldSetId = "name", sequence = "3", multiLine = 10)
     @Getter @Setter
 	private String description;
     
-    @Action
-    @ActionLayout(named = "Update Description", associateWith = "description", describedAs = "Update the project description", promptStyle = PromptStyle.DIALOG)
-    public Project updateDescription(@ParameterLayout(multiLine = 5) String description) {
-        this.description = description;
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout(named = "Update Description", associateWith = "description", describedAs = "Update the project description")
+    public Project updateDescription(@ParameterLayout(multiLine = 5) String descriptionUpdate) {
+        this.description = descriptionUpdate;
         return this;
     }
 
@@ -147,7 +147,7 @@ public class Project implements Comparable<Project>, HasPrompt  {
     @Getter @Setter
 	private Markdown plan;
 
-    @Action
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(named = "Update Plan", associateWith = "plan", describedAs = "Update the project plan", promptStyle = PromptStyle.DIALOG)
     public Project updatePlan(String plan) {
         this.plan = Markdown.valueOf(plan);
