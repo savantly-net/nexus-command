@@ -17,8 +17,8 @@
 
 
         <logger name="org.apache.causeway" level="info"/>
-        <logger name="net.savantly" level="info"/>
-        <logger name="dev.langchain4j" level="info"/>
+        <logger name="net.savantly.nexus.projects" level="debug"/>
+        <logger name="dev.langchain4j" level="debug"/>
         <logger name="org.springframework" level="info"/>
 
 

@@ -15,7 +15,7 @@ public interface PersonaGenerator {
     }
 
     @SystemMessage("Generate details for the persona based on the project information")
-    @UserMessage("Project: {{projectContext}}\n\nPersona: {{persona}}\n\n")
+    @UserMessage("--CONTEXT--\n{{projectContext}}\n\nPersona: {{persona}}\n--END CONTEXT--")
     default ProjectPersonaDetailsDTO generateProjectPersonaDetails(@V("projectContext") String projectContext, @V("persona") String personaContext) {
         return new ProjectPersonaDetailsDTO();
     }

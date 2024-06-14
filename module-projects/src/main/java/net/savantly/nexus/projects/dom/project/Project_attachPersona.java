@@ -9,12 +9,14 @@ import org.apache.causeway.applib.services.repository.RepositoryService;
 
 import jakarta.inject.Inject;
 import jakarta.persistence.Transient;
+import lombok.extern.log4j.Log4j2;
 import net.savantly.ai.languagetools.PromptBuilder;
 import net.savantly.nexus.projects.dom.generator.PersonaGenerator;
 import net.savantly.nexus.projects.dom.persona.Persona;
 import net.savantly.nexus.projects.dom.projectPersona.ProjectPersona;
 import net.savantly.nexus.projects.dom.projectPersona.ProjectPersonaDetailsDTO;
 
+@Log4j2
 @Action
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
@@ -37,11 +39,16 @@ public class Project_attachPersona {
     public ProjectPersona act(
             @ParameterLayout(named = "Persona") final Persona persona) {
 
-        final ProjectPersonaDetailsDTO personaDetailsDto = personaGenerator
-                .generateProjectPersonaDetails(project.getPrompt(), formatContext(persona));
+        var projectContext = project.getPrompt();
+        var personaContext = formatContext(persona);
+
+        //log.debug("Generating ProjectPersona details using the contexts: {} {}", projectContext, personaContext);
+
+        // final ProjectPersonaDetailsDTO personaDetailsDto = personaGenerator
+        //         .generateProjectPersonaDetails(projectContext, personaContext);
 
         ProjectPersona projectPersona = ProjectPersona.withRequiredFields(persona, project);
-        projectPersona.setDetailsFromDto(personaDetailsDto);
+        projectPersona.setDetailsFromDto(new ProjectPersonaDetailsDTO());
         repositoryService.persist(projectPersona);
         return projectPersona;
     }
