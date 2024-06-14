@@ -165,3 +165,5 @@ nexus:
     security.enabled: true
     audited-entity.enabled: true
     ai.enabled: true
+  encryption:
+    secret: "12312312312312312312312312312312" # don't use this secret in production

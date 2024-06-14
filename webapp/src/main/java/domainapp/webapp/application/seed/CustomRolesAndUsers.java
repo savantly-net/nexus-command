@@ -3,6 +3,7 @@ package domainapp.webapp.application.seed;
 import java.util.function.Supplier;
 
 import jakarta.inject.Inject;
+import lombok.extern.log4j.Log4j2;
 
 import org.apache.causeway.applib.services.appfeat.ApplicationFeatureId;
 import org.apache.causeway.commons.collections.Can;
@@ -24,6 +25,7 @@ import net.savantly.nexus.orgweb.OrgWebModule;
 import net.savantly.nexus.products.ProductsModule;
 import net.savantly.nexus.projects.ProjectsModule;
 
+@Log4j2
 public class CustomRolesAndUsers extends FixtureScript {
 
     private final NexusAppProperties nexusAppProperties;
@@ -34,6 +36,7 @@ public class CustomRolesAndUsers extends FixtureScript {
 
     @Override
     protected void execute(ExecutionContext executionContext) {
+        log.info("Creating custom roles and users");
         executionContext.executeChildren(this,
                 new OrganizationsModuleSuperuserRole(),
                 new OrgWebModuleSuperuserRole(),
@@ -44,13 +47,15 @@ public class CustomRolesAndUsers extends FixtureScript {
                 new FranchiseModuleSuperuserRole(),
                 new ApplicationSuperuserRole(),
                 new ApplicationUserRole());
-        if (nexusAppProperties.getAdminSeed().isEnabled()) {
-            executionContext.executeChildren(this, new AdminUser(nexusAppProperties.getAdminSeed().getUsername(),
-                    nexusAppProperties.getAdminSeed().getPassword()));
+        if (nexusAppProperties.getSeed().getAdmin().isEnabled()) {
+            log.info("Creating admin user: {}", nexusAppProperties.getSeed().getAdmin().getUsername());
+            executionContext.executeChildren(this, new AdminUser(nexusAppProperties.getSeed().getAdmin().getUsername(),
+                    nexusAppProperties.getSeed().getAdmin().getPassword()));
         }
-        if (nexusAppProperties.getUserSeed().isEnabled()) {
-            executionContext.executeChildren(this, new UnprivilegedUser(nexusAppProperties.getUserSeed().getUsername(),
-                    nexusAppProperties.getUserSeed().getPassword()));
+        if (nexusAppProperties.getSeed().getUser().isEnabled()) {
+            log.info("Creating unprivileged user: {}", nexusAppProperties.getSeed().getUser().getUsername());
+            executionContext.executeChildren(this, new UnprivilegedUser(nexusAppProperties.getSeed().getUser().getUsername(),
+                    nexusAppProperties.getSeed().getUser().getPassword()));
         }
     }
 

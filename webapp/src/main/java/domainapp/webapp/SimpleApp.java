@@ -19,7 +19,6 @@ public class SimpleApp extends SpringBootServletInitializer {
      * entry point by searching for classes having a {@code main(...)}
      */
     public static void main(String[] args) {
-        CausewayPresets.prototyping();
         SpringApplication.run(new Class[] { SimpleApp.class }, args);
     }
 

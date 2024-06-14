@@ -28,7 +28,7 @@ public class SeedSecurityService {
 
     @EventListener(MetamodelEvent.class)
     public void onMetamodelEvent(final MetamodelEvent event) {
-        if (event.isPostMetamodel() && causewaySystemEnvironment.isPrototyping()) {
+        if (event.isPostMetamodel() && nexusAppProperties.getSeed().isEnabled()) {
             runScripts();
             transactionService.flushTransaction();
         }

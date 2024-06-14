@@ -1,13 +1,18 @@
 package domainapp.webapp.application;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import domainapp.webapp.properties.NexusAppProperties;
+import lombok.RequiredArgsConstructor;
 import net.savantly.ai.AIModule;
+import net.savantly.encryption.jpa.AttributeEncryptor;
 import net.savantly.nexus.audited.AuditedEntityModule;
 import net.savantly.nexus.command.franchise.organizations.FranchiseOrganizationsModule;
 import net.savantly.nexus.command.web.NexusCommandWebModule;
@@ -25,9 +30,18 @@ import net.savantly.security.SecurityModule;
 @ComponentScan
 @EnableJpaRepositories
 @EntityScan
+@RequiredArgsConstructor
 public class ApplicationModule {
 
     public static final String PUBLIC_NAMESPACE = "public";
+
+    private final NexusAppProperties properties;
+
+    @Bean
+    @ConditionalOnMissingBean
+    public AttributeEncryptor attributeEncryptor() throws Exception {
+        return new AttributeEncryptor(properties.getEncryption().getSecret());
+    }
 
     @ConditionalOnProperty(value = "nexus.modules.audited-entity.enabled", havingValue = "true")
     @Import(AuditedEntityModule.class)

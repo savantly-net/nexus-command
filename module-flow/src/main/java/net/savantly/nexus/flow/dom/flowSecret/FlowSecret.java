@@ -15,8 +15,8 @@ import org.apache.causeway.applib.annotation.Editing;
 import org.apache.causeway.applib.annotation.Property;
 import org.apache.causeway.applib.annotation.PropertyLayout;
 import org.apache.causeway.applib.annotation.Publishing;
-import org.apache.causeway.applib.annotation.SemanticsOf;
 import org.apache.causeway.applib.annotation.Title;
+import org.apache.causeway.applib.annotation.Where;
 import org.apache.causeway.applib.jaxb.PersistentEntityAdapter;
 import org.apache.causeway.applib.services.message.MessageService;
 import org.apache.causeway.applib.services.repository.RepositoryService;
@@ -62,12 +62,11 @@ public class FlowSecret extends AuditedEntity implements Comparable<FlowSecret> 
     @Transient
     MessageService messageService;
 
-    public static FlowSecret withName(Organization organization, String name, String secret) {
+    public static FlowSecret withName(Organization organization, String name) {
         val entity = new FlowSecret();
         entity.id = UUID.randomUUID().toString();
         entity.setName(name);
         entity.setOrganization(organization);
-        entity.setSecret(secret);
         return entity;
     }
 
@@ -104,15 +103,25 @@ public class FlowSecret extends AuditedEntity implements Comparable<FlowSecret> 
 
     @Column(columnDefinition = "text", nullable = true)
     @Property
-    @PropertyLayout(fieldSetId = "identity", sequence = "1.5", multiLine = 10)
-    @Setter
+    @PropertyLayout(fieldSetId = "identity", sequence = "1.5")
     private String secret;
 
+    public void setEncryptedSecret(String secret) {
+        this.secret = secret;
+    }
+
+    // just so we see it's set in the UI
     public String getSecret() {
         if (secret == null || secret.isEmpty()) {
             return "unset";
         }
-        return secret.replaceAll(".", "*");
+        return "[encrypted]";
+    }
+
+    @Transient
+    @PropertyLayout(hidden = Where.EVERYWHERE)
+    public String getEncryptedSecret() {
+        return secret;
     }
 
 
@@ -133,13 +142,6 @@ public class FlowSecret extends AuditedEntity implements Comparable<FlowSecret> 
         final String title = titleService.titleOf(this);
         messageService.informUser(String.format("'%s' deleted", title));
         repositoryService.removeAndFlush(this);
-    }
-
-    @Action(semantics = SemanticsOf.NON_IDEMPOTENT_ARE_YOU_SURE)
-    @ActionLayout(associateWith = "secret")
-    public FlowSecret updateSecret(String secret) {
-        setSecret(secret);
-        return this;
     }
     
 }
