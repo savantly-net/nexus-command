@@ -39,6 +39,7 @@ import net.savantly.nexus.flow.dom.flowDefinition.FlowDefinitionRepository;
 import net.savantly.nexus.flow.dom.flowDefinition.FlowDefinitions;
 import net.savantly.nexus.flow.dom.flowNode.FlowNodeDiscoveryService;
 import net.savantly.nexus.flow.dom.flowSecret.FlowSecretRepository;
+import net.savantly.nexus.flow.dom.flowSecret.FlowSecrets;
 import net.savantly.nexus.flow.dom.generator.GeneralGenerator;
 import net.savantly.nexus.flow.executor.FlowExecutorFactory;
 import net.savantly.nexus.flow.executor.FlowNodeFactory;
@@ -107,8 +108,8 @@ public class FlowModule implements ModuleWithFixtures {
     }
 
     @Bean
-    public DatasourceFactory flow_datasourceFactory() {
-        return new DatasourceFactory();
+    public DatasourceFactory flow_datasourceFactory(FlowSecrets flowSecrets) {
+        return new DatasourceFactory(flowSecrets);
     }
 
     @Bean

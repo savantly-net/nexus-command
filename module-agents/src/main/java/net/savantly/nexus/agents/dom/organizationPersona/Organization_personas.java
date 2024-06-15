@@ -1,4 +1,4 @@
-package net.savantly.nexus.projects.dom.organizationPersona;
+package net.savantly.nexus.agents.dom.organizationPersona;
 
 import java.util.Set;
 

@@ -1,4 +1,4 @@
-package net.savantly.nexus.projects.dom.persona;
+package net.savantly.nexus.agents.dom.persona;
 
 import java.io.Serializable;
 

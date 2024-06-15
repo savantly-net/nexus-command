@@ -17,6 +17,7 @@ import org.apache.causeway.testing.fixtures.applib.fixturescripts.FixtureScript;
 
 import domainapp.webapp.application.ApplicationModule;
 import domainapp.webapp.properties.NexusAppProperties;
+import net.savantly.nexus.agents.AgentsModule;
 import net.savantly.nexus.command.web.NexusCommandWebModule;
 import net.savantly.nexus.flow.FlowModule;
 import net.savantly.nexus.franchise.FranchiseModule;
@@ -46,7 +47,8 @@ public class CustomRolesAndUsers extends FixtureScript {
                 new NexusCommandWebModuleSuperuserRole(),
                 new FranchiseModuleSuperuserRole(),
                 new ApplicationSuperuserRole(),
-                new ApplicationUserRole());
+                new ApplicationUserRole(),
+                new AgentsModuleSuperuserRole());
         if (nexusAppProperties.getSeed().getAdmin().isEnabled()) {
             log.info("Creating admin user: {}", nexusAppProperties.getSeed().getAdmin().getUsername());
             executionContext.executeChildren(this, new AdminUser(nexusAppProperties.getSeed().getAdmin().getUsername(),
@@ -107,6 +109,23 @@ public class CustomRolesAndUsers extends FixtureScript {
                     ApplicationPermissionRule.ALLOW,
                     ApplicationPermissionMode.CHANGING,
                     Can.of(ApplicationFeatureId.newNamespace(ProductsModule.NAMESPACE)));
+        }
+    }
+
+    private static class AgentsModuleSuperuserRole extends AbstractRoleAndPermissionsFixtureScript {
+
+        public static final String ROLE_NAME = "agents-superuser";
+
+        public AgentsModuleSuperuserRole() {
+            super(ROLE_NAME, "Permission to use everything in the 'Agents' module");
+        }
+
+        @Override
+        protected void execute(ExecutionContext executionContext) {
+            newPermissions(
+                    ApplicationPermissionRule.ALLOW,
+                    ApplicationPermissionMode.CHANGING,
+                    Can.of(ApplicationFeatureId.newNamespace(AgentsModule.NAMESPACE)));
         }
     }
 
@@ -231,7 +250,8 @@ public class CustomRolesAndUsers extends FixtureScript {
                         FlowModuleSuperuserRole.ROLE_NAME,
                         FranchiseModuleSuperuserRole.ROLE_NAME,
                         NexusCommandWebModuleSuperuserRole.ROLE_NAME,
-                        ApplicationSuperuserRole.ROLE_NAME);
+                        ApplicationSuperuserRole.ROLE_NAME,
+                        AgentsModuleSuperuserRole.ROLE_NAME);
             }
 
             @Inject

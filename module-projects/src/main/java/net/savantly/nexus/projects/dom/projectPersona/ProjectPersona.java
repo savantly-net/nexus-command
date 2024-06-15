@@ -34,8 +34,8 @@ import lombok.ToString;
 import lombok.val;
 import net.savantly.ai.languagetools.HasPrompt;
 import net.savantly.ai.languagetools.PromptBuilder;
+import net.savantly.nexus.agents.dom.persona.Persona;
 import net.savantly.nexus.projects.ProjectsModule;
-import net.savantly.nexus.projects.dom.persona.Persona;
 import net.savantly.nexus.projects.dom.project.Project;
 
 @Named(ProjectsModule.NAMESPACE + ".ProjectPersona")

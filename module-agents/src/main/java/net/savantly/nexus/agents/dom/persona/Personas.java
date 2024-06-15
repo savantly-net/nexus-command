@@ -1,13 +1,9 @@
-package net.savantly.nexus.projects.dom.persona;
+package net.savantly.nexus.agents.dom.persona;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-import jakarta.persistence.TypedQuery;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
@@ -20,10 +16,13 @@ import org.apache.causeway.applib.annotation.PromptStyle;
 import org.apache.causeway.applib.annotation.SemanticsOf;
 import org.apache.causeway.persistence.jpa.applib.services.JpaSupportService;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.persistence.TypedQuery;
+import net.savantly.nexus.agents.AgentsModule;
 import net.savantly.nexus.common.types.Name;
-import net.savantly.nexus.projects.ProjectsModule;
 
-@Named(ProjectsModule.NAMESPACE + ".Personas")
+@Named(AgentsModule.NAMESPACE + ".Personas")
 @DomainService
 @DomainServiceLayout()
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
@@ -31,13 +30,6 @@ import net.savantly.nexus.projects.ProjectsModule;
 public class Personas {
     final JpaSupportService jpaSupportService;
     final PersonaRepository repository;
-
-    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
-    @ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR)
-    public Persona create(
-            @Name final String name) {
-        return repository.save(Persona.withName(name));
-    }
 
     @Programmatic
     public Persona create(
@@ -50,17 +42,6 @@ public class Personas {
     @ActionLayout()
     public List<Persona> listAll() {
         return repository.findAll();
-    }
-
-    @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout()
-    public Persona findByName(final Persona item) {
-        return item;
-    }
-
-    @Programmatic
-    public Persona findByNameIgnoreCase(final String name) {
-        return repository.findByNameIgnoreCase(name);
     }
 
     @Programmatic

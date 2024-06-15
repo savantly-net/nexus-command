@@ -26,7 +26,6 @@ import net.savantly.ai.languagetools.LanguageToolModel;
 import net.savantly.nexus.projects.config.ProjectModuleProperties;
 import net.savantly.nexus.projects.dom.generator.GeneralGenerator;
 import net.savantly.nexus.projects.dom.generator.IssueGenerator;
-import net.savantly.nexus.projects.dom.generator.PersonaGenerator;
 import net.savantly.nexus.projects.dom.issue.IssueGenAi;
 
 @Configuration
@@ -61,24 +60,6 @@ public class ProjectsModule implements ModuleWithFixtures {
     @Bean
     public ProjectModuleProperties projectModuleProperties() {
         return new ProjectModuleProperties();
-    }
-
-    @Bean
-    @Primary
-    @ConditionalOnProperty("langchain4j.open-ai.chat-model.api-key")
-    public PersonaGenerator personaGenerator(LanguageToolModel model) {
-        log.info("Creating persona generator with model: {}", model);
-        return AiServices.builder(PersonaGenerator.class)
-                .chatLanguageModel(model.asChatLanguageModel())
-                .build();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public PersonaGenerator defaultPersonaGenerator() {
-        log.info("Creating default persona generator");
-        return new PersonaGenerator() {
-        };
     }
 
     @Bean

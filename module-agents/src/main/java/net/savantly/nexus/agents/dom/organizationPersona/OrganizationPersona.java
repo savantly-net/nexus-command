@@ -1,18 +1,6 @@
-package net.savantly.nexus.projects.dom.organizationPersona;
+package net.savantly.nexus.agents.dom.organizationPersona;
 
 import java.util.Comparator;
-
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Transient;
-import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.DomainObjectLayout;
@@ -27,19 +15,30 @@ import org.apache.causeway.applib.services.repository.RepositoryService;
 import org.apache.causeway.applib.services.title.TitleService;
 import org.apache.causeway.persistence.jpa.applib.integration.CausewayEntityListener;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Transient;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
+import net.savantly.nexus.agents.AgentsModule;
+import net.savantly.nexus.agents.dom.persona.Persona;
 import net.savantly.nexus.organizations.dom.organization.Organization;
-import net.savantly.nexus.projects.ProjectsModule;
-import net.savantly.nexus.projects.dom.persona.Persona;
 
-@Named(ProjectsModule.NAMESPACE + ".OrganizationPersona")
+@Named(AgentsModule.NAMESPACE + ".OrganizationPersona")
 @jakarta.persistence.Entity
-@jakarta.persistence.Table(name = "org_persona", schema = ProjectsModule.SCHEMA)
+@jakarta.persistence.Table(name = "org_persona", schema = AgentsModule.SCHEMA)
 @jakarta.persistence.EntityListeners(CausewayEntityListener.class)
 @DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.ENABLED)
 @DomainObjectLayout(cssClassFa = "circle-user")

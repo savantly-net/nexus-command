@@ -10,7 +10,6 @@ import org.apache.causeway.applib.annotation.ActionLayout;
 import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.DomainObjectLayout;
 import org.apache.causeway.applib.annotation.Editing;
-import org.apache.causeway.applib.annotation.Programmatic;
 import org.apache.causeway.applib.annotation.Property;
 import org.apache.causeway.applib.annotation.PropertyLayout;
 import org.apache.causeway.applib.annotation.Publishing;
@@ -37,6 +36,7 @@ import lombok.ToString;
 import lombok.val;
 import net.savantly.nexus.common.types.Name;
 import net.savantly.nexus.flow.FlowModule;
+import net.savantly.nexus.flow.dom.flowSecret.FlowSecret;
 import net.savantly.nexus.organizations.dom.organization.Organization;
 
 @Named(FlowModule.NAMESPACE + ".JdbcConnection")
@@ -112,27 +112,12 @@ public class JdbcConnection implements Comparable<JdbcConnection> {
     private String username;
 
 
-    @Column(length = 255, nullable = true)
+    @JoinColumn(name = "flow_secret_id", nullable = true)
     @Property(editing = Editing.DISABLED)
     @PropertyLayout(fieldSetId = "identity", sequence = "1.7")
     @Setter
-    private String password;
-    public String getPassword() {
-        if (password == null) {
-            return "No password set";
-        }
-        return String.format("%s characters", password.length());
-    }
-    @Programmatic
-    public String getRawPassword() {
-        return password;
-    }
-    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
-    @ActionLayout(associateWith = "password", describedAs = "Update the password")
-    public JdbcConnection updatePassword(String password) {
-        this.password = password;
-        return this;
-    }
+    @Getter
+    private FlowSecret password;
 
 
     @Column(length = 255, nullable = true)

@@ -5,11 +5,16 @@ import javax.sql.DataSource;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import net.savantly.nexus.flow.dom.connections.jdbcConnection.JdbcConnection;
+import net.savantly.nexus.flow.dom.flowSecret.FlowSecrets;
 
 @Log4j2
+@RequiredArgsConstructor
 public class DatasourceFactory {
+
+    private final FlowSecrets flowSecrets;
 
     public DataSource createFromJdbcConnection(JdbcConnection jdbcConnection) {
         log.info("creating datasource for url: {}", jdbcConnection.getJdbcUrl());
@@ -18,7 +23,7 @@ public class DatasourceFactory {
 
         HikariConfig config = new HikariConfig();
         config.setUsername(jdbcConnection.getUsername());
-        config.setPassword(jdbcConnection.getRawPassword());
+        config.setPassword(flowSecrets.decryptSecretString(jdbcConnection.getPassword()));
         config.setDriverClassName(jdbcConnection.getDriverClassName());
         config.setJdbcUrl(jdbcUrl);
 

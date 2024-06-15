@@ -10,12 +10,8 @@
         <version>3.0.0</version>
     </parent>
 
-    <artifactId>projects-module</artifactId>
-    <name>Nexus Command - Projects Module</name>
-
-    <properties>
-        <maven.compiler.release>17</maven.compiler.release>
-    </properties>
+    <artifactId>agents-module</artifactId>
+    <name>Nexus Command - Agents Module</name>
 
     <build>
         <resources>
@@ -44,6 +40,11 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>encryption-module</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>organizations-module</artifactId>
         </dependency>
 
@@ -54,8 +55,11 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>agents-module</artifactId>
+            <artifactId>nexus-audited-entity-module</artifactId>
         </dependency>
+
+        <!-- Spring -->
+
 
         <!-- CAUSEWAY API -->
 
@@ -68,21 +72,6 @@
         <dependency>
             <groupId>org.apache.causeway.valuetypes</groupId>
             <artifactId>causeway-valuetypes-markdown-applib</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.causeway.testing</groupId>
-            <artifactId>causeway-testing-fakedata-applib</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.causeway.extensions</groupId>
-            <artifactId>causeway-extensions-fullcalendar-applib</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.causeway.extensions</groupId>
-            <artifactId>causeway-extensions-pdfjs-applib</artifactId>
         </dependency>
 
         <dependency>
@@ -103,6 +92,16 @@
             <optional>true</optional>
         </dependency>
 
+
+        <!-- TESTING -->
+
+        <dependency>
+            <groupId>org.apache.causeway.testing</groupId>
+            <artifactId>causeway-testing-integtestsupport-applib</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
+
 
 </project>

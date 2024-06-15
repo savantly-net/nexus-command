@@ -64,6 +64,11 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
+                <artifactId>agents-module</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>projects-module</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -164,6 +169,7 @@
         <module>module-audited-entity</module>
         <module>module-products</module>
         <module>module-ai</module>
+        <module>module-agents</module>
         <module>module-projects</module>
         <module>module-flow</module>
         <module>module-organizations</module>

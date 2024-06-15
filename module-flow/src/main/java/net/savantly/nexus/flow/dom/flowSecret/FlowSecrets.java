@@ -1,11 +1,13 @@
 package net.savantly.nexus.flow.dom.flowSecret;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
 import org.apache.causeway.applib.annotation.DomainService;
 import org.apache.causeway.applib.annotation.DomainServiceLayout;
+import org.apache.causeway.applib.annotation.Parameter;
 import org.apache.causeway.applib.annotation.PriorityPrecedence;
 import org.apache.causeway.applib.annotation.Programmatic;
 import org.apache.causeway.applib.annotation.PromptStyle;
@@ -33,7 +35,7 @@ public final class FlowSecrets {
     @ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR)
     public FlowSecret create(
             final Organization organization,
-            @Name final String name,
+            @Parameter(regexPattern = "^[a-zA-Z0-9]*", regexPatternReplacement = "Must be alphanumeric or underscore") @Name final String name,
             final String secret) {
 
         var entity = FlowSecret.withName(organization, name);
@@ -50,6 +52,10 @@ public final class FlowSecrets {
     @Programmatic
     public String decryptSecretString(FlowSecret secret) {
         return attributeEncryptor.convertToEntityAttribute(secret.getEncryptedSecret());
+    }
+
+    public Set<FlowSecret> findByOrganizationId(String id) {
+        return repository.findAllByOrganizationId(id);
     }
 
 }

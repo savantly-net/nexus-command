@@ -1,14 +1,7 @@
-package net.savantly.nexus.projects.dom.persona;
+package net.savantly.nexus.agents.dom.persona;
 
 import java.util.Comparator;
 import java.util.UUID;
-
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
-import jakarta.persistence.Transient;
-import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.causeway.applib.annotation.Bounding;
 import org.apache.causeway.applib.annotation.DomainObject;
@@ -24,6 +17,12 @@ import org.apache.causeway.applib.services.repository.RepositoryService;
 import org.apache.causeway.applib.services.title.TitleService;
 import org.apache.causeway.persistence.jpa.applib.integration.CausewayEntityListener;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,12 +30,12 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
 import net.savantly.ai.languagetools.HasPrompt;
+import net.savantly.nexus.agents.AgentsModule;
 import net.savantly.nexus.common.types.Name;
-import net.savantly.nexus.projects.ProjectsModule;
 
-@Named(ProjectsModule.NAMESPACE + ".Persona")
+@Named(AgentsModule.NAMESPACE + ".Persona")
 @jakarta.persistence.Entity
-@jakarta.persistence.Table(schema = ProjectsModule.SCHEMA, name = "persona")
+@jakarta.persistence.Table(schema = AgentsModule.SCHEMA, name = "persona")
 @jakarta.persistence.EntityListeners(CausewayEntityListener.class)
 @DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.ENABLED, bounding = Bounding.BOUNDED)
 @DomainObjectLayout(cssClassFa = "user")
@@ -124,6 +123,12 @@ public class Persona implements Comparable<Persona>, HasPrompt {
     @ToString.Include
     @PropertyLayout(fieldSetId = "name", sequence = "1")
     private String name;
+
+    @Property(editing = Editing.DISABLED)
+    @PropertyLayout(fieldSetId = "name", sequence = "1")
+    @Getter @Setter
+    @ToString.Include
+    private boolean retired;
 
     /****************
      * DESCRIPTION *

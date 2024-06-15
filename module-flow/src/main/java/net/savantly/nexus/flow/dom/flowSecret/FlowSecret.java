@@ -12,6 +12,7 @@ import org.apache.causeway.applib.annotation.Bounding;
 import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.DomainObjectLayout;
 import org.apache.causeway.applib.annotation.Editing;
+import org.apache.causeway.applib.annotation.MemberSupport;
 import org.apache.causeway.applib.annotation.Property;
 import org.apache.causeway.applib.annotation.PropertyLayout;
 import org.apache.causeway.applib.annotation.Publishing;
@@ -87,12 +88,13 @@ public class FlowSecret extends AuditedEntity implements Comparable<FlowSecret> 
     @Title
     @Name
     @Column(length = Name.MAX_LEN, nullable = false)
-    @Property
+    @Property(regexPattern = "^[a-zA-Z0-9_]*$", regexPatternReplacement = "Must be alphanumeric or underscore", maxLength = Name.MAX_LEN)
     @Getter
     @Setter
     @ToString.Include
     @PropertyLayout(fieldSetId = "identity", sequence = "1")
     private String name;
+
 
     @JoinColumn(name = "org_id", nullable = false)
     @Property

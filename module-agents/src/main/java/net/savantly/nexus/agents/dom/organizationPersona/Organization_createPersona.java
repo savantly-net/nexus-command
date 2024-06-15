@@ -1,4 +1,4 @@
-package net.savantly.nexus.projects.dom.organizationPersona;
+package net.savantly.nexus.agents.dom.organizationPersona;
 
 import java.util.UUID;
 
@@ -13,10 +13,10 @@ import org.apache.causeway.applib.annotation.PromptStyle;
 import org.apache.causeway.applib.services.repository.RepositoryService;
 import org.apache.commons.lang3.RandomStringUtils;
 
+import net.savantly.nexus.agents.dom.generator.PersonaGenerator;
+import net.savantly.nexus.agents.dom.persona.Persona;
+import net.savantly.nexus.agents.dom.persona.PersonaDTO;
 import net.savantly.nexus.organizations.dom.organization.Organization;
-import net.savantly.nexus.projects.dom.generator.PersonaGenerator;
-import net.savantly.nexus.projects.dom.persona.Persona;
-import net.savantly.nexus.projects.dom.persona.PersonaDTO;
 
 @Action
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)

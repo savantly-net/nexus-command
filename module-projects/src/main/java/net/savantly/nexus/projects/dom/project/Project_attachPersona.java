@@ -11,8 +11,8 @@ import jakarta.inject.Inject;
 import jakarta.persistence.Transient;
 import lombok.extern.log4j.Log4j2;
 import net.savantly.ai.languagetools.PromptBuilder;
-import net.savantly.nexus.projects.dom.generator.PersonaGenerator;
-import net.savantly.nexus.projects.dom.persona.Persona;
+import net.savantly.nexus.agents.dom.generator.PersonaGenerator;
+import net.savantly.nexus.agents.dom.persona.Persona;
 import net.savantly.nexus.projects.dom.projectPersona.ProjectPersona;
 import net.savantly.nexus.projects.dom.projectPersona.ProjectPersonaDetailsDTO;
 

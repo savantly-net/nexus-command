@@ -39,6 +39,14 @@
             </mb3:section>
         </mb3:menu>
         <mb3:menu>
+            <mb3:named>Agents</mb3:named>
+            <mb3:section>
+                <mb3:serviceAction objectType="nexus.agents.Personas" id="listAll">
+                    <cpt:named>List Personas</cpt:named>
+                </mb3:serviceAction>
+            </mb3:section>
+        </mb3:menu>
+        <mb3:menu>
             <mb3:named>Projects</mb3:named>
             <mb3:section>
                 <mb3:serviceAction objectType="nexus.projects.Projects" id="create">
@@ -49,17 +57,6 @@
                 </mb3:serviceAction>
                 <mb3:serviceAction objectType="nexus.projects.Projects" id="findByName">
                     <cpt:named>Find Project</cpt:named>
-                </mb3:serviceAction>
-            </mb3:section>
-            <mb3:section>
-                <mb3:serviceAction objectType="nexus.projects.Personas" id="create">
-                    <cpt:named>New Persona</cpt:named>
-                </mb3:serviceAction>
-                <mb3:serviceAction objectType="nexus.projects.Personas" id="listAll">
-                    <cpt:named>List Personas</cpt:named>
-                </mb3:serviceAction>
-                <mb3:serviceAction objectType="nexus.projects.Personas" id="findByName">
-                    <cpt:named>Find Personas</cpt:named>
                 </mb3:serviceAction>
             </mb3:section>
             <mb3:section>

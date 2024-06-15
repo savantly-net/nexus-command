@@ -41,6 +41,7 @@ causeway:
     schema:
       auto-create-schemas:
       - public
+      - agents
       - products
       - projects
       - flow
@@ -153,17 +154,17 @@ app:
     enabled: false #  disable spring auto-configuration of security
 
 nexus:
-  modules:
-    products.enabled: true
-    organizations.enabled: true
-    projects.enabled: true
-    flow.enabled: true
-    franchise.enabled: true
-    web.enabled: true
-    org-web.enabled: true
-    org-fees.enabled: true
-    security.enabled: true
-    audited-entity.enabled: true
-    ai.enabled: true
+  products.enabled: true
+  organizations.enabled: true
+  projects.enabled: true
+  flow.enabled: true
+  franchise.enabled: true
+  web.enabled: true
+  org-web.enabled: true
+  org-fees.enabled: true
+  security.enabled: true
+  audited-entity.enabled: true
+  ai.enabled: true
+  agents.enabled: true
   encryption:
     secret: "12312312312312312312312312312312" # don't use this secret in production
