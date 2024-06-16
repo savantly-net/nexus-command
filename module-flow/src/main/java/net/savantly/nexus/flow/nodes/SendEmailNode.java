@@ -9,8 +9,8 @@ import lombok.Setter;
 import net.savantly.nexus.flow.dom.flowContext.FlowContext;
 import net.savantly.nexus.flow.dom.flowContext.VariableReplacement;
 import net.savantly.nexus.flow.dom.flowNode.FlowNodeType;
-import net.savantly.nexus.flow.dom.flowNode.Parameter;
 import net.savantly.nexus.flow.dom.flowNode.impl.BasicFlowNode;
+import net.savantly.nexus.flow.dom.flowNodeParameter.FlowNodeParameter;
 
 @FlowNodeType(name = "Send Email", description = "Send an email")
 public class SendEmailNode extends BasicFlowNode {
@@ -22,27 +22,27 @@ public class SendEmailNode extends BasicFlowNode {
         this.emailService = emailService;
     }
 
-    @Parameter("to")
+    @FlowNodeParameter("to")
     @Getter
     @Setter
     private String to;
 
-    @Parameter("cc")
+    @FlowNodeParameter("cc")
     @Getter
     @Setter
     private String cc;
 
-    @Parameter("bcc")
+    @FlowNodeParameter("bcc")
     @Getter
     @Setter
     private String bcc;
 
-    @Parameter("subject")
+    @FlowNodeParameter("subject")
     @Getter
     @Setter
     private String subject;
 
-    @Parameter("body")
+    @FlowNodeParameter("body")
     @Getter
     @Setter
     private String body;

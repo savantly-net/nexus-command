@@ -7,7 +7,17 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.util.AnnotatedTypeScanner;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
+import lombok.RequiredArgsConstructor;
+import net.savantly.nexus.flow.dom.flowNodeParameter.FlowNodeParameter;
+import net.savantly.nexus.flow.dom.flowNodeParameter.FlowNodeParameterDescriptor;
+import net.savantly.nexus.flow.dom.flowNodeSchema.FlowNodeSchemaGenerator;
+
+@RequiredArgsConstructor
 public class FlowNodeDiscoveryService {
+
+    private final FlowNodeSchemaGenerator schemaGenerator;
 
     public Set<FlowNodeDescriptor> discoverFlowNodes() {
 
@@ -25,23 +35,28 @@ public class FlowNodeDiscoveryService {
                     descriptor.setClassName(clazz.getName());
                     descriptor.setName(annotation.name());
                     descriptor.setDescription(annotation.description());
-                    descriptor.setInputParameters(getInputParameters(clazz));
+                    //descriptor.setInputParameters(getInputParameters(clazz));
+                    descriptor.setSchema(generateSchema(clazz));
                     return descriptor;
                 })
                 .collect(Collectors.toSet());
     }
 
-    private Set<ParameterDescriptor> getInputParameters(Class<?> clazz) {
+    private JsonNode generateSchema(Class<?> clazz) {
+        return schemaGenerator.generateSchema(clazz);
+    }
+
+    private Set<FlowNodeParameterDescriptor> getInputParameters(Class<?> clazz) {
         // find all fields annotated with @Parameter
         // create a map of field name to field description
 
-        var result = new HashSet<ParameterDescriptor>();
+        var result = new HashSet<FlowNodeParameterDescriptor>();
 
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
-            if (field.isAnnotationPresent(Parameter.class)) {
-                Parameter parameter = field.getAnnotation(Parameter.class);
-                var descriptor = new ParameterDescriptor();
+            if (field.isAnnotationPresent(FlowNodeParameter.class)) {
+                FlowNodeParameter parameter = field.getAnnotation(FlowNodeParameter.class);
+                var descriptor = new FlowNodeParameterDescriptor();
                 descriptor.setName(parameter.value());
                 descriptor.setDescription(parameter.description());
                 descriptor.setType(field.getType().getName());

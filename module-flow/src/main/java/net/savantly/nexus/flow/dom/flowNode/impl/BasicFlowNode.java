@@ -3,13 +3,13 @@ package net.savantly.nexus.flow.dom.flowNode.impl;
 import lombok.Getter;
 import net.savantly.nexus.flow.dom.flowContext.FlowContext;
 import net.savantly.nexus.flow.dom.flowNode.FlowNode;
-import net.savantly.nexus.flow.dom.flowNode.Parameter;
+import net.savantly.nexus.flow.dom.flowNodeParameter.FlowNodeParameter;
 
 public abstract class BasicFlowNode implements FlowNode {
+
     private String id;
 
-
-    @Parameter("label")
+    @FlowNodeParameter(name = "label", description = "The label for this node")
     @Getter
     private String label;
 

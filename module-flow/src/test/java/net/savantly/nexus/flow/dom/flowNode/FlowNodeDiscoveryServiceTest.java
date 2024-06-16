@@ -6,11 +6,14 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
+import net.savantly.nexus.flow.dom.flowNodeSchema.FlowNodeSchemaGenerator;
+
 public class FlowNodeDiscoveryServiceTest {
     
     @Test
     public void testDiscoverFlowNodes() {
-        FlowNodeDiscoveryService service = new FlowNodeDiscoveryService();
+        FlowNodeSchemaGenerator flowNodeSchemaGenerator = new FlowNodeSchemaGenerator();
+        FlowNodeDiscoveryService service = new FlowNodeDiscoveryService(flowNodeSchemaGenerator);
         Set<FlowNodeDescriptor> descriptors = service.discoverFlowNodes();
         assertFalse(descriptors.isEmpty());
     }

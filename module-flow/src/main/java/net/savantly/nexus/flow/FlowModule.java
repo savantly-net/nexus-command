@@ -38,6 +38,7 @@ import net.savantly.nexus.flow.dom.flowDefinition.FlowDefinitionExecutionProxy;
 import net.savantly.nexus.flow.dom.flowDefinition.FlowDefinitionRepository;
 import net.savantly.nexus.flow.dom.flowDefinition.FlowDefinitions;
 import net.savantly.nexus.flow.dom.flowNode.FlowNodeDiscoveryService;
+import net.savantly.nexus.flow.dom.flowNodeSchema.FlowNodeSchemaGenerator;
 import net.savantly.nexus.flow.dom.flowSecret.FlowSecretRepository;
 import net.savantly.nexus.flow.dom.flowSecret.FlowSecrets;
 import net.savantly.nexus.flow.dom.generator.GeneralGenerator;
@@ -118,8 +119,8 @@ public class FlowModule implements ModuleWithFixtures {
     }
 
     @Bean
-    public FlowNodeDiscoveryService flowNodeDiscoveryService() {
-        return new FlowNodeDiscoveryService();
+    public FlowNodeDiscoveryService flowNodeDiscoveryService(FlowNodeSchemaGenerator flowNodeSchemaGenerator) {
+        return new FlowNodeDiscoveryService(flowNodeSchemaGenerator);
     }
 
     @Bean
