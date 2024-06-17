@@ -37,9 +37,13 @@ public class FormSubmissionProxy {
         var destinations = form.getDestinations();
         log.info("executing form hooks: " + destinations.size());
         for (var destination : destinations) {
-            var destinationHook = destinationHookFactory.createHook(destination);
-            var result = destinationHook.execute(destination, payload, form.getMappings());
-            log.info("hook executed: " + result);
+            try (var destinationHook = destinationHookFactory.createHook(destination)) {
+                var result = destinationHook.execute(destination, payload, form.getMappings());
+                log.info("hook executed: " + result);
+            } catch (Exception e) {
+                log.error("hook failed", e);
+            
+            }
         }
     }
     

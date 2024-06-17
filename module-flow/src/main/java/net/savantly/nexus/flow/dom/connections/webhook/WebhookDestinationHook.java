@@ -50,4 +50,8 @@ public class WebhookDestinationHook implements DestinationHook {
                 .setMessage(response.getBody());
     }
 
+    @Override
+    public void close() throws Exception {
+    }
+
 }

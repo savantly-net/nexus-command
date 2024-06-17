@@ -30,5 +30,9 @@ public class FlowDestinationHook implements DestinationHook {
             .setSuccess(true)
             .setMessage("Flow executed successfully: " + result.getId());
     }
+
+    @Override
+    public void close() throws Exception {
+    }
     
 }

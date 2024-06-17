@@ -1,5 +1,6 @@
 package net.savantly.nexus.flow.dom.connections.jdbcConnection;
 
+import java.io.Closeable;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.util.Collection;
@@ -7,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
+
+import org.springframework.beans.factory.DisposableBean;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -160,6 +163,13 @@ public class JdbcConnectionDestinationHook implements DestinationHook {
 
         public V getValue() {
             return value;
+        }
+    }
+
+    @Override
+    public void close() throws Exception {
+        if (dataSource instanceof Closeable) {
+            ((Closeable) dataSource).close();
         }
     }
 
