@@ -142,7 +142,7 @@ public class JdbcConnectionDestinationHook implements DestinationHook {
     }
 
     private String defaultColumnNameFormat(String column) {
-        return formatAsColumnName(column.toLowerCase());
+        return formatAsColumnName(column);
     }
 
     static class KeyValue<V> {
