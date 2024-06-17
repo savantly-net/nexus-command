@@ -1,0 +1,29 @@
+<h2>Example script to post form data to the API endpoint</h2>
+<h3>The form data is passed in as a JSON object</h3>
+
+<hr />
+
+<h4>javascript</h4>
+<pre>
+var formData = {
+    "name": "John Doe",
+    "email": "example@savantly.net",
+    "message": "This is a test message"
+};
+
+// The API endpoint URL is passed in as a string
+fetch('{{ENDPOINT}}', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(formData),
+})
+.then(response => response.json())
+.then(data => {
+    console.log('Success:', data);
+})
+.catch((error) => {
+    console.error('Error:', error);
+});
+</pre>
