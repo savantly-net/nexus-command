@@ -52,7 +52,7 @@ public class FlowApi {
             return ResponseEntity.ok().build();
         } catch (IllegalArgumentException e) {
             var errBody = Map.of("error", e.getMessage());
-            return ResponseEntity.badRequest().body(errBody).build();
+            return ResponseEntity.badRequest().body(errBody);
         }
     }
     
