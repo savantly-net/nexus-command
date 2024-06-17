@@ -5,6 +5,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import net.savantly.nexus.flow.dom.connections.datasource.DatasourceFactory;
 import net.savantly.nexus.flow.dom.connections.flowHook.FlowDestinationHookFactory;
 import net.savantly.nexus.flow.dom.connections.jdbcConnection.JdbcConnectionDestinationHook;
@@ -13,6 +14,7 @@ import net.savantly.nexus.flow.dom.connections.webhook.WebhookDestinationHook;
 import net.savantly.nexus.flow.dom.connections.webhook.Webhooks;
 
 @RequiredArgsConstructor
+@Log4j2
 public class DestinationHookFactory {
 
     final ObjectMapper objectMapper;
@@ -23,6 +25,7 @@ public class DestinationHookFactory {
     final FlowDestinationHookFactory flowDestinationHookFactory;
 
     public DestinationHook createHook(Destination destination) {
+        log.info("Creating destination hook for: " + destination.getDestinationType());
         switch (destination.getDestinationType()) {
             case JDBC:
                 return getJdbcHook(destination);

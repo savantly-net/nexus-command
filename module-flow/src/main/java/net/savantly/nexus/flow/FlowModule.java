@@ -151,8 +151,8 @@ public class FlowModule implements ModuleWithFixtures {
     }
 
     @Bean
-    public FormSubmissionProxy flowFormSubmissionProxy(FormSubmissionRepository formSubmissionRepository, FormRepository formRepository, ObjectMapper objectMapper) {
-        return new FormSubmissionProxy(formSubmissionRepository, formRepository, objectMapper);
+    public FormSubmissionProxy flowFormSubmissionProxy(FormSubmissionRepository formSubmissionRepository, FormRepository formRepository, ObjectMapper objectMapper, DestinationHookFactory destinationHookFactory) {
+        return new FormSubmissionProxy(formSubmissionRepository, formRepository, objectMapper, destinationHookFactory);
     }
 
 }

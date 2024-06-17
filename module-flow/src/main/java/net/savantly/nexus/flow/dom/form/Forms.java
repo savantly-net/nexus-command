@@ -57,14 +57,6 @@ public class Forms {
         return repository.findById(id);
     }
 
-    @Programmatic
-    public void executeHook(final Form form, final Map<String, Object> payload) {
-        for (var destination : form.getDestinations()) {
-            var destinationHook = destinationHookFactory.createHook(destination);
-            var result = destinationHook.execute(destination, payload, form.getMappings());
-            log.info("hook executed: " + result);
-        }
-    }
 
     @Programmatic
     public void submitForm(final String formId, final Map<String, Object> payload, final String apiKey)
@@ -74,7 +66,6 @@ public class Forms {
         formSubmissionProxy.submitForm(form, payload, apiKey);
 
         log.info("executing hooks for form: " + form.getName());
-        executeHook(form, payload);
 
     }
 
