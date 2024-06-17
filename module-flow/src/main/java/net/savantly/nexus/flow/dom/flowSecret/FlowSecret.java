@@ -86,9 +86,8 @@ public class FlowSecret extends AuditedEntity implements Comparable<FlowSecret> 
     private long version;
 
     @Title
-    @Name
     @Column(length = Name.MAX_LEN, nullable = false)
-    @Property(regexPattern = "^[a-zA-Z0-9_]*$", regexPatternReplacement = "Must be alphanumeric or underscore", maxLength = Name.MAX_LEN)
+    @Property(regexPattern = "^[a-zA-Z0-9_]*$", regexPatternReplacement = "Name must be alphanumeric or underscore", maxLength = Name.MAX_LEN)
     @Getter
     @Setter
     @ToString.Include

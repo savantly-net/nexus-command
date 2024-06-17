@@ -1,5 +1,6 @@
 package net.savantly.nexus.flow.api;
 
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import lombok.RequiredArgsConstructor;
 import net.savantly.nexus.flow.dom.flowDefinition.FlowDefinitions;
@@ -34,6 +37,12 @@ public class FlowApi {
     @PostMapping("/execute/{flowId}")
     public void executeFlow(@PathVariable String flowId, @RequestBody Object payload, @RequestHeader("api-key") String apiKey){
         flowService.executeFlow(flowId, payload, apiKey);
+    }
+
+    @PostMapping("/submit/{formId}")
+    public void submitForm(@PathVariable String formId, @RequestBody Map<String, Object> payload, @RequestHeader("api-key") String
+            apiKey) throws JsonProcessingException{
+        flowService.submitForm(formId, payload, apiKey);
     }
     
 }

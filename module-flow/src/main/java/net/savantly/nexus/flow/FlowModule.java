@@ -41,6 +41,10 @@ import net.savantly.nexus.flow.dom.flowNode.FlowNodeDiscoveryService;
 import net.savantly.nexus.flow.dom.flowNodeSchema.FlowNodeSchemaGenerator;
 import net.savantly.nexus.flow.dom.flowSecret.FlowSecretRepository;
 import net.savantly.nexus.flow.dom.flowSecret.FlowSecrets;
+import net.savantly.nexus.flow.dom.form.FormRepository;
+import net.savantly.nexus.flow.dom.form.FormSubmissionProxy;
+import net.savantly.nexus.flow.dom.form.Forms;
+import net.savantly.nexus.flow.dom.formSubmission.FormSubmissionRepository;
 import net.savantly.nexus.flow.dom.generator.GeneralGenerator;
 import net.savantly.nexus.flow.executor.FlowExecutorFactory;
 import net.savantly.nexus.flow.executor.FlowNodeFactory;
@@ -142,8 +146,13 @@ public class FlowModule implements ModuleWithFixtures {
     }
 
     @Bean
-    public FlowService flowService(FlowDefinitions flowDefinitions, FlowNodeDiscoveryService flowNodeDiscoveryService) {
-        return new FlowService(flowDefinitions, flowNodeDiscoveryService);
+    public FlowService flowService(FlowDefinitions flowDefinitions, FlowNodeDiscoveryService flowNodeDiscoveryService, Forms forms) {
+        return new FlowService(flowDefinitions, flowNodeDiscoveryService, forms);
+    }
+
+    @Bean
+    public FormSubmissionProxy flowFormSubmissionProxy(FormSubmissionRepository formSubmissionRepository, FormRepository formRepository, ObjectMapper objectMapper) {
+        return new FormSubmissionProxy(formSubmissionRepository, formRepository, objectMapper);
     }
 
 }

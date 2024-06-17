@@ -14,6 +14,7 @@ import org.apache.causeway.applib.annotation.PromptStyle;
 import org.apache.causeway.applib.annotation.SemanticsOf;
 import org.apache.causeway.applib.services.repository.RepositoryService;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.inject.Inject;
@@ -35,6 +36,7 @@ public class Forms {
     final FormRepository repository;
     final DestinationHookFactory destinationHookFactory;
     final ObjectMapper objectMapper;
+    final FormSubmissionProxy formSubmissionProxy;
 
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR)
@@ -62,6 +64,16 @@ public class Forms {
             var result = destinationHook.execute(destination, payload, form.getMappings());
             log.info("hook executed: " + result);
         }
+    }
+
+    @Programmatic
+    public void submitForm(final String formId, final Map<String, Object> payload, final String apiKey)
+            throws JsonProcessingException {
+        var form = repository.findById(formId).orElseThrow();
+        formSubmissionProxy.submitForm(form, payload, apiKey);
+
+        executeHook(form, payload);
+
     }
 
 }
