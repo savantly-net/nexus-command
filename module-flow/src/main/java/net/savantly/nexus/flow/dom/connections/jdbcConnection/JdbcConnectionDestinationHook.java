@@ -41,7 +41,7 @@ public class JdbcConnectionDestinationHook implements DestinationHook {
                 var kv = extractKeyValue(new Mapping() {
                     @Override
                     public String getSourcePath() {
-                        return defaultColumnNameFormat(entry.getKey());
+                        return entry.getKey();
                     }
 
                     @Override
