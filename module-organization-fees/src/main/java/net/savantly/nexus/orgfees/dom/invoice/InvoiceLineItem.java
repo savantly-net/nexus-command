@@ -1,4 +1,4 @@
-package net.savantly.nexus.orgfees.dom.onetime;
+package net.savantly.nexus.orgfees.dom.invoice;
 
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -8,11 +8,9 @@ import org.apache.causeway.applib.annotation.Bounding;
 import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.DomainObjectLayout;
 import org.apache.causeway.applib.annotation.Editing;
-import org.apache.causeway.applib.annotation.Navigable;
 import org.apache.causeway.applib.annotation.Property;
 import org.apache.causeway.applib.annotation.PropertyLayout;
 import org.apache.causeway.applib.annotation.Publishing;
-import org.apache.causeway.applib.annotation.Title;
 import org.apache.causeway.applib.annotation.Where;
 import org.apache.causeway.applib.jaxb.PersistentEntityAdapter;
 import org.apache.causeway.persistence.jpa.applib.integration.CausewayEntityListener;
@@ -20,7 +18,8 @@ import org.apache.causeway.persistence.jpa.applib.integration.CausewayEntityList
 import jakarta.inject.Named;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -29,32 +28,29 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
 import net.savantly.nexus.organizations.OrganizationsModule;
-import net.savantly.nexus.organizations.dom.organization.Organization;
-import net.savantly.nexus.products.dom.product.Product;
 
-@Named(OrganizationsModule.NAMESPACE + ".OneTimePurchase")
+@Named(OrganizationsModule.NAMESPACE + ".InvoiceLineItem")
 @jakarta.persistence.Entity
 @jakarta.persistence.Table(schema = OrganizationsModule.SCHEMA)
 @jakarta.persistence.EntityListeners(CausewayEntityListener.class)
 @DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.DISABLED, bounding = Bounding.BOUNDED)
-@DomainObjectLayout(cssClassFa = "money")
+@DomainObjectLayout(cssClassFa = "file-lines", named = "Invoice Line Item")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
-public class OneTimePurchase implements Comparable<OneTimePurchase> {
+public class InvoiceLineItem implements Comparable<InvoiceLineItem> {
 
-
-    public static OneTimePurchase withRequiredFields(String id, Product product, Organization organization) {
-        val entity = new OneTimePurchase();
+    public static InvoiceLineItem withRequiredFields(String id, Invoice invoice) {
+        val entity = new InvoiceLineItem();
         entity.id = id;
-        entity.setProduct(product);
-        entity.setOrganization(organization);
+        entity.invoice = invoice;
+
         return entity;
     }
 
-    public static OneTimePurchase withRequiredFields(Product product, Organization organization) {
+    public static InvoiceLineItem withRequiredFields(Invoice invoice) {
         val id = UUID.randomUUID().toString();
-        return withRequiredFields(id, product, organization);
+        return withRequiredFields(id, invoice);
     }
 
     // *** PROPERTIES ***
@@ -66,55 +62,58 @@ public class OneTimePurchase implements Comparable<OneTimePurchase> {
 
     @jakarta.persistence.Version
     @jakarta.persistence.Column(name = "version", nullable = false)
-    @PropertyLayout(fieldSetId = "metadata", sequence = "999")
+    @PropertyLayout(fieldSetId = "metadata", sequence = "999", hidden = Where.PARENTED_TABLES)
     @Getter
     @Setter
     private long version;
 
-    @Title(sequence = "1", append = " for ")
-    @JoinColumn(name = "product_id", nullable = false)
+    @Getter
     @Property
-    @Getter
-    @Setter
-    @ToString.Include
-    @PropertyLayout(fieldSetId = "name", sequence = "1")
-    private Product product;
-
-    @Title
-    @JoinColumn(name = "organization_id")
-    @Getter
-    @Setter
-    @ToString.Include
-    @PropertyLayout(fieldSetId = "name", sequence = "2", navigable = Navigable.PARENT, hidden = Where.ALL_TABLES)
-    private Organization organization;
-
-    @Column(length = 1000, nullable = true)
-    @PropertyLayout(fieldSetId = "name", sequence = "3")
-    @Getter
-    @Setter
-    private String description;
+    @PropertyLayout(fieldSetId = "identity")
+    @ManyToOne
+    private Invoice invoice;
 
     @Column(name = "purchase_date")
-    @PropertyLayout(fieldSetId = "identity", sequence = "4")
+    @PropertyLayout(fieldSetId = "identity")
     @Getter
     @Setter
     private LocalDate purchaseDate;
 
-    @Column(name = "purchase_quantity")
-    @PropertyLayout(fieldSetId = "identity", sequence = "4")
     @Getter
     @Setter
-    private double quantity;
+    @Property
+    @PropertyLayout(fieldSetId = "identity")
+    private String productName;
 
-    
+    @Getter
+    @Setter
+    @Property
+    @PropertyLayout(fieldSetId = "identity")
+    private String productDescription;
 
-    // *** IMPLEMENTATIONS ****
+    @Getter
+    @Setter
+    @Property
+    @PropertyLayout(fieldSetId = "identity")
+    private String productBillingInterval;
 
-    private final static Comparator<OneTimePurchase> comparator = Comparator.comparing(s -> s.getProduct().getName());
+    @Getter
+    @Setter
+    @Property
+    @PropertyLayout(fieldSetId = "identity")
+    private double productBillingAmount;
+
+    @Getter
+    @Setter
+    @Property
+    @PropertyLayout(fieldSetId = "identity")
+    private double productQuantity;
+
+
+    private final static Comparator<InvoiceLineItem> comparator = Comparator.comparing(s -> s.purchaseDate);
 
     @Override
-    public int compareTo(final OneTimePurchase other) {
+    public int compareTo(final InvoiceLineItem other) {
         return comparator.compare(this, other);
     }
-
 }

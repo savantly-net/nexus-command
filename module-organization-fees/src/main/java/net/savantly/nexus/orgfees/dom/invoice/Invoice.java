@@ -4,32 +4,25 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.UUID;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Transient;
-import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.apache.causeway.applib.annotation.Action;
-import org.apache.causeway.applib.annotation.ActionLayout;
 import org.apache.causeway.applib.annotation.Bounding;
+import org.apache.causeway.applib.annotation.Collection;
 import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.DomainObjectLayout;
 import org.apache.causeway.applib.annotation.Editing;
 import org.apache.causeway.applib.annotation.Navigable;
-import org.apache.causeway.applib.annotation.Property;
 import org.apache.causeway.applib.annotation.PropertyLayout;
 import org.apache.causeway.applib.annotation.Publishing;
 import org.apache.causeway.applib.annotation.Title;
 import org.apache.causeway.applib.annotation.Where;
 import org.apache.causeway.applib.jaxb.PersistentEntityAdapter;
-import org.apache.causeway.applib.services.message.MessageService;
-import org.apache.causeway.applib.services.repository.RepositoryService;
-import org.apache.causeway.applib.services.title.TitleService;
 import org.apache.causeway.persistence.jpa.applib.integration.CausewayEntityListener;
 
+import jakarta.inject.Named;
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,7 +32,6 @@ import lombok.val;
 import net.savantly.nexus.audited.dom.AuditedEntity;
 import net.savantly.nexus.organizations.OrganizationsModule;
 import net.savantly.nexus.organizations.dom.organization.Organization;
-import net.savantly.nexus.products.dom.product.Product;
 
 @Named(OrganizationsModule.NAMESPACE + ".Invoice")
 @jakarta.persistence.Entity
@@ -52,16 +44,6 @@ import net.savantly.nexus.products.dom.product.Product;
 @ToString(onlyExplicitlyIncluded = true)
 public class Invoice extends AuditedEntity implements Comparable<Invoice> {
 
-    @Inject
-    @Transient
-    RepositoryService repositoryService;
-    @Inject
-    @Transient
-    TitleService titleService;
-    @Inject
-    @Transient
-    MessageService messageService;
-
     public static Invoice withRequiredFields(String id, Organization organization, LocalDate startDate, LocalDate endDate) {
         val entity = new Invoice();
         entity.id = id;
@@ -70,8 +52,24 @@ public class Invoice extends AuditedEntity implements Comparable<Invoice> {
     }
 
     public static Invoice withRequiredFields(Organization organization, LocalDate startDate, LocalDate endDate) {
-        val id = UUID.randomUUID().toString();
+        val id = UUID.randomUUID().toString().substring(0, 16);
         return withRequiredFields(id, organization, startDate, endDate);
+    }
+
+    public static Invoice withRequiredFields(MonthlyOrgReport report) {
+        var id = UUID.randomUUID().toString().substring(0, 16);
+        var startDate = LocalDate.of(report.getYear(), report.getMonth().getValue(), 1);
+        var endDate = startDate.plusMonths(1).minusDays(1);
+        var entity = withRequiredFields(id, report.getOrganization(), startDate, endDate);
+
+        report.getLineItems().forEach(li -> {
+            var lineItem = InvoiceLineItem.withRequiredFields(entity);
+            lineItem.setProductBillingAmount(li.getProductBillingAmount());
+            lineItem.setProductName(li.getProductName());
+            lineItem.setProductQuantity(li.getProductQuantity());
+            entity.getLineItems().add(lineItem);
+        });
+        return entity;
     }
 
     // *** PROPERTIES ***
@@ -96,7 +94,7 @@ public class Invoice extends AuditedEntity implements Comparable<Invoice> {
     @PropertyLayout(fieldSetId = "identity", sequence = "2", navigable = Navigable.PARENT, hidden = Where.ALL_TABLES)
     private Organization organization;
 
-    @Column(name = "start_date")
+    @Column(name = "invoice_year")
     @PropertyLayout(fieldSetId = "identity", sequence = "4")
     @Getter
     private LocalDate startDate;
@@ -105,6 +103,13 @@ public class Invoice extends AuditedEntity implements Comparable<Invoice> {
     @PropertyLayout(fieldSetId = "identity", sequence = "5")
     @Getter
     private LocalDate endDate;
+
+    @Collection
+    @Getter
+    @PropertyLayout(fieldSetId = "lineItems", sequence = "1")
+    @OneToOne(mappedBy = "invoice")
+    @JoinColumn(name = "invoice_id")
+    private java.util.SortedSet<InvoiceLineItem> lineItems = new java.util.TreeSet<>();
 
 
     // *** ACTIONS ***

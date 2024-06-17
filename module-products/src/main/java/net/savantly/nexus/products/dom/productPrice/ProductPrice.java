@@ -1,23 +1,21 @@
-package net.savantly.nexus.products.dom.product;
+package net.savantly.nexus.products.dom.productPrice;
 
 import java.time.LocalDate;
 import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
 import org.apache.causeway.applib.annotation.Bounding;
-import org.apache.causeway.applib.annotation.Collection;
-import org.apache.causeway.applib.annotation.CollectionLayout;
 import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.DomainObjectLayout;
 import org.apache.causeway.applib.annotation.Editing;
 import org.apache.causeway.applib.annotation.Property;
 import org.apache.causeway.applib.annotation.PropertyLayout;
 import org.apache.causeway.applib.annotation.Publishing;
+import org.apache.causeway.applib.annotation.SemanticsOf;
 import org.apache.causeway.applib.annotation.Title;
+import org.apache.causeway.applib.annotation.Where;
 import org.apache.causeway.applib.jaxb.PersistentEntityAdapter;
 import org.apache.causeway.applib.services.message.MessageService;
 import org.apache.causeway.applib.services.repository.RepositoryService;
@@ -27,10 +25,8 @@ import org.apache.causeway.persistence.jpa.applib.integration.CausewayEntityList
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Transient;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import lombok.AccessLevel;
@@ -39,21 +35,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
-import net.savantly.nexus.common.types.Name;
 import net.savantly.nexus.products.ProductsModule;
-import net.savantly.nexus.products.dom.billing.BillingIntervalType;
-import net.savantly.nexus.products.dom.productPrice.ProductPrice;
+import net.savantly.nexus.products.dom.product.Product;
 
-@Named(ProductsModule.NAMESPACE + ".Product")
+@Named(ProductsModule.NAMESPACE + ".ProductPrice")
 @jakarta.persistence.Entity
 @jakarta.persistence.Table(schema = ProductsModule.SCHEMA)
 @jakarta.persistence.EntityListeners(CausewayEntityListener.class)
 @DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.DISABLED, bounding = Bounding.BOUNDED)
-@DomainObjectLayout(cssClassFa = "gift")
+@DomainObjectLayout(cssClassFa = "dollar-sign")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
-public class Product implements Comparable<Product> {
+public class ProductPrice implements Comparable<ProductPrice> {
 
     @Inject
     @Transient
@@ -65,18 +59,13 @@ public class Product implements Comparable<Product> {
     @Transient
     MessageService messageService;
 
-    public static Product withRequiredFields(String id, String name, String description, BillingIntervalType billingInterval) {
-        val entity = new Product();
-        entity.id = id;
-        entity.setName(name);
-        entity.setDescription(description);
-        entity.billingInterval = billingInterval;
+    public static ProductPrice withRequiredFields(Product product, double price, LocalDate startDate) {
+        val entity = new ProductPrice();
+        entity.id = UUID.randomUUID().toString();
+        entity.product = product;
+        entity.price = price;
+        entity.startDate = startDate;
         return entity;
-    }
-
-    public static Product withRequiredFields(String name, String description, BillingIntervalType billingInterval) {
-        val id = UUID.randomUUID().toString();
-        return withRequiredFields(id, name, description, billingInterval);
     }
 
     // *** PROPERTIES ***
@@ -88,21 +77,29 @@ public class Product implements Comparable<Product> {
 
     @jakarta.persistence.Version
     @jakarta.persistence.Column(name = "version", nullable = false)
-    @PropertyLayout(fieldSetId = "metadata", sequence = "999")
+    @PropertyLayout(fieldSetId = "metadata", sequence = "999", hidden = Where.PARENTED_TABLES)
     @Getter
     @Setter
     private long version;
 
+    @JoinColumn(name = "product_id", nullable = false)
+    @Getter
+    @Setter
+    private Product product;
+
     @Title
-    @Name
-    @Column(name = "NAME", length = Name.MAX_LEN, nullable = false)
+    @Column(name = "start_date")
+    @PropertyLayout(fieldSetId = "identity", sequence = "1")
+    @Getter
+    @Setter
+    private LocalDate startDate;
+
+    @Column(name = "price", nullable = false)
     @Property
     @Getter
     @Setter
-    @ToString.Include
-    @PropertyLayout(fieldSetId = "identity", sequence = "1")
-    private String name;
-
+    @PropertyLayout(fieldSetId = "identity", sequence = "2")
+    private double price;
 
     @Column(length = 1000, nullable = true)
     @PropertyLayout(fieldSetId = "identity", sequence = "3")
@@ -110,51 +107,28 @@ public class Product implements Comparable<Product> {
     @Setter
     private String description;
 
-
-    @Column(name = "billing_period", nullable = false)
-    @Property
-    @Getter
-    @PropertyLayout(fieldSetId = "identity", sequence = "4")
-    @Enumerated(EnumType.STRING)
-    private BillingIntervalType billingInterval;
-
-    @OneToMany(mappedBy = "product")
-    @Getter
-    @Collection
-    @CollectionLayout(named = "Pricing")
-    private Set<ProductPrice> prices = new HashSet<>();
-
-
     // *** ACTIONS ***
-
-
-    @Action
-    @ActionLayout(named = "Update Name", associateWith = "name")
-    public Product updateName(final String name) {
-        this.name = name;
-        return this;
-    }
 
     @Action
     @ActionLayout(named = "Update Description", associateWith = "description")
-    public Product updateDescription(final String description) {
+    public ProductPrice updateDescription(final String description) {
         this.description = description;
         return this;
     }
 
-    @Action
-    @ActionLayout(named = "Update Billing Interval" , associateWith = "billingInterval")
-    public Product updateBillingInterval(final BillingIntervalType billingInterval) {
-        this.billingInterval = billingInterval;
+    @Action(semantics = SemanticsOf.IDEMPOTENT_ARE_YOU_SURE)
+    @ActionLayout(named = "Update Price", associateWith = "price")
+    public ProductPrice updatePrice(final double price) {
+        this.price = price;
         return this;
     }
 
     // *** IMPLEMENTATIONS ****
 
-    private final static Comparator<Product> comparator = Comparator.comparing(Product::getName);
+    private final static Comparator<ProductPrice> comparator = Comparator.comparing(ProductPrice::getId);
 
     @Override
-    public int compareTo(final Product other) {
+    public int compareTo(final ProductPrice other) {
         return comparator.compare(this, other);
     }
 

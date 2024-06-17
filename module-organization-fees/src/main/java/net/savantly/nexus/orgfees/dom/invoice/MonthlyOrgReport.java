@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.causeway.applib.annotation.Action;
+import org.apache.causeway.applib.annotation.ActionLayout;
 import org.apache.causeway.applib.annotation.Bounding;
 import org.apache.causeway.applib.annotation.Collection;
 import org.apache.causeway.applib.annotation.CollectionLayout;
@@ -39,6 +41,8 @@ import net.savantly.nexus.orgfees.dom.onetime.OneTimePurchase;
 import net.savantly.nexus.orgfees.dom.onetime.OneTimePurchaseRepository;
 import net.savantly.nexus.orgfees.dom.subscription.Subscription;
 import net.savantly.nexus.orgfees.dom.subscription.SubscriptionRepository;
+import net.savantly.nexus.products.dom.product.Product;
+import net.savantly.nexus.products.dom.product.Products;
 
 @DomainObject(nature = Nature.VIEW_MODEL, editing = Editing.DISABLED, bounding = Bounding.BOUNDED)
 @Named(OrganizationsModule.NAMESPACE + ".MonthlyOrgReport")
@@ -51,7 +55,6 @@ import net.savantly.nexus.orgfees.dom.subscription.SubscriptionRepository;
         "organization",
         "year",
         "month",
-        "totalAmount",
 })
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MonthlyOrgReport {
@@ -65,6 +68,11 @@ public class MonthlyOrgReport {
     @Transient
     @XmlTransient
     SubscriptionRepository subscriptionRepository;
+
+    @Inject
+    @Transient
+    @XmlTransient
+    Products products;
 
     public static MonthlyOrgReport withRequiredFields(Organization organization, MonthType month, int year) {
         log.info("Creating MonthlyOrgReport for {} {} {}", organization.getName(), month, year);
@@ -103,12 +111,13 @@ public class MonthlyOrgReport {
     @XmlElement(required = true)
     private int year;
 
-    @Getter
-    @Setter
+    @XmlTransient
+    @Transient
     @Property
     @PropertyLayout(fieldSetId = "identity")
-    @XmlElement(required = true)
-    private double totalAmount;
+    public double getTotalAmount() {
+        return getLineItems().stream().mapToDouble(MonthlyOrgReportItem::getTotalAmount).sum();
+    }
 
     @XmlTransient
     @Transient
@@ -132,21 +141,35 @@ public class MonthlyOrgReport {
     }
 
     private MonthlyOrgReportItem fromOneTimePurchase(OneTimePurchase otp) {
+        double productPrice = calculatePriceFromProduct(otp.getProduct());
+        double exactAmount = productPrice * otp.getQuantity();
+        double roundedTotalAmount = Math.round(exactAmount * 100.0) / 100.0;
+
         return new MonthlyOrgReportItem()
                 .setOrganizationName(organization.getName())
-                .setProductBillingAmount(otp.getProduct().getPrice())
+                .setProductBillingAmount(calculatePriceFromProduct(otp.getProduct()))
                 .setProductBillingInterval("ONE-TIME")
                 .setProductDescription(otp.getProduct().getDescription())
-                .setProductName(otp.getProduct().getName());
+                .setProductName(otp.getProduct().getName())
+                .setProductQuantity(otp.getQuantity())
+                .setTotalAmount(roundedTotalAmount);
     }
 
     private MonthlyOrgReportItem fromSubscription(Subscription s) {
+        double productPrice = calculatePriceFromProduct(s.getProduct());
+        double totalAmount = productPrice * 1;
         return new MonthlyOrgReportItem()
                 .setOrganizationName(organization.getName())
-                .setProductBillingAmount(s.getProduct().getPrice())
+                .setProductBillingAmount(productPrice)
                 .setProductBillingInterval(s.getProduct().getBillingInterval().name())
                 .setProductDescription(s.getProduct().getDescription())
-                .setProductName(s.getProduct().getName());
+                .setProductName(s.getProduct().getName())
+                .setProductQuantity(1)
+                .setTotalAmount(totalAmount);
+    }
+
+    private double calculatePriceFromProduct(Product product) {
+        return products.calculatePriceAtDate(product, LocalDate.of(year, month.getValue(), 1));
     }
 
 }

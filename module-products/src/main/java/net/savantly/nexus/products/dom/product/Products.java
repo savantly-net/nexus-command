@@ -1,5 +1,6 @@
 package net.savantly.nexus.products.dom.product;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.inject.Inject;
@@ -64,6 +65,23 @@ public class Products {
                             .setMaxResults(1);
                     q.getResultList();
                 });
+    }
+
+    public double calculatePriceAtDate(Product product, LocalDate of) {
+        // find all prices for this product
+        // sort the prices by start date
+        // find the price that is active at the given date
+        // return the price
+
+        var prices = product.getPrices().stream()
+            .filter(p -> p.getStartDate().isBefore(of))
+            .sorted((a, b) -> a.getStartDate().compareTo(b.getStartDate()))
+            .toList();
+
+        if (prices.size() > 0) {
+            return prices.get(prices.size() - 1).getPrice();
+        }
+        return 0;
     }
 
 }

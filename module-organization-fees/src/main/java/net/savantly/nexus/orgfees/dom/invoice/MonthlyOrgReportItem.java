@@ -36,7 +36,9 @@ import net.savantly.nexus.organizations.OrganizationsModule;
                 "productName",
                 "productDescription",
                 "productBillingInterval",
-                "productBillingAmount"
+                "productBillingAmount",
+                "productQuantity",
+                "totalAmount"
         }
 )
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -81,4 +83,19 @@ public class MonthlyOrgReportItem {
     @PropertyLayout(fieldSetId = "identity")
     @XmlElement(required = true)
     private double productBillingAmount;
+
+    @Getter
+    @Setter
+    @Property
+    @PropertyLayout(fieldSetId = "identity")
+    @XmlElement(required = true)
+    private double productQuantity;
+
+
+    @Getter
+    @Setter
+    @Property
+    @PropertyLayout(fieldSetId = "identity")
+    @XmlElement(required = true)
+    private double totalAmount;
 }
