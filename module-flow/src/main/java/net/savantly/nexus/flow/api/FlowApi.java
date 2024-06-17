@@ -3,6 +3,7 @@ package net.savantly.nexus.flow.api;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,12 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import net.savantly.nexus.flow.dom.flowDefinition.FlowDefinitions;
 import net.savantly.nexus.flow.dom.flowNode.FlowNodeDescriptor;
 
 @RestController
-@RequestMapping("${nexus.modules.flow.api-path:/api/flow}")
+@RequestMapping("${nexus.modules.flow.api-path:/api/public/flow}")
 @RequiredArgsConstructor
+@Log4j2
 public class FlowApi {
 
     private final FlowService flowService;
@@ -35,14 +38,22 @@ public class FlowApi {
     }
 
     @PostMapping("/execute/{flowId}")
-    public void executeFlow(@PathVariable String flowId, @RequestBody Object payload, @RequestHeader("api-key") String apiKey){
+    public void executeFlow(@PathVariable String flowId, @RequestBody Object payload, @RequestHeader(name = "api-key", required = false) String apiKey){
+        log.info("Requested to execute flow: {}", flowId);
         flowService.executeFlow(flowId, payload, apiKey);
     }
 
     @PostMapping("/submit/{formId}")
-    public void submitForm(@PathVariable String formId, @RequestBody Map<String, Object> payload, @RequestHeader("api-key") String
+    public ResponseEntity submitForm(@PathVariable String formId, @RequestBody Map<String, Object> payload, @RequestHeader(name = "api-key", required = false) String
             apiKey) throws JsonProcessingException{
-        flowService.submitForm(formId, payload, apiKey);
+        log.info("Requested to submit form: {}", formId);
+        try {
+            flowService.submitForm(formId, payload, apiKey);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            var errBody = Map.of("error", e.getMessage());
+            return ResponseEntity.badRequest().body(errBody).build();
+        }
     }
     
 }

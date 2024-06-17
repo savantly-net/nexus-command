@@ -47,7 +47,7 @@ public class Form_showExamples {
         }
 
         // replace the {{ENDPOINT}} with the actual endpoint
-        var endpoint = String.format("https://[nexus-host]/api/flow/submit/%s", object.getId());
+        var endpoint = String.format("https://[nexus-host]/api/public/flow/submit/%s", object.getId());
 
         var markup = Markup.valueOf(exampleText.replace("{{ENDPOINT}}", endpoint));
         return markup;

@@ -70,8 +70,10 @@ public class Forms {
     public void submitForm(final String formId, final Map<String, Object> payload, final String apiKey)
             throws JsonProcessingException {
         var form = repository.findById(formId).orElseThrow();
+        log.info("submitting form: " + form.getName());
         formSubmissionProxy.submitForm(form, payload, apiKey);
 
+        log.info("executing hooks for form: " + form.getName());
         executeHook(form, payload);
 
     }

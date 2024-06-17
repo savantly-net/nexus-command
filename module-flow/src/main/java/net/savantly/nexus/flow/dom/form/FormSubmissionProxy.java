@@ -18,8 +18,13 @@ public class FormSubmissionProxy {
 
     public void submitForm(Form form, Map<String, Object> payload, String apiKey) throws JsonProcessingException {
         
-        if (!form.isPublicForm() && !form.getApiKey().equals(apiKey)) {
-            throw new RuntimeException("Invalid API Key");
+        if (!form.isPublicForm()) {
+            if (form.getApiKey() == null) {
+                throw new IllegalArgumentException("api-key required");
+            }
+            if (!form.getApiKey().equals(apiKey)) {
+                throw new IllegalArgumentException("api-key does not match");
+            }
         }
         var stringPayload = objectMapper.writeValueAsString(payload);
         var submission = FormSubmission.withRequiredArgs(form, stringPayload);
