@@ -2,6 +2,7 @@ package net.savantly.nexus.orgfees.dom.invoice;
 
 import java.time.LocalDate;
 import java.util.Comparator;
+import java.util.Set;
 import java.util.UUID;
 
 import org.apache.causeway.applib.annotation.Bounding;
@@ -18,10 +19,12 @@ import org.apache.causeway.applib.jaxb.PersistentEntityAdapter;
 import org.apache.causeway.persistence.jpa.applib.integration.CausewayEntityListener;
 
 import jakarta.inject.Named;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -48,6 +51,8 @@ public class Invoice extends AuditedEntity implements Comparable<Invoice> {
         val entity = new Invoice();
         entity.id = id;
         entity.setOrganization(organization);
+        entity.startDate = startDate;
+        entity.endDate = endDate;
         return entity;
     }
 
@@ -63,13 +68,19 @@ public class Invoice extends AuditedEntity implements Comparable<Invoice> {
         var entity = withRequiredFields(id, report.getOrganization(), startDate, endDate);
 
         report.getLineItems().forEach(li -> {
-            var lineItem = InvoiceLineItem.withRequiredFields(entity);
+            var lineItem = InvoiceLineItem.withRequiredFields(entity, toLocalDate(li.getProductPurchaseDate()));
             lineItem.setProductBillingAmount(li.getProductBillingAmount());
             lineItem.setProductName(li.getProductName());
             lineItem.setProductQuantity(li.getProductQuantity());
+            lineItem.setProductDescription(li.getProductDescription());
+            lineItem.setTotalAmount(li.getTotalAmount());
             entity.getLineItems().add(lineItem);
         });
         return entity;
+    }
+
+    private static LocalDate toLocalDate(String stringDate) {
+        return LocalDate.parse(stringDate);
     }
 
     // *** PROPERTIES ***
@@ -107,9 +118,14 @@ public class Invoice extends AuditedEntity implements Comparable<Invoice> {
     @Collection
     @Getter
     @PropertyLayout(fieldSetId = "lineItems", sequence = "1")
-    @OneToOne(mappedBy = "invoice")
+    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "invoice_id")
-    private java.util.SortedSet<InvoiceLineItem> lineItems = new java.util.TreeSet<>();
+    private Set<InvoiceLineItem> lineItems = new java.util.TreeSet<>();
+
+    @Transient
+    public double getTotalAmount() {
+        return getLineItems().stream().mapToDouble(InvoiceLineItem::getTotalAmount).sum();
+    }
 
 
     // *** ACTIONS ***

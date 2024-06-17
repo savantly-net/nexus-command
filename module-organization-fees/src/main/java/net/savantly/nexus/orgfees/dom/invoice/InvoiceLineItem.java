@@ -40,17 +40,18 @@ import net.savantly.nexus.organizations.OrganizationsModule;
 @ToString(onlyExplicitlyIncluded = true)
 public class InvoiceLineItem implements Comparable<InvoiceLineItem> {
 
-    public static InvoiceLineItem withRequiredFields(String id, Invoice invoice) {
+    public static InvoiceLineItem withRequiredFields(String id, Invoice invoice, LocalDate purchaseDate) {
         val entity = new InvoiceLineItem();
         entity.id = id;
         entity.invoice = invoice;
+        entity.purchaseDate = purchaseDate;
 
         return entity;
     }
 
-    public static InvoiceLineItem withRequiredFields(Invoice invoice) {
+    public static InvoiceLineItem withRequiredFields(Invoice invoice, LocalDate purchaseDate) {
         val id = UUID.randomUUID().toString();
-        return withRequiredFields(id, invoice);
+        return withRequiredFields(id, invoice, purchaseDate);
     }
 
     // *** PROPERTIES ***
@@ -69,51 +70,66 @@ public class InvoiceLineItem implements Comparable<InvoiceLineItem> {
 
     @Getter
     @Property
-    @PropertyLayout(fieldSetId = "identity")
+    @PropertyLayout(fieldSetId = "identity", hidden = Where.REFERENCES_PARENT)
     @ManyToOne
     private Invoice invoice;
 
     @Column(name = "purchase_date")
-    @PropertyLayout(fieldSetId = "identity")
+    @PropertyLayout(fieldSetId = "identity", sequence = "1")
     @Getter
     @Setter
     private LocalDate purchaseDate;
 
+    @Column(name = "product_name")
     @Getter
     @Setter
     @Property
-    @PropertyLayout(fieldSetId = "identity")
+    @PropertyLayout(fieldSetId = "identity", sequence = "2")
     private String productName;
 
+    @Column(name = "product_description")
     @Getter
     @Setter
     @Property
-    @PropertyLayout(fieldSetId = "identity")
+    @PropertyLayout(fieldSetId = "identity", sequence = "3")
     private String productDescription;
 
+    @Column(name = "product_billing_interval")
     @Getter
     @Setter
     @Property
-    @PropertyLayout(fieldSetId = "identity")
+    @PropertyLayout(fieldSetId = "identity", sequence = "4")
     private String productBillingInterval;
 
+    @Column(name = "product_billing_amount", nullable = false)
     @Getter
     @Setter
     @Property
-    @PropertyLayout(fieldSetId = "identity")
+    @PropertyLayout(fieldSetId = "identity", sequence = "5")
     private double productBillingAmount;
 
+    @Column(name = "product_quantity", nullable = false)
     @Getter
     @Setter
     @Property
-    @PropertyLayout(fieldSetId = "identity")
+    @PropertyLayout(fieldSetId = "identity", sequence = "6")
     private double productQuantity;
+
+    @Column(name = "total_amount", nullable = false)
+    @Getter
+    @Setter
+    @Property
+    @PropertyLayout(fieldSetId = "identity", sequence = "7")
+    private double totalAmount;
 
 
     private final static Comparator<InvoiceLineItem> comparator = Comparator.comparing(s -> s.purchaseDate);
 
     @Override
     public int compareTo(final InvoiceLineItem other) {
+        if (other == null || other.purchaseDate == null) {
+            return 1;
+        }
         return comparator.compare(this, other);
     }
 }

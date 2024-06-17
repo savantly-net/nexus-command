@@ -1,5 +1,7 @@
 package net.savantly.nexus.orgfees.dom.invoice;
 
+import java.time.LocalDate;
+
 import org.apache.causeway.applib.annotation.Bounding;
 import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.DomainObjectLayout;
@@ -38,6 +40,7 @@ import net.savantly.nexus.organizations.OrganizationsModule;
                 "productBillingInterval",
                 "productBillingAmount",
                 "productQuantity",
+                "productPurchaseDate",
                 "totalAmount"
         }
 )
@@ -90,6 +93,13 @@ public class MonthlyOrgReportItem {
     @PropertyLayout(fieldSetId = "identity")
     @XmlElement(required = true)
     private double productQuantity;
+
+    @Getter
+    @Setter
+    @Property
+    @PropertyLayout(fieldSetId = "identity")
+    @XmlElement(required = true)
+    private String productPurchaseDate;
 
 
     @Getter

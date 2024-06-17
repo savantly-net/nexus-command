@@ -27,7 +27,7 @@ public class Organization_invoices {
     @Transient
     InvoiceRepository repository;
 
-    @CollectionLayout(named = "Invoices", describedAs = "Invoices for this organization")
+    @CollectionLayout(named = "Invoices", describedAs = "Invoices for this organization", sequence = "99")
     public Set<Invoice> coll() {
         return repository.findByOrganizationId(organization.getId());
     }

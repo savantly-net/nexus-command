@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.causeway.applib.annotation.Action;
-import org.apache.causeway.applib.annotation.ActionLayout;
 import org.apache.causeway.applib.annotation.Bounding;
 import org.apache.causeway.applib.annotation.Collection;
 import org.apache.causeway.applib.annotation.CollectionLayout;
@@ -152,6 +150,7 @@ public class MonthlyOrgReport {
                 .setProductDescription(otp.getProduct().getDescription())
                 .setProductName(otp.getProduct().getName())
                 .setProductQuantity(otp.getQuantity())
+                .setProductPurchaseDate(otp.getPurchaseDate().toString())
                 .setTotalAmount(roundedTotalAmount);
     }
 
@@ -164,7 +163,8 @@ public class MonthlyOrgReport {
                 .setProductBillingInterval(s.getProduct().getBillingInterval().name())
                 .setProductDescription(s.getProduct().getDescription())
                 .setProductName(s.getProduct().getName())
-                .setProductQuantity(1)
+                .setProductQuantity(1d)
+                .setProductPurchaseDate(s.getStartDate().toString())
                 .setTotalAmount(totalAmount);
     }
 
