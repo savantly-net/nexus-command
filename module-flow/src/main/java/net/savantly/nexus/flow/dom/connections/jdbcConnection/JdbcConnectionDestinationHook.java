@@ -1,5 +1,6 @@
 package net.savantly.nexus.flow.dom.connections.jdbcConnection;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.util.Collection;
 import java.util.List;
@@ -73,7 +74,7 @@ public class JdbcConnectionDestinationHook implements DestinationHook {
                     } else if (String.class.isAssignableFrom(value.getClass())) {
                         preparedStatement.setString(i + 1, (String) value);
                     } else if (isParsableDate(value)) {
-                        preparedStatement.setDate(i + 1, java.sql.Date.valueOf(value.toString()));
+                        preparedStatement.setDate(i + 1, Date.valueOf(value.toString()));
                     } else if (Boolean.class.isAssignableFrom(value.getClass())) {
                         preparedStatement.setBoolean(i + 1, (Boolean) value);
                     } else {
