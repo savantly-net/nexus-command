@@ -33,6 +33,9 @@ public class FormSubmissionProxy {
         var stringPayload = objectMapper.writeValueAsString(payload);
         var submission = FormSubmission.withRequiredArgs(form, stringPayload);
         repository.save(submission);
+
+        payload.put("_form_id", form.getId());
+        payload.put("_submission_id", submission.getId());
         
         var destinations = form.getDestinations();
         log.info("executing form hooks: " + destinations.size());
