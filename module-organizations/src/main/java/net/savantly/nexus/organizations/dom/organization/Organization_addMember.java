@@ -14,6 +14,8 @@ import org.apache.causeway.applib.annotation.PromptStyle;
 import org.apache.causeway.applib.annotation.Publishing;
 import org.apache.causeway.applib.annotation.SemanticsOf;
 
+import net.savantly.nexus.organizations.dom.organizationMember.OrganizationMember;
+import net.savantly.nexus.organizations.dom.organizationMember.OrganizationMemberRole;
 import net.savantly.nexus.organizations.dom.organizationUser.OrganizationUser;
 import net.savantly.nexus.organizations.dom.organizationUser.OrganizationUsers;
 

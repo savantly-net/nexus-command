@@ -24,6 +24,7 @@ import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
 import org.apache.causeway.applib.annotation.Bounding;
 import org.apache.causeway.applib.annotation.Collection;
+import org.apache.causeway.applib.annotation.CollectionLayout;
 import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.DomainObjectLayout;
 import org.apache.causeway.applib.annotation.Editing;
@@ -54,6 +55,7 @@ import net.savantly.nexus.common.types.PhoneNumber;
 import net.savantly.nexus.organizations.OrganizationsModule;
 import net.savantly.nexus.organizations.dom.organizationAddress.OrganizationAddress;
 import net.savantly.nexus.organizations.dom.organizationAddress.OrganizationAddressType;
+import net.savantly.nexus.organizations.dom.organizationMember.OrganizationMember;
 import net.savantly.nexus.organizations.dom.organizationUser.OrganizationUser;
 import net.savantly.nexus.organizations.dom.organizationUser.OrganizationUsers;
 
@@ -182,11 +184,13 @@ public class Organization implements Comparable<Organization>  {
     @Collection
     @Getter @Setter
 	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "organization")
+    @CollectionLayout(named = "Members", sequence = "1")
 	private Set<OrganizationMember> members = new HashSet<>();
 
     @Collection
     @Getter @Setter
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "organization")
+    @CollectionLayout(named = "Addresses", sequence = "2")
     private Set<OrganizationAddress> addresses = new HashSet<>();
 	
 	// *** IMPLEMENTATIONS ****

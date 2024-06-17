@@ -1,4 +1,4 @@
-package net.savantly.nexus.organizations.dom.organization;
+package net.savantly.nexus.organizations.dom.organizationMember;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

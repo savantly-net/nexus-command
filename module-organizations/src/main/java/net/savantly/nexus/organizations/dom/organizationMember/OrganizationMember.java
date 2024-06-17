@@ -1,4 +1,4 @@
-package net.savantly.nexus.organizations.dom.organization;
+package net.savantly.nexus.organizations.dom.organizationMember;
 
 import static org.apache.causeway.applib.annotation.SemanticsOf.NON_IDEMPOTENT_ARE_YOU_SURE;
 
@@ -32,6 +32,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
 import net.savantly.nexus.organizations.OrganizationsModule;
+import net.savantly.nexus.organizations.dom.organization.Organization;
 
 @Named(OrganizationsModule.NAMESPACE + ".OrganizationMember")
 @jakarta.persistence.Entity
