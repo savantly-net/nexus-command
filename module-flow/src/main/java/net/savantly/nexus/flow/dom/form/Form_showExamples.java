@@ -35,7 +35,7 @@ public class Form_showExamples {
     public Markup act() {
 
         // get the example from a file in the classpath
-        var exampleFile = this.getClass().getResourceAsStream("example.md");
+        var exampleFile = this.getClass().getResourceAsStream("example.html");
 
         // get the text from the file
         String exampleText;
