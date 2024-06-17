@@ -18,7 +18,7 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
-@ConditionalOnProperty(prefix = "app.security.oauth2.login", name = "enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = "nexus.security.oauth2.login", name = "enabled", havingValue = "true")
 @RequiredArgsConstructor
 @Import(CausewayModuleExtSecmanDelegatedSpringOauth2.class)
 public class OAuth2LoginConfig {

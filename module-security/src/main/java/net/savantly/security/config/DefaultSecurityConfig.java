@@ -12,10 +12,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@ConfigurationProperties(prefix = "app.security")
+@ConfigurationProperties(prefix = "nexus.security")
 @Configuration
 @RequiredArgsConstructor
-@ConditionalOnProperty(prefix = "app.security", name = "enabled", havingValue = "false", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "nexus.security", name = "enabled", havingValue = "false", matchIfMissing = true)
 public class DefaultSecurityConfig {
 
     private boolean debug = false;

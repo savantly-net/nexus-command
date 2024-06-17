@@ -149,22 +149,21 @@ management:
     health:
       enabled: true
 
-app:
-  security:
-    enabled: false #  disable spring auto-configuration of security
 
 nexus:
+  security:
+    enabled: false #  disable custom security. Basic auth will be used instead
   products.enabled: true
   organizations.enabled: true
   projects.enabled: true
   flow.enabled: true
   franchise.enabled: true
-  web.enabled: true
-  org-web.enabled: true
   org-fees.enabled: true
   security.enabled: true
   audited-entity.enabled: true
   ai.enabled: true
   agents.enabled: true
+  web.enabled: false
+  org-web.enabled: false
   encryption:
     secret: "12312312312312312312312312312312" # don't use this secret in production

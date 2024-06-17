@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @Configuration
-@ConfigurationProperties(prefix = "app.security.oauth2")
+@ConfigurationProperties(prefix = "nexus.security.oauth2")
 public class OauthConfigProperties {
     
     private ResourceServerProperties resourceServer = new ResourceServerProperties();

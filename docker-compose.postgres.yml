@@ -15,7 +15,7 @@ services:
     - nexus.modules.org-web.enabled=true
     - nexus.modules.security.enabled=true
     - nexus.modules.flow.enabled=true
-    - app.security.enabled=false
+    - nexus.security.enabled=false
     - SPRING_PROFILES_ACTIVE=POSTGRESQL
     - SPRING_DATASOURCE_URL=jdbc:postgresql://nexus-postgres:5432/nexus
     - SPRING_DATASOURCE_USERNAME=nexus

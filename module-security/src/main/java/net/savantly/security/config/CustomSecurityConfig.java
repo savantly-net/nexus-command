@@ -26,12 +26,12 @@ import net.savantly.security.preauthenticated.PreAuthConfigProperties;
  * security of the application.
  */
 @Slf4j
-@ConfigurationProperties(prefix = "app.security")
+@ConfigurationProperties(prefix = "nexus.security")
 // @EnableMethodSecurity(prePostEnabled = true)
 @Configuration
 @RequiredArgsConstructor
 @Import({ CausewayModuleExtSpringSecurityOAuth2.class })
-@ConditionalOnProperty(prefix = "app.security", name = "enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = "nexus.security", name = "enabled", havingValue = "true")
 public class CustomSecurityConfig {
 
     private final OauthConfigProperties oauth2;

@@ -17,8 +17,8 @@ services:
     - nexus.modules.org-web.enabled=true
     - nexus.modules.security.enabled=true
     - nexus.modules.flow.enabled=true
-    - app.security.enabled=true
-    - app.security.debug=true
+    - nexus.security.enabled=true
+    - nexus.security.debug=true
     - logging.level.org.apache.causeway.testing=WARN
     - logging.level.org.springframework.boot.autoconfigure.security.oauth2=DEBUG
     - logging.level.org.springframework.security=DEBUG
