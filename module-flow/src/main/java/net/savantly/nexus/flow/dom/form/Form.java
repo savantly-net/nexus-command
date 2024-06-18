@@ -107,32 +107,58 @@ public class Form implements Comparable<Form> {
     @Setter
     private Organization organization;
 
-    @Column(nullable = false)
-    @PropertyLayout(fieldSetId = "identity", sequence = "1.2")
-    @Property(editing = Editing.ENABLED)
-    @Getter
-    @Setter
-    private boolean publicForm;
-
-    @Column(nullable = true)
-    @PropertyLayout(fieldSetId = "identity", sequence = "1.3")
-    @Getter
-    @Setter
-    private String apiKey;
-
-    @Column(nullable = true)
-    @PropertyLayout(fieldSetId = "identity", sequence = "1.4")
-    @Getter
-    @Setter
-    private String recaptchaSecret;
-
-
     @Column(columnDefinition = "text", nullable = true)
     @Property(editing = Editing.ENABLED)
     @PropertyLayout(fieldSetId = "identity", sequence = "1.5", multiLine = 10)
     @Getter
     @Setter
     private String sampleData;
+
+
+
+    @Column(nullable = false)
+    @PropertyLayout(fieldSetId = "access", sequence = "1.2")
+    @Property(editing = Editing.ENABLED)
+    @Getter
+    @Setter
+    private boolean publicForm;
+    
+    @Column(nullable = true)
+    @PropertyLayout(fieldSetId = "access", sequence = "1.3")
+    @Getter
+    @Setter
+    private String apiKey;
+
+    @Column(name = "recaptcha_enabled", nullable = false)
+    @Property(editing = Editing.ENABLED)
+    @PropertyLayout(fieldSetId = "recaptcha", sequence = "2")
+    @Getter
+    @Setter
+    private boolean recaptchaEnabled;
+
+
+
+    @Column(name = "recaptcha_secret", nullable = true)
+    @Property(editing = Editing.ENABLED)
+    @PropertyLayout(fieldSetId = "recaptcha", sequence = "2.3")
+    @Getter
+    @Setter
+    private String recaptchaSecret;
+
+    @Column(name = "recaptcha_action", nullable = true)
+    @Property(editing = Editing.ENABLED)
+    @PropertyLayout(fieldSetId = "recaptcha", sequence = "2.4")
+    @Getter
+    @Setter
+    private String recaptchaAction;
+
+    @Column(name = "recaptcha_threshold", nullable = false)
+    @Property(editing = Editing.ENABLED)
+    @PropertyLayout(fieldSetId = "recaptcha", sequence = "2.5")
+    @Getter
+    @Setter
+    private float recaptchaThreshold = 0.5f;
+
 
 
 

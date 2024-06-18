@@ -10,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import net.savantly.nexus.flow.dom.destinations.DestinationHookFactory;
 import net.savantly.nexus.flow.dom.formSubmission.FormSubmission;
 import net.savantly.nexus.flow.dom.formSubmission.FormSubmissionRepository;
+import net.savantly.nexus.flow.dom.recaptcha.ReCaptchaService;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -19,9 +20,11 @@ public class FormSubmissionProxy {
     final FormRepository formRepository;
     final ObjectMapper objectMapper;
     final DestinationHookFactory destinationHookFactory;
+    final ReCaptchaService reCaptchaService;
 
-    public void submitForm(Form form, Map<String, Object> payload, String apiKey) throws JsonProcessingException {
-        
+    public void submitForm(Form form, Map<String, Object> payload, String apiKey, String recaptcha, String clientIP)
+            throws JsonProcessingException {
+
         if (!form.isPublicForm()) {
             if (form.getApiKey() == null) {
                 throw new IllegalArgumentException("api-key required");
@@ -30,13 +33,22 @@ public class FormSubmissionProxy {
                 throw new IllegalArgumentException("api-key does not match");
             }
         }
+
+        if (form.isRecaptchaEnabled()) {
+            if (recaptcha == null) {
+                throw new IllegalArgumentException("recaptcha required");
+            }
+            reCaptchaService.processResponse(recaptcha, form.getRecaptchaSecret(), form.getRecaptchaThreshold(),
+                    clientIP, form.getRecaptchaAction());
+        }
+
         var stringPayload = objectMapper.writeValueAsString(payload);
         var submission = FormSubmission.withRequiredArgs(form, stringPayload);
         repository.save(submission);
 
         payload.put("_form_id", form.getId());
         payload.put("_submission_id", submission.getId());
-        
+
         var destinations = form.getDestinations();
         log.info("executing form hooks: " + destinations.size());
         for (var destination : destinations) {
@@ -45,9 +57,9 @@ public class FormSubmissionProxy {
                 log.info("hook executed: " + result);
             } catch (Exception e) {
                 log.error("hook failed", e);
-            
+
             }
         }
     }
-    
+
 }

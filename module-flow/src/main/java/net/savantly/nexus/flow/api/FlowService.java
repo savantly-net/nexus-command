@@ -31,8 +31,8 @@ public class FlowService {
         flowDefinitions.executeFlow(flowId, payload, apiKey);
     }
 
-    public void submitForm(String formId, Map<String, Object> payload, String apiKey) throws JsonProcessingException {
-        forms.submitForm(formId, payload, apiKey);
+    public void submitForm(String formId, Map<String, Object> payload, String apiKey, String recaptcha, String clientIP) throws JsonProcessingException {
+        forms.submitForm(formId, payload, apiKey, recaptcha, clientIP);
     }
     
 }

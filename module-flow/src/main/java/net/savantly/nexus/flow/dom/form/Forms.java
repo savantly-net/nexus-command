@@ -57,13 +57,13 @@ public class Forms {
         return repository.findById(id);
     }
 
-
     @Programmatic
-    public void submitForm(final String formId, final Map<String, Object> payload, final String apiKey)
+    public void submitForm(final String formId, final Map<String, Object> payload, final String apiKey,
+            String recaptcha, String clientIP)
             throws JsonProcessingException {
         var form = repository.findById(formId).orElseThrow();
         log.info("submitting form: " + form.getName());
-        formSubmissionProxy.submitForm(form, payload, apiKey);
+        formSubmissionProxy.submitForm(form, payload, apiKey, recaptcha, clientIP);
 
         log.info("executing hooks for form: " + form.getName());
 

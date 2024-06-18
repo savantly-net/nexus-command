@@ -12,6 +12,7 @@ import org.apache.causeway.valuetypes.markdown.applib.CausewayModuleValMarkdownA
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -26,6 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dev.langchain4j.service.AiServices;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.savantly.ai.languagetools.LanguageToolModel;
 import net.savantly.nexus.flow.api.FlowService;
@@ -46,6 +48,8 @@ import net.savantly.nexus.flow.dom.form.FormSubmissionProxy;
 import net.savantly.nexus.flow.dom.form.Forms;
 import net.savantly.nexus.flow.dom.formSubmission.FormSubmissionRepository;
 import net.savantly.nexus.flow.dom.generator.GeneralGenerator;
+import net.savantly.nexus.flow.dom.recaptcha.ReCaptchaAttemptService;
+import net.savantly.nexus.flow.dom.recaptcha.ReCaptchaService;
 import net.savantly.nexus.flow.executor.FlowExecutorFactory;
 import net.savantly.nexus.flow.executor.FlowNodeFactory;
 import net.savantly.nexus.flow.executor.javascript.JavascriptExecutor;
@@ -64,10 +68,16 @@ import net.savantly.nexus.flow.executor.javascript.JavascriptExecutor;
 @EntityScan(basePackageClasses = { FlowModule.class })
 @RequiredArgsConstructor
 @DependsOn("aiConfig")
+@ConfigurationProperties(prefix = "nexus.flow")
 public class FlowModule implements ModuleWithFixtures {
 
     public static final String NAMESPACE = "nexus.flow";
     public static final String SCHEMA = "flow";
+
+
+    @Setter
+    private String recaptchEndpoint = "https://www.google.com/recaptcha/api/siteverify";
+
 
     @Override
     public FixtureScript getTeardownFixture() {
@@ -151,8 +161,18 @@ public class FlowModule implements ModuleWithFixtures {
     }
 
     @Bean
-    public FormSubmissionProxy flowFormSubmissionProxy(FormSubmissionRepository formSubmissionRepository, FormRepository formRepository, ObjectMapper objectMapper, DestinationHookFactory destinationHookFactory) {
-        return new FormSubmissionProxy(formSubmissionRepository, formRepository, objectMapper, destinationHookFactory);
+    public FormSubmissionProxy flowFormSubmissionProxy(FormSubmissionRepository formSubmissionRepository, FormRepository formRepository, ObjectMapper objectMapper, DestinationHookFactory destinationHookFactory, ReCaptchaService recaptchaService) {
+        return new FormSubmissionProxy(formSubmissionRepository, formRepository, objectMapper, destinationHookFactory, recaptchaService);
+    }
+
+    @Bean 
+    public ReCaptchaAttemptService flowReCaptchaAttemptService() {
+        return new ReCaptchaAttemptService();
+    }
+
+    @Bean
+    public ReCaptchaService flowReCaptchaService(ReCaptchaAttemptService reCaptchaAttemptService) {
+        return new ReCaptchaService(reCaptchaAttemptService, recaptchEndpoint);
     }
 
 }
