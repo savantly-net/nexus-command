@@ -1,4 +1,4 @@
-package net.savantly.nexus.flow.dom.connections.webhook;
+package net.savantly.nexus.webhooks.dom.webhook;
 
 public enum WebhookMethodType {
     GET,

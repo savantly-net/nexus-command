@@ -15,6 +15,7 @@ import net.savantly.nexus.flow.dom.destinations.Destination;
 import net.savantly.nexus.flow.dom.destinations.DestinationHook;
 import net.savantly.nexus.flow.dom.destinations.DestinationHookResponse;
 import net.savantly.nexus.flow.dom.formMapping.Mapping;
+import net.savantly.nexus.webhooks.dom.webhook.Webhooks;
 
 @Log4j2
 @RequiredArgsConstructor

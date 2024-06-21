@@ -29,6 +29,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
 import net.savantly.nexus.organizations.OrganizationsModule;
+import net.savantly.nexus.organizations.api.OrganizationEntity;
 import net.savantly.nexus.organizations.dom.organization.Organization;
 import net.savantly.nexus.products.dom.product.Product;
 
@@ -41,7 +42,7 @@ import net.savantly.nexus.products.dom.product.Product;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
-public class OneTimePurchase implements Comparable<OneTimePurchase> {
+public class OneTimePurchase extends OrganizationEntity implements Comparable<OneTimePurchase> {
 
 
     public static OneTimePurchase withRequiredFields(String id, Product product, Organization organization) {
@@ -79,14 +80,6 @@ public class OneTimePurchase implements Comparable<OneTimePurchase> {
     @ToString.Include
     @PropertyLayout(fieldSetId = "name", sequence = "1")
     private Product product;
-
-    @Title
-    @JoinColumn(name = "organization_id")
-    @Getter
-    @Setter
-    @ToString.Include
-    @PropertyLayout(fieldSetId = "name", sequence = "2", navigable = Navigable.PARENT, hidden = Where.ALL_TABLES)
-    private Organization organization;
 
     @Column(length = 1000, nullable = true)
     @PropertyLayout(fieldSetId = "name", sequence = "3")

@@ -7,6 +7,7 @@ import org.apache.causeway.applib.annotation.Bounding;
 import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.DomainObjectLayout;
 import org.apache.causeway.applib.annotation.Editing;
+import org.apache.causeway.applib.annotation.Programmatic;
 import org.apache.causeway.applib.annotation.Property;
 import org.apache.causeway.applib.annotation.PropertyLayout;
 import org.apache.causeway.applib.annotation.Publishing;
@@ -19,6 +20,7 @@ import jakarta.inject.Named;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Transient;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -26,9 +28,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
-import net.savantly.nexus.audited.dom.AuditedEntity;
+import net.savantly.nexus.audited.api.AuditedEntity;
 import net.savantly.nexus.flow.FlowModule;
 import net.savantly.nexus.flow.dom.form.Form;
+import net.savantly.nexus.organizations.api.HasOrganization;
+import net.savantly.nexus.organizations.dom.organization.Organization;
 
 @Named(FlowModule.NAMESPACE + ".FormSubmission")
 @jakarta.persistence.Entity
@@ -39,7 +43,7 @@ import net.savantly.nexus.flow.dom.form.Form;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
-public class FormSubmission extends AuditedEntity implements Comparable<FormSubmission> {
+public class FormSubmission extends AuditedEntity implements Comparable<FormSubmission>, HasOrganization {
 
     public static FormSubmission withRequiredArgs(Form form, String payload) {
         val entity = new FormSubmission();
@@ -88,6 +92,16 @@ public class FormSubmission extends AuditedEntity implements Comparable<FormSubm
     @Override
     public int compareTo(final FormSubmission other) {
         return comparator.compare(this, other);
+    }
+
+    @Transient
+    @Override
+    @Programmatic
+    public Organization getOrganization() {
+        if (form != null) {
+            return form.getOrganization();
+        }
+        return null;
     }
 
     // *** ACTIONS ***

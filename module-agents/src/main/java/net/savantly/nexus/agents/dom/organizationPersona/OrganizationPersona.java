@@ -34,6 +34,7 @@ import lombok.ToString;
 import lombok.val;
 import net.savantly.nexus.agents.AgentsModule;
 import net.savantly.nexus.agents.dom.persona.Persona;
+import net.savantly.nexus.organizations.api.OrganizationEntity;
 import net.savantly.nexus.organizations.dom.organization.Organization;
 
 @Named(AgentsModule.NAMESPACE + ".OrganizationPersona")
@@ -45,7 +46,7 @@ import net.savantly.nexus.organizations.dom.organization.Organization;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
-public class OrganizationPersona implements Comparable<OrganizationPersona> {
+public class OrganizationPersona extends OrganizationEntity implements Comparable<OrganizationPersona> {
 
     @Inject
     @Transient
@@ -89,19 +90,12 @@ public class OrganizationPersona implements Comparable<OrganizationPersona> {
     @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Persona persona;
 
-    @Property
-    @PropertyLayout(fieldSetId = "content", sequence = "4")
-    @JoinColumn(name = "organization_id", nullable = false)
-    @Getter
-    @Setter
-    private Organization organization;
-
     // *** IMPLEMENTATIONS ****
 
     @Title
     @Transient
     public String getTitle() {
-        return String.format("%s - %s", titleService.titleOf(this.organization), titleService.titleOf(this.persona));
+        return String.format("%s - %s", titleService.titleOf(this.getOrganization()), titleService.titleOf(this.persona));
     }
 
     private final static Comparator<OrganizationPersona> comparator = Comparator.comparing(OrganizationPersona::getId);

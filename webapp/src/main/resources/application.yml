@@ -49,6 +49,7 @@ causeway:
       - organizations
       - orgweb
       - franchise
+      - webhooks
       - causewayExtSecman
       - causewayExtAuditTrail
       - causewayExtCommandLog
@@ -163,6 +164,7 @@ nexus:
   audited-entity.enabled: true
   ai.enabled: true
   agents.enabled: true
+  webhooks.enabled: true
   web.enabled: false
   org-web.enabled: false
   encryption:

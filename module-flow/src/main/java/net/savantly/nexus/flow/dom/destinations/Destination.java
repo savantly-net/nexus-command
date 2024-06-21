@@ -11,6 +11,7 @@ import org.apache.causeway.applib.annotation.ActionLayout;
 import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.DomainObjectLayout;
 import org.apache.causeway.applib.annotation.Editing;
+import org.apache.causeway.applib.annotation.Programmatic;
 import org.apache.causeway.applib.annotation.Property;
 import org.apache.causeway.applib.annotation.PropertyLayout;
 import org.apache.causeway.applib.annotation.Publishing;
@@ -38,6 +39,8 @@ import lombok.val;
 import net.savantly.nexus.common.types.Name;
 import net.savantly.nexus.flow.FlowModule;
 import net.savantly.nexus.flow.dom.form.Form;
+import net.savantly.nexus.organizations.api.HasOrganization;
+import net.savantly.nexus.organizations.dom.organization.Organization;
 
 @Named(FlowModule.NAMESPACE + ".Destination")
 @jakarta.persistence.Entity
@@ -48,7 +51,7 @@ import net.savantly.nexus.flow.dom.form.Form;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
-public class Destination implements Comparable<Destination> {
+public class Destination implements Comparable<Destination>, HasOrganization {
 
     @Inject
     @Transient
@@ -144,5 +147,15 @@ public class Destination implements Comparable<Destination> {
         final String title = titleService.titleOf(this);
         messageService.informUser(String.format("'%s' deleted", title));
         repositoryService.removeAndFlush(this);
+    }
+
+    @Programmatic
+    @Transient
+    @Override
+    public Organization getOrganization() {
+        if (form != null) {
+            return form.getOrganization();
+        }
+        return null;
     }
 }

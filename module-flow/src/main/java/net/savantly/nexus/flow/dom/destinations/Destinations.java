@@ -19,9 +19,9 @@ import jakarta.inject.Named;
 import net.savantly.nexus.common.types.KeyValueDto;
 import net.savantly.nexus.flow.FlowModule;
 import net.savantly.nexus.flow.dom.connections.jdbcConnection.JdbcConnectionRepository;
-import net.savantly.nexus.flow.dom.connections.webhook.WebhookRepository;
 import net.savantly.nexus.flow.dom.flowDefinition.FlowDefinitions;
 import net.savantly.nexus.flow.dom.form.Form;
+import net.savantly.nexus.webhooks.dom.webhook.WebhookRepository;
 
 @Named(FlowModule.NAMESPACE + ".Destinations")
 @DomainService
@@ -47,6 +47,11 @@ public class Destinations {
         String destinationId = extractDestinationId(destination);
         DestinationType destinationType = extractDestinationType(destination);
         return repositoryService.persist(Destination.withName(form, destinationType, destinationId, name, collectionName));
+    }
+
+    @MemberSupport
+    public List<Form> choices0Create() {
+        return repositoryService.allInstances(Form.class);
     }
 
     @MemberSupport

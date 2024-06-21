@@ -23,7 +23,7 @@ import net.savantly.nexus.flow.dom.destinations.DestinationHookFactory;
 @Log4j2
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
-@ActionLayout(associateWith = "sampleData", promptStyle = PromptStyle.DIALOG)
+@ActionLayout(associateWith = "destinations", promptStyle = PromptStyle.DIALOG)
 @lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
 public class Form_testDestination {
 

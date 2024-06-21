@@ -62,6 +62,11 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>webhooks-module</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>nexus-audited-entity-module</artifactId>
         </dependency>
 

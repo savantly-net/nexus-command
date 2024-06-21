@@ -11,7 +11,7 @@ import net.savantly.nexus.flow.dom.connections.flowHook.FlowDestinationHookFacto
 import net.savantly.nexus.flow.dom.connections.jdbcConnection.JdbcConnectionDestinationHook;
 import net.savantly.nexus.flow.dom.connections.jdbcConnection.JdbcConnections;
 import net.savantly.nexus.flow.dom.connections.webhook.WebhookDestinationHook;
-import net.savantly.nexus.flow.dom.connections.webhook.Webhooks;
+import net.savantly.nexus.webhooks.dom.webhook.Webhooks;
 
 @RequiredArgsConstructor
 @Log4j2

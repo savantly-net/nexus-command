@@ -55,6 +55,7 @@ import net.savantly.nexus.franchise.dom.groupAddress.FranchiseGroupAddress;
 import net.savantly.nexus.franchise.dom.groupAddress.FranchiseGroupAddressType;
 import net.savantly.nexus.franchise.dom.location.FranchiseLocation;
 import net.savantly.nexus.franchise.dom.location.FranchiseLocations;
+import net.savantly.nexus.organizations.api.OrganizationEntity;
 import net.savantly.nexus.organizations.dom.organization.Organization;
 import net.savantly.nexus.organizations.dom.organizationUser.OrganizationUser;
 
@@ -72,7 +73,7 @@ import net.savantly.nexus.organizations.dom.organizationUser.OrganizationUser;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
-public class FranchiseGroup implements Comparable<FranchiseGroup>  {
+public class FranchiseGroup extends OrganizationEntity implements Comparable<FranchiseGroup>  {
 	
 
     @Inject @Transient RepositoryService repositoryService;
@@ -108,12 +109,6 @@ public class FranchiseGroup implements Comparable<FranchiseGroup>  {
     @Getter @Setter @ToString.Include
     @PropertyLayout(fieldSetId = "name", sequence = "1")
     private String name;
-
-    @JoinColumn(name = "org_id", nullable = false)
-    @Property(editing = Editing.DISABLED)
-    @PropertyLayout(fieldSetId = "name", sequence = "1.1")
-    @Getter @Setter
-    private Organization organization;
 
     @PhoneNumber
     @Column(length = PhoneNumber.MAX_LEN, nullable = true)

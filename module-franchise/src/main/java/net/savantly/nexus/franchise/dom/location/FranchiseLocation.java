@@ -50,6 +50,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
+import net.savantly.nexus.audited.api.AuditedEntity;
 import net.savantly.nexus.common.types.EmailAddress;
 import net.savantly.nexus.common.types.Name;
 import net.savantly.nexus.common.types.Notes;
@@ -74,7 +75,7 @@ import net.savantly.nexus.franchise.dom.market.FranchiseMarket;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
-public class FranchiseLocation implements Comparable<FranchiseLocation>  {
+public class FranchiseLocation extends AuditedEntity implements Comparable<FranchiseLocation>  {
 	
 
     @Inject @Transient RepositoryService repositoryService;

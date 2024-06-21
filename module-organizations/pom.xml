@@ -43,6 +43,11 @@
             <artifactId>web-module</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>nexus-audited-entity-module</artifactId>
+        </dependency>
+
         <!-- CAUSEWAY API -->
 
         <dependency>

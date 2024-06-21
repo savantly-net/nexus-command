@@ -1,11 +1,11 @@
-package net.savantly.nexus.flow.dom.connections.webhook;
+package net.savantly.nexus.webhooks.dom.webhook;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface WebhookRepository extends JpaRepository<Webhook, String> {
 
-    Collection<Webhook> findByOrganizationId(String id);
+    List<Webhook> findByOrganizationId(String id);
 
 }

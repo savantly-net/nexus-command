@@ -10,11 +10,8 @@ import org.apache.causeway.applib.annotation.Collection;
 import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.DomainObjectLayout;
 import org.apache.causeway.applib.annotation.Editing;
-import org.apache.causeway.applib.annotation.Navigable;
 import org.apache.causeway.applib.annotation.PropertyLayout;
 import org.apache.causeway.applib.annotation.Publishing;
-import org.apache.causeway.applib.annotation.Title;
-import org.apache.causeway.applib.annotation.Where;
 import org.apache.causeway.applib.jaxb.PersistentEntityAdapter;
 import org.apache.causeway.persistence.jpa.applib.integration.CausewayEntityListener;
 
@@ -32,8 +29,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
-import net.savantly.nexus.audited.dom.AuditedEntity;
 import net.savantly.nexus.organizations.OrganizationsModule;
+import net.savantly.nexus.organizations.api.OrganizationEntity;
 import net.savantly.nexus.organizations.dom.organization.Organization;
 
 @Named(OrganizationsModule.NAMESPACE + ".Invoice")
@@ -45,7 +42,7 @@ import net.savantly.nexus.organizations.dom.organization.Organization;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
-public class Invoice extends AuditedEntity implements Comparable<Invoice> {
+public class Invoice extends OrganizationEntity implements Comparable<Invoice> {
 
     public static Invoice withRequiredFields(String id, Organization organization, LocalDate startDate, LocalDate endDate) {
         val entity = new Invoice();
@@ -96,14 +93,6 @@ public class Invoice extends AuditedEntity implements Comparable<Invoice> {
     @Getter
     @Setter
     private long version;
-
-    @Title
-    @JoinColumn(name = "organization_id")
-    @Getter
-    @Setter
-    @ToString.Include
-    @PropertyLayout(fieldSetId = "identity", sequence = "2", navigable = Navigable.PARENT, hidden = Where.ALL_TABLES)
-    private Organization organization;
 
     @Column(name = "invoice_year")
     @PropertyLayout(fieldSetId = "identity", sequence = "4")

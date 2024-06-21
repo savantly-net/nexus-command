@@ -12,7 +12,6 @@ import org.apache.causeway.applib.annotation.Bounding;
 import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.DomainObjectLayout;
 import org.apache.causeway.applib.annotation.Editing;
-import org.apache.causeway.applib.annotation.MemberSupport;
 import org.apache.causeway.applib.annotation.Property;
 import org.apache.causeway.applib.annotation.PropertyLayout;
 import org.apache.causeway.applib.annotation.Publishing;
@@ -28,7 +27,6 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Transient;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import lombok.AccessLevel;
@@ -37,9 +35,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
-import net.savantly.nexus.audited.dom.AuditedEntity;
 import net.savantly.nexus.common.types.Name;
 import net.savantly.nexus.flow.FlowModule;
+import net.savantly.nexus.organizations.api.OrganizationEntity;
 import net.savantly.nexus.organizations.dom.organization.Organization;
 
 @Named(FlowModule.NAMESPACE + ".FlowSecret")
@@ -51,7 +49,7 @@ import net.savantly.nexus.organizations.dom.organization.Organization;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
-public class FlowSecret extends AuditedEntity implements Comparable<FlowSecret> {
+public class FlowSecret extends OrganizationEntity implements Comparable<FlowSecret> {
 
     @Inject
     @Transient
@@ -94,13 +92,6 @@ public class FlowSecret extends AuditedEntity implements Comparable<FlowSecret> 
     @PropertyLayout(fieldSetId = "identity", sequence = "1")
     private String name;
 
-
-    @JoinColumn(name = "org_id", nullable = false)
-    @Property
-    @PropertyLayout(fieldSetId = "identity", sequence = "1.1")
-    @Getter
-    @Setter
-    private Organization organization;
 
     @Column(columnDefinition = "text", nullable = true)
     @Property

@@ -27,7 +27,8 @@ import domainapp.webapp.application.services.homepage.dom.HomepageVersionReposit
 @DomainObjectLayout()
 public class HomePageViewModel {
 
-    @ObjectSupport public String title() {
+    @ObjectSupport 
+    public String title() {
         return getLatestPublishedVersion().map(v -> v.getName()).orElse("Homepage");
     }
 

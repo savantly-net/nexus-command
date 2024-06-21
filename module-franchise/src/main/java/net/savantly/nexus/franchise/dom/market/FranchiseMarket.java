@@ -26,6 +26,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
+import net.savantly.nexus.audited.api.AuditedEntity;
 import net.savantly.nexus.common.types.Name;
 import net.savantly.nexus.franchise.FranchiseModule;
 
@@ -40,7 +41,7 @@ import net.savantly.nexus.franchise.FranchiseModule;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
-public class FranchiseMarket {
+public class FranchiseMarket extends AuditedEntity {
 
     @Inject
     @Transient

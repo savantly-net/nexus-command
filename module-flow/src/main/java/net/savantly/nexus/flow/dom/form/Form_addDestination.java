@@ -14,10 +14,10 @@ import org.apache.causeway.applib.services.repository.RepositoryService;
 import jakarta.inject.Inject;
 import lombok.extern.log4j.Log4j2;
 import net.savantly.nexus.flow.dom.connections.jdbcConnection.JdbcConnectionRepository;
-import net.savantly.nexus.flow.dom.connections.webhook.WebhookRepository;
 import net.savantly.nexus.flow.dom.destinations.Destination;
 import net.savantly.nexus.flow.dom.destinations.DestinationType;
 import net.savantly.nexus.flow.dom.flowDefinition.FlowDefinitions;
+import net.savantly.nexus.webhooks.dom.webhook.WebhookRepository;
 
 @Log4j2
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)

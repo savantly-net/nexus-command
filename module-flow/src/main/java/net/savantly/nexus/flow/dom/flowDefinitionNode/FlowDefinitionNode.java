@@ -41,7 +41,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
-import net.savantly.nexus.audited.dom.AuditedEntity;
+import net.savantly.nexus.audited.api.AuditedEntity;
 import net.savantly.nexus.flow.FlowModule;
 import net.savantly.nexus.flow.dom.flowDefinition.FlowDefinition;
 import net.savantly.nexus.flow.dto.FlowNodeDto;

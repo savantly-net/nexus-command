@@ -109,6 +109,11 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
+                <artifactId>webhooks-module</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>franchise-organizations-module</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -117,6 +122,7 @@
                 <artifactId>nexus-security-module</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>franchise-module-tests</artifactId>
@@ -124,6 +130,7 @@
                 <scope>test</scope>
                 <type>test-jar</type>
             </dependency>
+
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>nexus-command-webapp</artifactId>
@@ -181,6 +188,7 @@
         <module>module-franchise</module>
         <module>module-franchise-organizations</module>
         <module>module-franchise-tests</module>
+        <module>module-webhooks</module>
         <module>webapp</module>
     </modules>
 

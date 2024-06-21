@@ -5,7 +5,7 @@
         </bs:col>
     </bs:row>
     <bs:row>
-        <bs:col span="8">
+        <bs:col span="6">
             <bs:row>
                 <bs:col span="12">
                     <bs:tabGroup>
@@ -39,7 +39,7 @@
                 </bs:col>
             </bs:row>
         </bs:col>
-        <bs:col span="4">
+        <bs:col span="6">
             <bs:tabGroup unreferencedCollections="true"/>
         </bs:col>
     </bs:row>

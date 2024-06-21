@@ -4,6 +4,22 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.UUID;
 
+import org.apache.causeway.applib.annotation.Action;
+import org.apache.causeway.applib.annotation.ActionLayout;
+import org.apache.causeway.applib.annotation.Bounding;
+import org.apache.causeway.applib.annotation.DomainObject;
+import org.apache.causeway.applib.annotation.DomainObjectLayout;
+import org.apache.causeway.applib.annotation.Editing;
+import org.apache.causeway.applib.annotation.Property;
+import org.apache.causeway.applib.annotation.PropertyLayout;
+import org.apache.causeway.applib.annotation.Publishing;
+import org.apache.causeway.applib.annotation.Title;
+import org.apache.causeway.applib.jaxb.PersistentEntityAdapter;
+import org.apache.causeway.applib.services.message.MessageService;
+import org.apache.causeway.applib.services.repository.RepositoryService;
+import org.apache.causeway.applib.services.title.TitleService;
+import org.apache.causeway.persistence.jpa.applib.integration.CausewayEntityListener;
+
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.persistence.Column;
@@ -11,33 +27,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Transient;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.apache.causeway.applib.annotation.Action;
-import org.apache.causeway.applib.annotation.ActionLayout;
-import org.apache.causeway.applib.annotation.Bounding;
-import org.apache.causeway.applib.annotation.DomainObject;
-import org.apache.causeway.applib.annotation.DomainObjectLayout;
-import org.apache.causeway.applib.annotation.Editing;
-import org.apache.causeway.applib.annotation.Navigable;
-import org.apache.causeway.applib.annotation.Property;
-import org.apache.causeway.applib.annotation.PropertyLayout;
-import org.apache.causeway.applib.annotation.Publishing;
-import org.apache.causeway.applib.annotation.Title;
-import org.apache.causeway.applib.annotation.Where;
-import org.apache.causeway.applib.jaxb.PersistentEntityAdapter;
-import org.apache.causeway.applib.services.message.MessageService;
-import org.apache.causeway.applib.services.repository.RepositoryService;
-import org.apache.causeway.applib.services.title.TitleService;
-import org.apache.causeway.persistence.jpa.applib.integration.CausewayEntityListener;
-
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
-import net.savantly.nexus.audited.dom.AuditedEntity;
 import net.savantly.nexus.organizations.OrganizationsModule;
+import net.savantly.nexus.organizations.api.OrganizationEntity;
 import net.savantly.nexus.organizations.dom.organization.Organization;
 import net.savantly.nexus.products.dom.product.Product;
 
@@ -50,7 +47,7 @@ import net.savantly.nexus.products.dom.product.Product;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
-public class Subscription extends AuditedEntity implements Comparable<Subscription> {
+public class Subscription extends OrganizationEntity implements Comparable<Subscription> {
 
     @Inject
     @Transient
@@ -97,14 +94,6 @@ public class Subscription extends AuditedEntity implements Comparable<Subscripti
     @ToString.Include
     @PropertyLayout(fieldSetId = "identity", sequence = "1")
     private Product product;
-
-    @Title
-    @JoinColumn(name = "organization_id")
-    @Getter
-    @Setter
-    @ToString.Include
-    @PropertyLayout(fieldSetId = "identity", sequence = "2", navigable = Navigable.PARENT, hidden = Where.ALL_TABLES)
-    private Organization organization;
 
     @Column(length = 1000, nullable = true)
     @PropertyLayout(fieldSetId = "identity", sequence = "3")

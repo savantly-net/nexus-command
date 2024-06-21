@@ -31,7 +31,6 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -45,6 +44,7 @@ import net.savantly.nexus.common.types.Name;
 import net.savantly.nexus.flow.FlowModule;
 import net.savantly.nexus.flow.dom.destinations.Destination;
 import net.savantly.nexus.flow.dom.formMapping.FormMapping;
+import net.savantly.nexus.organizations.api.OrganizationEntity;
 import net.savantly.nexus.organizations.dom.organization.Organization;
 
 @Named(FlowModule.NAMESPACE + ".Form")
@@ -56,7 +56,7 @@ import net.savantly.nexus.organizations.dom.organization.Organization;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
-public class Form implements Comparable<Form> {
+public class Form extends OrganizationEntity implements Comparable<Form> {
 
     @Inject
     @Transient
@@ -99,13 +99,6 @@ public class Form implements Comparable<Form> {
     @ToString.Include
     @PropertyLayout(fieldSetId = "identity", sequence = "1")
     private String name;
-
-    @JoinColumn(name = "org_id", nullable = false)
-    @Property(editing = Editing.DISABLED)
-    @PropertyLayout(fieldSetId = "identity", sequence = "1.1")
-    @Getter
-    @Setter
-    private Organization organization;
 
     @Column(columnDefinition = "text", nullable = true)
     @Property(editing = Editing.ENABLED)

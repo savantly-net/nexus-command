@@ -39,6 +39,15 @@
             </mb3:section>
         </mb3:menu>
         <mb3:menu>
+            <mb3:named>Webhooks</mb3:named>
+            <mb3:section>
+                <mb3:serviceAction objectType="nexus.webhooks.Webhooks" id="listAll">
+                    <cpt:named>List Webhooks</cpt:named>
+                </mb3:serviceAction>
+                <mb3:serviceAction objectType="nexus.webhooks.Webhooks" id="create"></mb3:serviceAction>
+            </mb3:section>
+        </mb3:menu>
+        <mb3:menu>
             <mb3:named>Agents</mb3:named>
             <mb3:section>
                 <mb3:serviceAction objectType="nexus.agents.Personas" id="listAll">

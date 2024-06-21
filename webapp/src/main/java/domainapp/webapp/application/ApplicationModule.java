@@ -25,6 +25,7 @@ import net.savantly.nexus.orgfees.OrganizationFeesModule;
 import net.savantly.nexus.orgweb.OrgWebModule;
 import net.savantly.nexus.products.ProductsModule;
 import net.savantly.nexus.projects.ProjectsModule;
+import net.savantly.nexus.webhooks.WebhooksModule;
 import net.savantly.security.SecurityModule;
 
 @Configuration
@@ -77,6 +78,11 @@ public class ApplicationModule {
     @ConditionalOnProperty(value = "nexus.flow.enabled", havingValue = "true")
     @Import(FlowModule.class)
     static class FlowModuleConfigurer {
+    }
+
+    @ConditionalOnProperty(value = "nexus.webhooks.enabled", havingValue = "true")
+    @Import({ WebhooksModule.class })
+    static class WebHooksModuleConfigurer {
     }
 
     @ConditionalOnProperty(value = "nexus.franchise.enabled", havingValue = "true")

@@ -34,7 +34,6 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -44,7 +43,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
-import net.savantly.nexus.audited.dom.AuditedEntity;
 import net.savantly.nexus.common.types.Name;
 import net.savantly.nexus.flow.FlowModule;
 import net.savantly.nexus.flow.dom.flowDefinitionEdge.FlowDefinitionEdge;
@@ -52,6 +50,7 @@ import net.savantly.nexus.flow.dom.flowDefinitionNode.FlowDefinitionNode;
 import net.savantly.nexus.flow.dto.FlowDto;
 import net.savantly.nexus.flow.dto.FlowEdgeDto;
 import net.savantly.nexus.flow.dto.FlowNodeDto;
+import net.savantly.nexus.organizations.api.OrganizationEntity;
 import net.savantly.nexus.organizations.dom.organization.Organization;
 
 @Named(FlowModule.NAMESPACE + ".FlowDefinition")
@@ -63,7 +62,7 @@ import net.savantly.nexus.organizations.dom.organization.Organization;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
-public class FlowDefinition extends AuditedEntity implements Comparable<FlowDefinition> {
+public class FlowDefinition extends OrganizationEntity implements Comparable<FlowDefinition> {
 
     @Inject
     @Transient
@@ -134,13 +133,6 @@ public class FlowDefinition extends AuditedEntity implements Comparable<FlowDefi
     @ToString.Include
     @PropertyLayout(fieldSetId = "identity", sequence = "1")
     private String name;
-
-    @JoinColumn(name = "org_id", nullable = false)
-    @Property(editing = Editing.DISABLED)
-    @PropertyLayout(fieldSetId = "identity", sequence = "1.1")
-    @Getter
-    @Setter
-    private Organization organization;
 
     @Column(name = "public_access", nullable = false)
     @PropertyLayout(fieldSetId = "identity", sequence = "1.2")

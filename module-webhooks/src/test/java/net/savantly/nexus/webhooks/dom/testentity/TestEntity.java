@@ -1,5 +1,4 @@
-package net.savantly.nexus.flow.dom.connections.webhook;
-
+package net.savantly.nexus.webhooks.dom.testentity;
 
 import static org.apache.causeway.applib.annotation.SemanticsOf.NON_IDEMPOTENT_ARE_YOU_SURE;
 
@@ -11,11 +10,8 @@ import org.apache.causeway.applib.annotation.ActionLayout;
 import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.DomainObjectLayout;
 import org.apache.causeway.applib.annotation.Editing;
-import org.apache.causeway.applib.annotation.Property;
 import org.apache.causeway.applib.annotation.PropertyLayout;
 import org.apache.causeway.applib.annotation.Publishing;
-import org.apache.causeway.applib.annotation.SemanticsOf;
-import org.apache.causeway.applib.annotation.Title;
 import org.apache.causeway.applib.jaxb.PersistentEntityAdapter;
 import org.apache.causeway.applib.services.message.MessageService;
 import org.apache.causeway.applib.services.repository.RepositoryService;
@@ -26,7 +22,6 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Transient;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import lombok.AccessLevel;
@@ -35,20 +30,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
-import net.savantly.nexus.common.types.Name;
-import net.savantly.nexus.flow.FlowModule;
-import net.savantly.nexus.organizations.dom.organization.Organization;
+import net.savantly.nexus.webhooks.WebhooksModule;
 
-@Named(FlowModule.NAMESPACE + ".Webhook")
+@Named(WebhooksModule.NAMESPACE + ".TestEntity")
 @jakarta.persistence.Entity
-@jakarta.persistence.Table(schema = FlowModule.SCHEMA)
+@jakarta.persistence.Table(schema = WebhooksModule.SCHEMA)
 @jakarta.persistence.EntityListeners(CausewayEntityListener.class)
 @DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.ENABLED)
 @DomainObjectLayout(cssClassFa = "hook")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
-public class Webhook implements Comparable<Webhook> {
+public class TestEntity implements Comparable<TestEntity> {
 
     @Inject
     @Transient
@@ -60,11 +53,9 @@ public class Webhook implements Comparable<Webhook> {
     @Transient
     MessageService messageService;
 
-    public static Webhook withName(Organization organization, String name) {
-        val entity = new Webhook();
+    public static TestEntity withRequiredArgs() {
+        val entity = new TestEntity();
         entity.id = UUID.randomUUID().toString();
-        entity.setName(name);
-        entity.setOrganization(organization);
         return entity;
     }
 
@@ -82,58 +73,17 @@ public class Webhook implements Comparable<Webhook> {
     @Setter
     private long version;
 
-    @Title
-    @Name
-    @Column(length = Name.MAX_LEN, nullable = false)
-    @Property(editing = Editing.DISABLED)
-    @Getter
-    @Setter
-    @ToString.Include
-    @PropertyLayout(fieldSetId = "identity", sequence = "1")
-    private String name;
-
-    @JoinColumn(name = "org_id", nullable = false)
-    @Property(editing = Editing.DISABLED)
-    @PropertyLayout(fieldSetId = "identity", sequence = "1.1")
-    @Getter
-    @Setter
-    private Organization organization;
-
-    @Column(length = 255, nullable = true)
-    @PropertyLayout(fieldSetId = "identity", sequence = "1.5")
-    @Getter
-    @Setter
-    private String url = "https://savantly/api/webhook";
-
-    @Column(name = "method", length = 255, nullable = true)
-    @PropertyLayout(fieldSetId = "identity", sequence = "1.6")
-    @Getter
-    @Setter
-    private WebhookMethodType method = WebhookMethodType.POST;
-
-    @Column(columnDefinition="text", nullable = true)
-    @PropertyLayout(fieldSetId = "identity", sequence = "1.7", multiLine = 10)
-    @Getter
-    @Setter
-    private String headers = "Content-type: application/json";
 
     // *** IMPLEMENTATIONS ****
 
-    private final static Comparator<Webhook> comparator = Comparator.comparing(Webhook::getName);
+    private final static Comparator<TestEntity> comparator = Comparator.comparing(TestEntity::getId);
 
     @Override
-    public int compareTo(final Webhook other) {
+    public int compareTo(final TestEntity other) {
         return comparator.compare(this, other);
     }
 
     // *** ACTIONS ***
-
-    @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
-    @ActionLayout(associateWith = "organization", describedAs = "Update which Organization this belongs to")
-    public Webhook updateOrganization(Organization organization) {
-        setOrganization(organization);
-        return this;
-    }
 
     @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
     @ActionLayout(describedAs = "Deletes this object from the persistent datastore")

@@ -1,4 +1,4 @@
-package net.savantly.nexus.audited.dom;
+package net.savantly.nexus.audited.api;
 
 import java.time.ZonedDateTime;
 

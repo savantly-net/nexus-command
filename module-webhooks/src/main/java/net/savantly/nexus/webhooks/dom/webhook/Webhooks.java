@@ -1,4 +1,4 @@
-package net.savantly.nexus.flow.dom.connections.webhook;
+package net.savantly.nexus.webhooks.dom.webhook;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,10 +16,10 @@ import org.apache.causeway.applib.services.repository.RepositoryService;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import net.savantly.nexus.common.types.Name;
-import net.savantly.nexus.flow.FlowModule;
 import net.savantly.nexus.organizations.dom.organization.Organization;
+import net.savantly.nexus.webhooks.WebhooksModule;
 
-@Named(FlowModule.NAMESPACE + ".Webhooks")
+@Named(WebhooksModule.NAMESPACE + ".Webhooks")
 @DomainService
 @DomainServiceLayout()
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
@@ -46,5 +46,11 @@ public class Webhooks {
     public Optional<Webhook> findById(final String id) {
         return repository.findById(id);
     }
+
+    @Programmatic
+    public List<Webhook> findByOrganization(final Organization organization) {
+        return repository.findByOrganizationId(organization.getId());
+    }
+
 
 }
