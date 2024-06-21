@@ -4,6 +4,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
@@ -25,7 +26,6 @@ public class DefaultSecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> {
             web.debug(debug);
-            web.ignoring().requestMatchers("/**");
         };
     }
 
@@ -38,6 +38,7 @@ public class DefaultSecurityConfig {
         }
         log.info("**** Using default security chain ****");
         http.authorizeHttpRequests(authz -> authz.requestMatchers("/**").permitAll());
+        http.formLogin(Customizer.withDefaults());
         return http.build();
     }
 }

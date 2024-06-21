@@ -39,6 +39,11 @@ public class ApplicationModule {
 
     private final NexusAppProperties properties;
 
+
+    @Import(SecurityModule.class)
+    static class SecurityModuleConfigurer {
+    }
+
     @Bean
     @ConditionalOnMissingBean
     public AttributeEncryptor attributeEncryptor() throws Exception {
@@ -50,10 +55,6 @@ public class ApplicationModule {
     static class AuditedEntityModuleConfigurer {
     }
 
-    @ConditionalOnProperty(value = "nexus.security.enabled", havingValue = "true")
-    @Import(SecurityModule.class)
-    static class SecurityModuleConfigurer {
-    }
 
     @ConditionalOnProperty(value = "nexus.organizations.enabled", havingValue = "true")
     @Import(OrganizationsModule.class)

@@ -154,13 +154,13 @@ management:
 nexus:
   security:
     enabled: false #  disable custom security. Basic auth will be used instead
+    debug: true
   products.enabled: true
   organizations.enabled: true
   projects.enabled: true
   flow.enabled: true
   franchise.enabled: true
   org-fees.enabled: true
-  security.enabled: true
   audited-entity.enabled: true
   ai.enabled: true
   agents.enabled: true
