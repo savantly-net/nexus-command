@@ -221,13 +221,13 @@ public class Organization implements Comparable<Organization>  {
     public Organization removeMember(
             @ParameterLayout(named = "User") final OrganizationUser user) {
         members.removeIf(m -> {
-            return m.getUserName().equals(user.getUsername());
+            return m.getUsername().equals(user.getUsername());
         });
         return this;
     }
     @MemberSupport
     public List<String> choices0RemoveMember() {
-        return this.getMembers().stream().map(m -> m.getUserName()).collect(Collectors.toList());
+        return this.getMembers().stream().map(m -> m.getUsername()).collect(Collectors.toList());
     }
     
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)

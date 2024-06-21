@@ -20,13 +20,15 @@ import org.apache.causeway.applib.annotation.Programmatic;
 import org.apache.causeway.applib.annotation.PromptStyle;
 import org.apache.causeway.applib.annotation.SemanticsOf;
 import org.apache.causeway.applib.services.repository.RepositoryService;
+import org.apache.causeway.applib.services.user.UserService;
 import org.apache.causeway.persistence.jpa.applib.services.JpaSupportService;
 
 import net.savantly.nexus.common.types.Name;
 import net.savantly.nexus.organizations.OrganizationsModule;
+import net.savantly.nexus.organizations.dom.organizationUser.OrganizationUsers;
 
 @Named(OrganizationsModule.NAMESPACE + ".Organizations")
-@DomainService(nature = NatureOfService.VIEW)
+@DomainService
 @DomainServiceLayout()
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
@@ -34,6 +36,8 @@ public class Organizations {
     final RepositoryService repositoryService;
     final JpaSupportService jpaSupportService;
     final OrganizationRepository repository;
+    final OrganizationUsers organizationUsers;
+    final UserService userService;
 
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR)
@@ -53,6 +57,12 @@ public class Organizations {
     @ActionLayout()
     public List<Organization> listAll() {
         return repository.findAll();
+    }
+
+    @Action(semantics = SemanticsOf.SAFE)
+    public List<Organization> listMine() {
+        var username = userService.currentUserName().orElseThrow();
+        return organizationUsers.findOrganizationsByUsername(username);
     }
 
     @Action(semantics = SemanticsOf.SAFE)

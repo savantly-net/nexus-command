@@ -17,6 +17,9 @@
                 <mb3:serviceAction objectType="nexus.organizations.Organizations" id="findByName">
                     <cpt:named>Find Organization</cpt:named>
                 </mb3:serviceAction>
+                <mb3:serviceAction objectType="nexus.organizations.Organizations" id="listMine">
+                    <cpt:named>My Organizations</cpt:named>
+                </mb3:serviceAction>
             </mb3:section>
             <mb3:section>
                 <mb3:serviceAction objectType="nexus.organizations.OrganizationMemberRoles" id="create">

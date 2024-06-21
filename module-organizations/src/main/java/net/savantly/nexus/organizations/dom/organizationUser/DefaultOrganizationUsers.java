@@ -1,42 +1,41 @@
-package net.savantly.nexus.command.franchise.organizations.service;
+package net.savantly.nexus.organizations.dom.organizationUser;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
-
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
 
 import org.apache.causeway.applib.annotation.DomainService;
 import org.apache.causeway.applib.annotation.PriorityPrecedence;
 import org.apache.causeway.applib.annotation.Programmatic;
 import org.apache.causeway.extensions.secman.applib.user.dom.ApplicationUserRepository;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import net.savantly.nexus.franchise.FranchiseModule;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import lombok.extern.log4j.Log4j2;
+import net.savantly.nexus.organizations.OrganizationsModule;
 import net.savantly.nexus.organizations.dom.organization.Organization;
-import net.savantly.nexus.organizations.dom.organizationUser.OrganizationUser;
-import net.savantly.nexus.organizations.dom.organizationUser.OrganizationUsers;
+import net.savantly.nexus.organizations.dom.organizationMember.OrganizationMember;
+import net.savantly.nexus.organizations.dom.organizationMember.OrganizationMemberRepository;
 
-@Named(FranchiseModule.NAMESPACE + ".OrganizationUsers")
+@Log4j2
+@Named(OrganizationsModule.NAMESPACE + ".OrganizationUsers")
 @DomainService
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
-public class FranchiseUserService implements OrganizationUsers {
-
-    private static final Logger logger = LogManager.getLogger(FranchiseUserService.class);
+public class DefaultOrganizationUsers implements OrganizationUsers {
 
     final private ApplicationUserRepository applicationUserRepository;
+    final private OrganizationMemberRepository repository;
 
     @Programmatic
     @Override
     public List<OrganizationUser> findAll() {
         var allApplicationUsers = applicationUserRepository.allUsers();
         if (allApplicationUsers == null || allApplicationUsers.isEmpty()) {
-            logger.warn("No users found");
+            log.warn("No users found");
             return null;
         }
-        logger.info("Found {} users", allApplicationUsers.size());
+        log.info("Found {} users", allApplicationUsers.size());
         return allApplicationUsers
                 .stream().map(u -> {
                     var user = new OrganizationUser();
@@ -48,14 +47,15 @@ public class FranchiseUserService implements OrganizationUsers {
 
     @Override
     public boolean isMemberOfOrganization(String username, Organization organization) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isMemberOfOrganization'");
+        Set<OrganizationMember> membership = repository.findByUsernameAndOrganizationId(username, organization.getId());
+        return membership != null && !membership.isEmpty();
     }
 
     @Override
     public List<Organization> findOrganizationsByUsername(String username) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findOrganizationsByUsername'");
+        Set<OrganizationMember> memberships = repository.findByUsername(username);
+        return memberships.stream().map(m -> m.getOrganization()).collect(Collectors.toList());
     }
+
 
 }

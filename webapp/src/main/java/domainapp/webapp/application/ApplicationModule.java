@@ -86,7 +86,7 @@ public class ApplicationModule {
     }
 
     @ConditionalOnProperty(value = "nexus.franchise.enabled", havingValue = "true")
-    @Import({ FranchiseModule.class, FranchiseOrganizationsModule.class })
+    @Import({ FranchiseModule.class })
     static class FranchiseModuleConfigurer {
     }
 

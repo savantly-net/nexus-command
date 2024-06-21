@@ -55,7 +55,7 @@ public class OrganizationMember {
         val entity = new OrganizationMember();
         entity.setOrganization(organization);
         entity.setMemberRole(memberRole);
-        entity.setUserName(username.getUsername());
+        entity.setUsername(username.getUsername());
         return entity;
     }
 
@@ -76,7 +76,7 @@ public class OrganizationMember {
     @Getter @Setter
     @PropertyLayout(fieldSetId = "name", sequence = "1")
     @jakarta.persistence.Column(name = "username", nullable = false)
-	private String userName;
+	private String username;
 
     @Title(sequence = "2", prepend = " as ")
     @Getter @Setter

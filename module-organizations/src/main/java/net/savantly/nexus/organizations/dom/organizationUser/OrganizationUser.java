@@ -15,18 +15,23 @@ import org.apache.causeway.applib.mixins.security.HasUsername;
 import lombok.Getter;
 import lombok.Setter;
 import net.savantly.nexus.organizations.OrganizationsModule;
+import net.savantly.nexus.organizations.api.HasOrganization;
+import net.savantly.nexus.organizations.dom.organization.Organization;
 
 @Named(OrganizationsModule.NAMESPACE + ".OrganizationUser")
 @DomainObject(nature = Nature.VIEW_MODEL)
 @XmlRootElement(name = "OrganizationUser")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Getter @Setter
-public class OrganizationUser implements HasUsername, Comparable<OrganizationUser> {
+public class OrganizationUser implements HasUsername, HasOrganization, Comparable<OrganizationUser> {
     
     private String username;
 
     @Title
     private String displayName;
+
+    private Organization organization;
+
 
     // *** IMPLEMENTATIONS ****
 
@@ -36,5 +41,10 @@ public class OrganizationUser implements HasUsername, Comparable<OrganizationUse
     @Override
     public int compareTo(final OrganizationUser other) {
         return comparator.compare(this, other);
+    }
+
+    @Override
+    public Organization getOrganization() {
+        return organization;
     }
 }

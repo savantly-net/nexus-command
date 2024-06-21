@@ -44,7 +44,7 @@ import net.savantly.nexus.webhooks.dom.webhook.Webhook;
 @jakarta.persistence.Table(schema = WebhooksModule.SCHEMA)
 @jakarta.persistence.EntityListeners(CausewayEntityListener.class)
 @DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.ENABLED)
-@DomainObjectLayout(cssClassFa = "hook")
+@DomainObjectLayout(cssClassFa = "exclamation")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)

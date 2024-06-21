@@ -22,6 +22,7 @@ import org.springframework.test.context.ActiveProfiles;
 import net.savantly.nexus.command.web.NexusCommandWebModule;
 import net.savantly.nexus.franchise.FranchiseModule;
 import net.savantly.nexus.organizations.OrganizationsModule;
+import net.savantly.nexus.organizations.dom.organization.Organization;
 import net.savantly.nexus.organizations.dom.organizationUser.OrganizationUser;
 import net.savantly.nexus.organizations.dom.organizationUser.OrganizationUsers;
 
@@ -61,6 +62,18 @@ public abstract class OrganizationsModuleIntegTestAbstract extends CausewayInteg
                 @Override
                 public List<OrganizationUser> findAll() {
                     return Collections.emptyList();
+                }
+
+                @Override
+                public boolean isMemberOfOrganization(String username, Organization organization) {
+                    // TODO Auto-generated method stub
+                    throw new UnsupportedOperationException("Unimplemented method 'isMemberOfOrganization'");
+                }
+
+                @Override
+                public List<Organization> findOrganizationsByUsername(String username) {
+                    // TODO Auto-generated method stub
+                    throw new UnsupportedOperationException("Unimplemented method 'findOrganizationsByUsername'");
                 }
             };
         }
