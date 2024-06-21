@@ -1,4 +1,7 @@
 causeway:
   persistence:
     schema:
-      auto-create-schemas: "franchise,nc_web"
+      auto-create-schemas: 
+      - CAUSEWAYEXTSECMAN
+      - franchise
+      - nc_web
