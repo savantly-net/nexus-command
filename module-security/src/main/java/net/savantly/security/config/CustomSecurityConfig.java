@@ -1,5 +1,8 @@
 package net.savantly.security.config;
 
+import org.apache.causeway.applib.services.factory.FactoryService;
+import org.apache.causeway.extensions.secman.applib.role.dom.ApplicationRoleRepository;
+import org.apache.causeway.extensions.secman.applib.user.dom.ApplicationUserRepository;
 import org.apache.causeway.extensions.spring.security.oauth2.CausewayModuleExtSpringSecurityOAuth2;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -18,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.savantly.security.jwt.ProxyBearerTokenResolver;
+import net.savantly.security.listener.AppUserAutoCreationService;
 import net.savantly.security.oauth.OauthConfigProperties;
 import net.savantly.security.preauthenticated.PreAuthConfigProperties;
 
@@ -53,6 +57,12 @@ public class CustomSecurityConfig {
 
     @Setter
     private PreAuthConfigProperties preauth = new PreAuthConfigProperties();
+
+    @Bean
+    public AppUserAutoCreationService appUserAutoCreationService(OauthConfigProperties securityConfigProps,
+            ApplicationUserRepository userRepo, ApplicationRoleRepository roleRepo, FactoryService factoryService) {
+        return new AppUserAutoCreationService(securityConfigProps, userRepo, roleRepo, factoryService);
+    }
 
     @Bean
     public SecurityFilterChain clientFilterChain(HttpSecurity http)

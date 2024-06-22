@@ -31,12 +31,12 @@ import domainapp.webapp.properties.NexusAppProperties;
             ApplicationModule.class,
     },
     properties = {
-            "nexus.modules.organizations.enabled=true",
-            "nexus.modules.projects.enabled=true",
-            "nexus.modules.franchise.enabled=true",
-            "nexus.modules.web.enabled=true",
-            "nexus.modules.org-web.enabled=true",
-            "nexus.modules.security.enabled=true",
+            "nexus.organizations.enabled=true",
+            "nexus.projects.enabled=true",
+            "nexus.franchise.enabled=true",
+            "nexus.web.enabled=true",
+            "nexus.org-web.enabled=true",
+            "nexus.security.oauth2.enabled=false",
     }
 )
 @ActiveProfiles({"test"})
