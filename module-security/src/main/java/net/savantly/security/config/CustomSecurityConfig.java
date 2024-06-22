@@ -22,7 +22,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.savantly.security.jwt.ProxyBearerTokenResolver;
 import net.savantly.security.listener.AppUserAutoCreationService;
-import net.savantly.security.oauth.OauthConfigProperties;
+import net.savantly.security.oauth.OAuthConfigProperties;
 import net.savantly.security.preauthenticated.PreAuthConfigProperties;
 
 /**
@@ -38,7 +38,7 @@ import net.savantly.security.preauthenticated.PreAuthConfigProperties;
 @ConditionalOnProperty(prefix = "nexus.security.oauth2", name = "enabled", havingValue = "true")
 public class CustomSecurityConfig {
 
-    private final OauthConfigProperties oauth2;
+    private final OAuthConfigProperties oauth2;
 
     @Setter
     private String bearerTokenHeaderName = "x-forwarded-access-token";
@@ -59,7 +59,7 @@ public class CustomSecurityConfig {
     private PreAuthConfigProperties preauth = new PreAuthConfigProperties();
 
     @Bean
-    public AppUserAutoCreationService appUserAutoCreationService(OauthConfigProperties securityConfigProps,
+    public AppUserAutoCreationService appUserAutoCreationService(OAuthConfigProperties securityConfigProps,
             ApplicationUserRepository userRepo, ApplicationRoleRepository roleRepo, FactoryService factoryService) {
         return new AppUserAutoCreationService(securityConfigProps, userRepo, roleRepo, factoryService);
     }

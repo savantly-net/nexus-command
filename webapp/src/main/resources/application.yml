@@ -163,9 +163,9 @@ nexus:
       roles:
         sticky:
         - application-user # default roles for all users
-        claim: roles # the jwt claim to get the roles from
+        claim: $.roles # the jwt claim to get the roles from
         mappings: # map oauth2 roles to application roles
-          admin: application-admin 
+          admin: causeway-ext-secman-admin
           user: application-user
       login: 
         enabled: false # use this to enable the oauth2 login page

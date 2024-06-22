@@ -3,7 +3,6 @@ package net.savantly.security.listener;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -27,14 +26,15 @@ import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import lombok.extern.log4j.Log4j2;
-import net.savantly.security.oauth.OauthConfigProperties;
+import net.savantly.security.oauth.JsonPathClaimExtractor;
+import net.savantly.security.oauth.OAuthConfigProperties;
 
 @RequiredArgsConstructor(onConstructor_ = { @Inject })
 @Log4j2
 public class AppUserAutoCreationService
         implements ApplicationListener<InteractiveAuthenticationSuccessEvent> {
 
-    private final OauthConfigProperties oauthConfigProperties;
+    private final OAuthConfigProperties oauthConfigProperties;
     private final ApplicationUserRepository applicationUserRepository;
     private final ApplicationRoleRepository applicationRoleRepository;
     private final FactoryService factoryService;
@@ -75,14 +75,16 @@ public class AppUserAutoCreationService
 
             val mappings = oauthConfigProperties.getRoles().getMappings();
             log.debug("role mappings: {}", mappings);
+            val mappedRoles = new HashSet<String>();
             for (String role : allUserRoles) {
                 log.debug("checking role: {}", role);
                 if (mappings.containsKey(role)) {
                     val mappedRole = mappings.get(role);
                     log.debug("mapping role: {} to {}", role, mappedRole);
-                    allUserRoles.add(mappedRole);
+                    mappedRoles.add(mappedRole);
                 }
             }
+            allUserRoles.addAll(mappedRoles);
 
             interactionService.runAnonymous(() -> {
                 Optional<ApplicationUser> userIfAny = applicationUserRepository.findByUsername(username);
@@ -119,10 +121,11 @@ public class AppUserAutoCreationService
     }
 
     private List<String> extractRolesFromClaim(DefaultOidcUser oidcUser) {
-        Map<String, Object> claims = oidcUser.getClaims();
-        if (claims.containsKey(oauthConfigProperties.getRoles().getClaim())) {
-            return oidcUser.getClaimAsStringList(oauthConfigProperties.getRoles().getClaim());
+        var rolesFromClaim = JsonPathClaimExtractor.extractRoles(oidcUser, oauthConfigProperties.getRoles().getClaim());
+        if (Objects.nonNull(rolesFromClaim)) {
+            return rolesFromClaim;
         }
+        log.warn("no roles found in claim: {}", oauthConfigProperties.getRoles().getClaim());
         return List.of();
     }
 

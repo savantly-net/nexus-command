@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @Import(CausewayModuleExtSecmanDelegatedSpringOauth2.class)
 public class OAuth2LoginConfig {
 
-    private final OauthConfigProperties oauthConfigProperties;
+    private final OAuthConfigProperties oauthConfigProperties;
 
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository() {
