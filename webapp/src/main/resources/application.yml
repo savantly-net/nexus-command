@@ -65,14 +65,18 @@ causeway:
           password: "pass"
           role-name: "causeway-ext-secman-admin"
           namespace-permissions:
-            sticky: "public,nc_web"
+            sticky: 
+            - public  
 #            additional: ...
-#        regular-user:
-#          role-name: "causeway-ext-secman-user"
+        regular-user:
+          role-name: "causeway-ext-secman-user"
+          namespace-permissions:
+            sticky:
+            - public
       user-registration:
         initial-roles:
-          - "application-user"
-          - "causeway-ext-secman-user"
+          - application-user
+          - causeway-ext-secman-user
       permissions-evaluation-policy: allow_beats_veto
       user-menu-me-action-policy: hide
 
@@ -153,8 +157,29 @@ management:
 
 nexus:
   security:
-    enabled: false #  disable custom security. Basic auth will be used instead
-    debug: true
+    debug: true # debug web security
+    oauth2:
+      enabled: false # use this to enable general oauth2 security
+      roles:
+        sticky:
+        - application-user # default roles for all users
+        claim: roles # the jwt claim to get the roles from
+        mappings: # map oauth2 roles to application roles
+          admin: application-admin 
+          user: application-user
+      login: 
+        enabled: false # use this to enable the oauth2 login page
+        name: "oauth2"
+        client-id: "nexus"
+        client-secret: "nexus"
+        scope: "openid profile email roles"
+        username-attribute: "preferred_username"
+        issuer-uri: "http://localhost:8080/auth/realms/nexus"
+        authorization-uri: "http://localhost:8080/auth/realms/nexus/protocol/openid-connect/auth"
+        token-uri: "http://localhost:8080/auth/realms/nexus/protocol/openid-connect/token"
+        user-info-uri: "http://localhost:8080/auth/realms/nexus/protocol/openid-connect/userinfo"
+        jwk-set-uri: "http://localhost:8080/auth/realms/nexus/protocol/openid-connect/certs"
+        registration-id: "oauth2"
   products.enabled: true
   organizations.enabled: true
   projects.enabled: true

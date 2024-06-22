@@ -1,5 +1,8 @@
 package net.savantly.security.oauth;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,6 +15,15 @@ public class OauthConfigProperties {
     
     private ResourceServerProperties resourceServer = new ResourceServerProperties();
     private OAuthLogin login = new OAuthLogin();
+
+    private Roles roles = new Roles();
+
+    @Data
+    public static class Roles {
+        private List<String> sticky = List.of("application-user");
+        private String claim = "roles";
+        private Map<String, String> mappings = Map.of("admin", "application-admin");
+    }
 
 
     @Data
@@ -31,7 +43,7 @@ public class OauthConfigProperties {
         private String name = "oauth2";
         private String clientId;
         private String clientSecret;
-        private String scope = "openid profile email";
+        private String scope = "openid profile email roles";
         //private String grantType = "authorization_code";
         private String usernameAttribute = "preferred_username";
 

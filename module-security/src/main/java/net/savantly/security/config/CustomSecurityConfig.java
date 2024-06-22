@@ -31,7 +31,7 @@ import net.savantly.security.preauthenticated.PreAuthConfigProperties;
 @Configuration
 @RequiredArgsConstructor
 @Import({ CausewayModuleExtSpringSecurityOAuth2.class })
-@ConditionalOnProperty(prefix = "nexus.security", name = "enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = "nexus.security.oauth2", name = "enabled", havingValue = "true")
 public class CustomSecurityConfig {
 
     private final OauthConfigProperties oauth2;

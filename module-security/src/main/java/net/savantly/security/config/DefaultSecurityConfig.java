@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @ConfigurationProperties(prefix = "nexus.security")
 @Configuration
 @RequiredArgsConstructor
-@ConditionalOnProperty(prefix = "nexus.security", name = "enabled", havingValue = "false", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "nexus.security.oauth2", name = "enabled", havingValue = "false", matchIfMissing = true)
 public class DefaultSecurityConfig {
 
     private boolean debug = false;
