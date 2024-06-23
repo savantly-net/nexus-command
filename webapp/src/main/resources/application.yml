@@ -3,8 +3,62 @@
 #
 # See also config/application.properties
 #
-causeway:
 
+nexus:
+  security:
+    debug: true # debug web security
+    oauth2:
+      enabled: false # use this to enable general oauth2 security
+      roles:
+        sticky:
+        - application-user # default roles for all users
+        claim: $.roles # the jwt claim to get the roles from
+        mappings: # map oauth2 roles to application roles
+          admin: causeway-ext-secman-admin
+          user: application-user
+      login: 
+        enabled: false # use this to enable the oauth2 login page
+        name: "oauth2"
+        client-id: "nexus"
+        client-secret: "nexus"
+        scope: "openid profile email roles"
+        username-attribute: "preferred_username"
+        issuer-uri: "http://localhost:8080/auth/realms/nexus"
+        authorization-uri: "http://localhost:8080/auth/realms/nexus/protocol/openid-connect/auth"
+        token-uri: "http://localhost:8080/auth/realms/nexus/protocol/openid-connect/token"
+        user-info-uri: "http://localhost:8080/auth/realms/nexus/protocol/openid-connect/userinfo"
+        jwk-set-uri: "http://localhost:8080/auth/realms/nexus/protocol/openid-connect/certs"
+        registration-id: "oauth2"
+  products:
+    enabled: true
+  organizations:
+    enabled: true
+  projects:
+    enabled: true
+  flow:
+    enabled: true
+  franchise:
+    enabled: true
+  org-fees:
+    enabled: true
+  audited-entity:
+    enabled: true
+  ai:
+    enabled: true
+  agents:
+    enabled: true
+  webhooks:
+    enabled: true
+  web:
+    enabled: false
+  org-web:
+    enabled: false
+  encryption:
+    secret: "12312312312312312312312312312312" # don't use this secret in production
+
+  
+
+causeway:
   applib:
     annotation:
       action:
@@ -31,12 +85,10 @@ causeway:
         allow-deprecated: false
         no-params-only: true
         explicit-object-type: true
-
     runtime-services:
       translation:
         po:
           mode: disabled
-
   persistence:
     schema:
       auto-create-schemas:
@@ -56,7 +108,6 @@ causeway:
       - causewayExtExecutionLog
       - causewayExtExecutionOutbox
       - causewayExtSessionLog
-
   extensions:
     secman:
       seed:
@@ -79,7 +130,6 @@ causeway:
           - causeway-ext-secman-user
       permissions-evaluation-policy: allow_beats_veto
       user-menu-me-action-policy: hide
-
   viewer:
     common:
       application:
@@ -98,22 +148,17 @@ causeway:
     wicket:
       css: css/application.css
       js: scripts/application.js
-
       bookmarked-pages:
         show-chooser: true
         show-drop-down-on-footer: true
-
       max-title-length-in-standalone-tables: 0
       max-title-length-in-parented-tables: 0
-
       themes:
         show-chooser: true
-
       table:
         decoration:
           data-tables-net:
             options: "info: false, pagingType: 'numbers'"
-
   testing:
     fixtures:
       fixture-scripts-specification:
@@ -145,7 +190,6 @@ server:
 spring:
   banner:
     location: banner.txt
-
   quartz:
     job-store-type: memory
 
@@ -153,44 +197,3 @@ management:
   endpoint:
     health:
       enabled: true
-
-
-nexus:
-  security:
-    debug: true # debug web security
-    oauth2:
-      enabled: false # use this to enable general oauth2 security
-      roles:
-        sticky:
-        - application-user # default roles for all users
-        claim: $.roles # the jwt claim to get the roles from
-        mappings: # map oauth2 roles to application roles
-          admin: causeway-ext-secman-admin
-          user: application-user
-      login: 
-        enabled: false # use this to enable the oauth2 login page
-        name: "oauth2"
-        client-id: "nexus"
-        client-secret: "nexus"
-        scope: "openid profile email roles"
-        username-attribute: "preferred_username"
-        issuer-uri: "http://localhost:8080/auth/realms/nexus"
-        authorization-uri: "http://localhost:8080/auth/realms/nexus/protocol/openid-connect/auth"
-        token-uri: "http://localhost:8080/auth/realms/nexus/protocol/openid-connect/token"
-        user-info-uri: "http://localhost:8080/auth/realms/nexus/protocol/openid-connect/userinfo"
-        jwk-set-uri: "http://localhost:8080/auth/realms/nexus/protocol/openid-connect/certs"
-        registration-id: "oauth2"
-  products.enabled: true
-  organizations.enabled: true
-  projects.enabled: true
-  flow.enabled: true
-  franchise.enabled: true
-  org-fees.enabled: true
-  audited-entity.enabled: true
-  ai.enabled: true
-  agents.enabled: true
-  webhooks.enabled: true
-  web.enabled: false
-  org-web.enabled: false
-  encryption:
-    secret: "12312312312312312312312312312312" # don't use this secret in production
