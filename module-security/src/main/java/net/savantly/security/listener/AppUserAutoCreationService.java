@@ -121,11 +121,13 @@ public class AppUserAutoCreationService
     }
 
     private List<String> extractRolesFromClaim(DefaultOidcUser oidcUser) {
-        var rolesFromClaim = JsonPathClaimExtractor.extractRoles(oidcUser, oauthConfigProperties.getRoles().getClaim());
+        val roleClaim = oauthConfigProperties.getRoles().getClaim();
+        log.info("extracting roles from claim: {}", roleClaim);
+        var rolesFromClaim = JsonPathClaimExtractor.extractRoles(oidcUser, roleClaim);
         if (Objects.nonNull(rolesFromClaim)) {
             return rolesFromClaim;
         }
-        log.warn("no roles found in claim: {}", oauthConfigProperties.getRoles().getClaim());
+        log.warn("no roles found in claim: {}", roleClaim);
         return List.of();
     }
 
