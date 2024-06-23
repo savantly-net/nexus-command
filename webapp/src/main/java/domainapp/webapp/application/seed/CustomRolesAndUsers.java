@@ -134,9 +134,9 @@ public class CustomRolesAndUsers extends FixtureScript {
 
 
     private static class FlowModuleSuperuserRole extends AbstractRoleAndPermissionsFixtureScript {
-        public static final String ROLE_NAME = "forms-superuser";
+        public static final String ROLE_NAME = "flow-superuser";
         public FlowModuleSuperuserRole() {
-            super(ROLE_NAME, "Permission to use everything in the 'Forms' module");
+            super(ROLE_NAME, "Permission to use everything in the 'Flow' module");
         }
         @Override
         protected void execute(ExecutionContext executionContext) {
