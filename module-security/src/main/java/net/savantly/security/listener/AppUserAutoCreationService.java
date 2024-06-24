@@ -26,14 +26,14 @@ import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import net.savantly.security.oauth.JsonPathClaimExtractor;
-import net.savantly.security.oauth.OAuthConfigProperties;
+import net.savantly.security.oauth.OAuth2ConfigProperties;
 
 @RequiredArgsConstructor(onConstructor_ = { @Inject })
 @Log4j2
 public class AppUserAutoCreationService
         implements ApplicationListener<InteractiveAuthenticationSuccessEvent> {
 
-    private final OAuthConfigProperties oauthConfigProperties;
+    private final OAuth2ConfigProperties oauthConfigProperties;
     private final ApplicationUserRepository applicationUserRepository;
     private final ApplicationRoleRepository applicationRoleRepository;
     private final FactoryService factoryService;

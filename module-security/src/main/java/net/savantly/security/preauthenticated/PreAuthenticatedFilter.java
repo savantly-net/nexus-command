@@ -17,11 +17,11 @@ import net.savantly.security.model.SecurityUserModel;
  * The UserDto object is then used as the principal for authentication.
  */
 @Log4j2
-public class PreAuthFilter extends AbstractPreAuthenticatedProcessingFilter {
+public class PreAuthenticatedFilter extends AbstractPreAuthenticatedProcessingFilter {
 
     private final PreAuthConfigProperties preauth;
 
-    public PreAuthFilter(PreAuthConfigProperties preauth, AuthenticationManager authenticationManager) {
+    public PreAuthenticatedFilter(PreAuthConfigProperties preauth, AuthenticationManager authenticationManager) {
         this.preauth = preauth;
         this.setAuthenticationManager(authenticationManager);
         this.setAuthenticationSuccessHandler((request, response, authentication) -> {
