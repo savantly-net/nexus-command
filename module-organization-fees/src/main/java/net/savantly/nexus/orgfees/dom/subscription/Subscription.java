@@ -127,6 +127,13 @@ public class Subscription extends OrganizationEntity implements Comparable<Subsc
         return this;
     }
 
+    @Action
+    @ActionLayout(associateWith = "description", named = "Set Description")
+    public Subscription setDescription(final String description) {
+        this.description = description;
+        return this;
+    }
+
 
     // *** IMPLEMENTATIONS ****
 
