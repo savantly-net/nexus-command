@@ -5,16 +5,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-import jakarta.persistence.TypedQuery;
-
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
 import org.apache.causeway.applib.annotation.DomainService;
 import org.apache.causeway.applib.annotation.DomainServiceLayout;
 import org.apache.causeway.applib.annotation.MinLength;
-import org.apache.causeway.applib.annotation.NatureOfService;
 import org.apache.causeway.applib.annotation.PriorityPrecedence;
 import org.apache.causeway.applib.annotation.Programmatic;
 import org.apache.causeway.applib.annotation.PromptStyle;
@@ -23,10 +18,15 @@ import org.apache.causeway.applib.services.repository.RepositoryService;
 import org.apache.causeway.applib.services.user.UserService;
 import org.apache.causeway.persistence.jpa.applib.services.JpaSupportService;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.persistence.TypedQuery;
+import lombok.extern.log4j.Log4j2;
 import net.savantly.nexus.common.types.Name;
 import net.savantly.nexus.organizations.OrganizationsModule;
 import net.savantly.nexus.organizations.dom.organizationUser.OrganizationUsers;
 
+@Log4j2
 @Named(OrganizationsModule.NAMESPACE + ".Organizations")
 @DomainService
 @DomainServiceLayout()
@@ -62,7 +62,10 @@ public class Organizations {
     @Action(semantics = SemanticsOf.SAFE)
     public List<Organization> listMine() {
         var username = userService.currentUserName().orElseThrow();
-        return organizationUsers.findOrganizationsByUsername(username);
+        log.info("Finding organizations for user: {}", username);
+        final var list = organizationUsers.findOrganizationsByUsername(username);
+        log.debug("Found {} organizations for user: {}", list.size(), username);
+        return list;
     }
 
     @Action(semantics = SemanticsOf.SAFE)
