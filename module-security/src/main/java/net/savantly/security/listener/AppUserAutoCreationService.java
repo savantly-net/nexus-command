@@ -24,7 +24,6 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 import lombok.extern.log4j.Log4j2;
 import net.savantly.security.oauth.JsonPathClaimExtractor;
 import net.savantly.security.oauth.OAuthConfigProperties;
@@ -48,38 +47,38 @@ public class AppUserAutoCreationService
 
         try {
 
-            val authentication = event.getAuthentication();
-            val principal = authentication.getPrincipal();
+            final var authentication = event.getAuthentication();
+            final var principal = authentication.getPrincipal();
             if (!(principal instanceof OidcUser)) {
                 log.debug("not an instance of OidcUser");
                 return;
             }
 
-            val oidcUser = (DefaultOidcUser) principal;
-            val username = oidcUser.getPreferredUsername();
+            final var oidcUser = (DefaultOidcUser) principal;
+            final var username = oidcUser.getPreferredUsername();
             log.info("upserting delegated account for {}", oidcUser);
             if (Objects.isNull(username) || username.isEmpty()) {
                 log.error("oidcUser has no preferredUsername: " + oidcUser.getSubject());
                 return;
             }
-            val email = oidcUser.getEmail();
-            val givenName = Objects.nonNull(oidcUser.getGivenName()) ? oidcUser.getGivenName() : email;
-            val familyName = Objects.nonNull(oidcUser.getFamilyName()) ? oidcUser.getFamilyName() : "";
-            val rolesFromClaim = extractRolesFromClaim(oidcUser);
-            val rolesFromAuthorities = oidcUser.getAuthorities().stream().map(GrantedAuthority::getAuthority)
+            final var email = oidcUser.getEmail();
+            final var givenName = Objects.nonNull(oidcUser.getGivenName()) ? oidcUser.getGivenName() : email;
+            final var familyName = Objects.nonNull(oidcUser.getFamilyName()) ? oidcUser.getFamilyName() : "";
+            final var rolesFromClaim = extractRolesFromClaim(oidcUser);
+            final var rolesFromAuthorities = oidcUser.getAuthorities().stream().map(GrantedAuthority::getAuthority)
                     .toList();
 
-            val allUserRoles = new HashSet<String>();
+            final var allUserRoles = new HashSet<String>();
             allUserRoles.addAll(rolesFromClaim);
             allUserRoles.addAll(rolesFromAuthorities);
 
-            val mappings = oauthConfigProperties.getRoles().getMappings();
+            final var mappings = oauthConfigProperties.getRoles().getMappings();
             log.debug("role mappings: {}", mappings);
-            val mappedRoles = new HashSet<String>();
+            final var mappedRoles = new HashSet<String>();
             for (String role : allUserRoles) {
                 log.debug("checking role: {}", role);
                 if (mappings.containsKey(role)) {
-                    val mappedRole = mappings.get(role);
+                    final var mappedRole = mappings.get(role);
                     log.debug("mapping role: {} to {}", role, mappedRole);
                     mappedRoles.add(mappedRole);
                 }
@@ -90,7 +89,7 @@ public class AppUserAutoCreationService
                 Optional<ApplicationUser> userIfAny = applicationUserRepository.findByUsername(username);
                 ApplicationUser applicationUser = null;
                 if (userIfAny.isEmpty()) {
-                    val status = ApplicationUserStatus.UNLOCKED; // locking not supported for spring delegated accounts
+                    final var status = ApplicationUserStatus.UNLOCKED; // locking not supported for spring delegated accounts
                     applicationUser = applicationUserRepository.newDelegateUser(username, status);
 
                 } else {
@@ -121,7 +120,7 @@ public class AppUserAutoCreationService
     }
 
     private List<String> extractRolesFromClaim(DefaultOidcUser oidcUser) {
-        val roleClaim = oauthConfigProperties.getRoles().getClaim();
+        final var roleClaim = oauthConfigProperties.getRoles().getClaim();
         log.info("extracting roles from claim: {}", roleClaim);
         var rolesFromClaim = JsonPathClaimExtractor.extractRoles(oidcUser, roleClaim);
         if (Objects.nonNull(rolesFromClaim)) {
