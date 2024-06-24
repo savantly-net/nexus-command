@@ -6,7 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import net.savantly.security.model.SecurityUserModel;
 
 /**
@@ -16,7 +16,7 @@ import net.savantly.security.model.SecurityUserModel;
  * and creating a UserDto object with the extracted information.
  * The UserDto object is then used as the principal for authentication.
  */
-@Slf4j
+@Log4j2
 public class PreAuthFilter extends AbstractPreAuthenticatedProcessingFilter {
 
     private final PreAuthConfigProperties preauth;
