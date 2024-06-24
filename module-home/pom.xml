@@ -62,18 +62,6 @@
             <artifactId>nexus-audited-entity-module</artifactId>
         </dependency>
 
-        <!-- JakartaValidation Module dependencies -->
-        <dependency>
-            <groupId>com.github.victools</groupId>
-            <artifactId>jsonschema-module-jakarta-validation</artifactId>
-            <version>${jsonschema-generator.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.validation</groupId>
-            <artifactId>jakarta.validation-api</artifactId>
-        </dependency>
-        <!-- Spring -->
-
         <!-- CAUSEWAY API -->
 
         <dependency>
