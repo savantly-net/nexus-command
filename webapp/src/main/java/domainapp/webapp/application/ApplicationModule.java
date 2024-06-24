@@ -15,11 +15,11 @@ import net.savantly.ai.AIModule;
 import net.savantly.encryption.jpa.AttributeEncryptor;
 import net.savantly.nexus.agents.AgentsModule;
 import net.savantly.nexus.audited.AuditedEntityModule;
-import net.savantly.nexus.command.franchise.organizations.FranchiseOrganizationsModule;
 import net.savantly.nexus.command.web.NexusCommandWebModule;
 import net.savantly.nexus.command.web.api.WebApiModule;
 import net.savantly.nexus.flow.FlowModule;
 import net.savantly.nexus.franchise.FranchiseModule;
+import net.savantly.nexus.home.HomeModule;
 import net.savantly.nexus.organizations.OrganizationsModule;
 import net.savantly.nexus.orgfees.OrganizationFeesModule;
 import net.savantly.nexus.orgweb.OrgWebModule;
@@ -109,6 +109,11 @@ public class ApplicationModule {
     @ConditionalOnProperty(value = "nexus.org-fees.enabled", havingValue = "true")
     @Import(OrganizationFeesModule.class)
     static class OrgFeesModuleConfigurer {
+    }
+
+    @ConditionalOnProperty(value = "nexus.home.enabled", havingValue = "true")
+    @Import(HomeModule.class)
+    static class HomeModuleConfigurer {
     }
 
 }

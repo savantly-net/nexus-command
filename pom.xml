@@ -122,6 +122,11 @@
                 <artifactId>nexus-security-module</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>home-module</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>${project.groupId}</groupId>
@@ -189,6 +194,7 @@
         <module>module-franchise-organizations</module>
         <module>module-franchise-tests</module>
         <module>module-webhooks</module>
+        <module>module-home</module>
         <module>webapp</module>
     </modules>
 
