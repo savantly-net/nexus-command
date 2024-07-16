@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import net.savantly.nexus.flow.dom.destinations.DestinationHookFactory;
+import net.savantly.nexus.flow.dom.destination.DestinationHookFactory;
 import net.savantly.nexus.flow.dom.formSubmission.FormSubmissions;
 import net.savantly.nexus.flow.dom.recaptcha.ReCaptchaService;
 

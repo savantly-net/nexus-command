@@ -1,4 +1,4 @@
-package net.savantly.nexus.flow.dom.destinations;
+package net.savantly.nexus.flow.dom.destination;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +19,7 @@ import jakarta.inject.Named;
 import net.savantly.nexus.common.types.KeyValueDto;
 import net.savantly.nexus.flow.FlowModule;
 import net.savantly.nexus.flow.dom.connections.jdbcConnection.JdbcConnectionRepository;
+import net.savantly.nexus.flow.dom.emailTarget.EmailTargets;
 import net.savantly.nexus.flow.dom.flowDefinition.FlowDefinitions;
 import net.savantly.nexus.flow.dom.form.Form;
 import net.savantly.nexus.webhooks.dom.webhook.WebhookRepository;
@@ -34,7 +35,8 @@ public class Destinations {
 
     final WebhookRepository webhookRepository;
     final JdbcConnectionRepository jdbcConnectionRepository;
-    final FlowDefinitions   flowDefinitions;
+    final FlowDefinitions flowDefinitions;
+    final EmailTargets emailTargets;
 
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR)
@@ -46,7 +48,8 @@ public class Destinations {
 
         String destinationId = extractDestinationId(destination);
         DestinationType destinationType = extractDestinationType(destination);
-        return repositoryService.persist(Destination.withName(form, destinationType, destinationId, name, collectionName));
+        return repositoryService
+                .persist(Destination.withName(form, destinationType, destinationId, name, collectionName));
     }
 
     @MemberSupport
@@ -62,16 +65,20 @@ public class Destinations {
         var allJdbcConnections = webhookRepository.findByOrganizationId(org.getId()).stream()
                 .map(d -> new KeyValueDto(d.getName(), formatDestinationValue(DestinationType.JDBC, d.getId())))
                 .toList();
-        
+
         var allWebhooks = jdbcConnectionRepository.findByOrganizationId(org.getId()).stream()
                 .map(d -> new KeyValueDto(d.getName(), formatDestinationValue(DestinationType.WEBHOOK, d.getId())))
                 .toList();
-        
+
         var allFlows = flowDefinitions.findByOrganizationId(org.getId()).stream()
                 .map(d -> new KeyValueDto(d.getName(), formatDestinationValue(DestinationType.FLOW, d.getId())))
-                .toList(); 
+                .toList();
 
-        var allInstances = List.of(allJdbcConnections, allWebhooks, allFlows).stream()
+        var allEmailTargets = emailTargets.findByOrganizationId(org.getId()).stream()
+                .map(d -> new KeyValueDto(d.getName(), formatDestinationValue(DestinationType.EMAIL, d.getId())))
+                .toList();
+
+        var allInstances = List.of(allJdbcConnections, allWebhooks, allFlows, allEmailTargets).stream()
                 .flatMap(List::stream)
                 .toList();
         return allInstances;

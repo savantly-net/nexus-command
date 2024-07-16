@@ -8,13 +8,13 @@ import com.zaxxer.hikari.HikariDataSource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import net.savantly.nexus.flow.dom.connections.jdbcConnection.JdbcConnection;
-import net.savantly.nexus.flow.dom.flowSecret.FlowSecrets;
+import net.savantly.nexus.organizations.dom.organizationSecret.OrganizationSecrets;
 
 @Log4j2
 @RequiredArgsConstructor
 public class DatasourceFactory {
 
-    private final FlowSecrets flowSecrets;
+    private final OrganizationSecrets flowSecrets;
 
     public DataSource createFromJdbcConnection(JdbcConnection jdbcConnection) {
         log.info("creating datasource for url: {}", jdbcConnection.getJdbcUrl());

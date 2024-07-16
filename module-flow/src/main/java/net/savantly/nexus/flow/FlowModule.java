@@ -1,5 +1,6 @@
 package net.savantly.nexus.flow;
 
+import org.apache.causeway.applib.services.email.EmailService;
 import org.apache.causeway.applib.services.repository.RepositoryService;
 import org.apache.causeway.extensions.fullcalendar.applib.CausewayModuleExtFullCalendarApplib;
 import org.apache.causeway.extensions.pdfjs.applib.CausewayModuleExtPdfjsApplib;
@@ -20,6 +21,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.caoccao.javet.interop.engine.IJavetEnginePool;
@@ -34,14 +36,15 @@ import net.savantly.nexus.flow.api.FlowService;
 import net.savantly.nexus.flow.dom.connections.datasource.DatasourceFactory;
 import net.savantly.nexus.flow.dom.connections.flowHook.FlowDestinationHookFactory;
 import net.savantly.nexus.flow.dom.connections.jdbcConnection.JdbcConnections;
-import net.savantly.nexus.flow.dom.destinations.DestinationHookFactory;
+import net.savantly.nexus.flow.dom.destination.DestinationHookFactory;
+import net.savantly.nexus.flow.dom.emailTarget.EmailDestinationHookFactory;
+import net.savantly.nexus.flow.dom.emailTarget.EmailTargets;
+import net.savantly.nexus.flow.dom.flowContext.FlowContextFactory;
 import net.savantly.nexus.flow.dom.flowDefinition.FlowDefinitionExecutionProxy;
 import net.savantly.nexus.flow.dom.flowDefinition.FlowDefinitionRepository;
 import net.savantly.nexus.flow.dom.flowDefinition.FlowDefinitions;
 import net.savantly.nexus.flow.dom.flowNode.FlowNodeDiscoveryService;
 import net.savantly.nexus.flow.dom.flowNodeSchema.FlowNodeSchemaGenerator;
-import net.savantly.nexus.flow.dom.flowSecret.FlowSecretRepository;
-import net.savantly.nexus.flow.dom.flowSecret.FlowSecrets;
 import net.savantly.nexus.flow.dom.form.FormRepository;
 import net.savantly.nexus.flow.dom.form.FormSubmissionProxy;
 import net.savantly.nexus.flow.dom.form.Forms;
@@ -52,6 +55,8 @@ import net.savantly.nexus.flow.dom.recaptcha.ReCaptchaService;
 import net.savantly.nexus.flow.executor.FlowExecutorFactory;
 import net.savantly.nexus.flow.executor.FlowNodeFactory;
 import net.savantly.nexus.flow.executor.javascript.JavascriptExecutor;
+import net.savantly.nexus.organizations.dom.organizationSecret.OrganizationSecretRepository;
+import net.savantly.nexus.organizations.dom.organizationSecret.OrganizationSecrets;
 import net.savantly.nexus.webhooks.dom.webhook.Webhooks;
 
 @Configuration
@@ -74,10 +79,8 @@ public class FlowModule implements ModuleWithFixtures {
     public static final String NAMESPACE = "nexus.flow";
     public static final String SCHEMA = "flow";
 
-
     @Setter
     private String recaptchEndpoint = "https://www.google.com/recaptcha/api/siteverify";
-
 
     @Override
     public FixtureScript getTeardownFixture() {
@@ -88,7 +91,6 @@ public class FlowModule implements ModuleWithFixtures {
             }
         };
     }
-    
 
     @Bean
     @Primary
@@ -117,19 +119,21 @@ public class FlowModule implements ModuleWithFixtures {
     @Bean
     public DestinationHookFactory flow_destinationHookFactory(ObjectMapper objectMapper,
             DatasourceFactory datasourceFactory, JdbcConnections jdbcConnections, Webhooks webhooks,
-            RestTemplateBuilder restTemplateBuilder, FlowDestinationHookFactory flowDestinationHookFactory) {
+            RestTemplateBuilder restTemplateBuilder, FlowDestinationHookFactory flowDestinationHookFactory,
+            EmailDestinationHookFactory emailDestinationHookFactory) {
         return new DestinationHookFactory(objectMapper, datasourceFactory, jdbcConnections, webhooks,
-                restTemplateBuilder, flowDestinationHookFactory);
+                restTemplateBuilder, flowDestinationHookFactory, emailDestinationHookFactory);
     }
 
     @Bean
-    public DatasourceFactory flow_datasourceFactory(FlowSecrets flowSecrets) {
+    public DatasourceFactory flow_datasourceFactory(OrganizationSecrets flowSecrets) {
         return new DatasourceFactory(flowSecrets);
     }
 
     @Bean
+    @Scope(scopeName = "prototype")
     public JavascriptExecutor flow_javascriptExecutor(IJavetEnginePool javetEnginePool) {
-        return new JavascriptExecutor(javetEnginePool);
+        return new JavascriptExecutor(() -> javetEnginePool);
     }
 
     @Bean
@@ -148,24 +152,33 @@ public class FlowModule implements ModuleWithFixtures {
     }
 
     @Bean
-    public FlowDefinitionExecutionProxy flow_flowDefinitionExecutionProxy(FlowExecutorFactory flowExecutorFactory,
-            FlowDefinitionRepository flowDefinitionRepository, ObjectMapper objectMapper,
-            RepositoryService repositoryService, FlowSecretRepository secretRepository) {
-        return new FlowDefinitionExecutionProxy(flowExecutorFactory, flowDefinitionRepository, objectMapper,
-                repositoryService, secretRepository);
+    public FlowContextFactory flow_flowContextFactory(OrganizationSecrets flowSecrets) {
+        return new FlowContextFactory(flowSecrets);
     }
 
     @Bean
-    public FlowService flow_flowService(FlowDefinitions flowDefinitions, FlowNodeDiscoveryService flowNodeDiscoveryService, Forms forms) {
+    public FlowDefinitionExecutionProxy flow_flowDefinitionExecutionProxy(FlowExecutorFactory flowExecutorFactory,
+            FlowDefinitionRepository flowDefinitionRepository, ObjectMapper objectMapper,
+            RepositoryService repositoryService, OrganizationSecretRepository secretRepository, FlowContextFactory flowContextFactory) {
+        return new FlowDefinitionExecutionProxy(flowExecutorFactory, flowDefinitionRepository, objectMapper,
+                repositoryService, flowContextFactory);
+    }
+
+    @Bean
+    public FlowService flow_flowService(FlowDefinitions flowDefinitions,
+            FlowNodeDiscoveryService flowNodeDiscoveryService, Forms forms) {
         return new FlowService(flowDefinitions, flowNodeDiscoveryService, forms);
     }
 
     @Bean
-    public FormSubmissionProxy flow_formSubmissionProxy(FormSubmissions formSubmissions, FormRepository formRepository, ObjectMapper objectMapper, DestinationHookFactory destinationHookFactory, ReCaptchaService recaptchaService) {
-        return new FormSubmissionProxy(formSubmissions, formRepository, objectMapper, destinationHookFactory, recaptchaService);
+    public FormSubmissionProxy flow_formSubmissionProxy(FormSubmissions formSubmissions, FormRepository formRepository,
+            ObjectMapper objectMapper, DestinationHookFactory destinationHookFactory,
+            ReCaptchaService recaptchaService) {
+        return new FormSubmissionProxy(formSubmissions, formRepository, objectMapper, destinationHookFactory,
+                recaptchaService);
     }
 
-    @Bean 
+    @Bean
     public ReCaptchaAttemptService flow_reCaptchaAttemptService() {
         return new ReCaptchaAttemptService();
     }
@@ -173,6 +186,12 @@ public class FlowModule implements ModuleWithFixtures {
     @Bean
     public ReCaptchaService flow_reCaptchaService(ReCaptchaAttemptService reCaptchaAttemptService) {
         return new ReCaptchaService(reCaptchaAttemptService, recaptchEndpoint);
+    }
+
+    @Bean
+    public EmailDestinationHookFactory flow_emailDestinationHookFactory(EmailService emailService,
+            EmailTargets emailTargets, JavascriptExecutor javascriptExecutor, FlowContextFactory flowContextFactory, RepositoryService repositoryService) {
+        return new EmailDestinationHookFactory(emailService, emailTargets, javascriptExecutor, flowContextFactory, repositoryService);
     }
 
 }

@@ -1,8 +1,8 @@
-package net.savantly.nexus.flow.dom.form;
+package net.savantly.nexus.flow.dom.emailTarget;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
@@ -14,59 +14,43 @@ import org.apache.causeway.applib.annotation.PromptStyle;
 import org.apache.causeway.applib.annotation.SemanticsOf;
 import org.apache.causeway.applib.services.repository.RepositoryService;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import lombok.extern.log4j.Log4j2;
 import net.savantly.nexus.common.types.Name;
 import net.savantly.nexus.flow.FlowModule;
-import net.savantly.nexus.flow.dom.destination.DestinationHookFactory;
 import net.savantly.nexus.organizations.dom.organization.Organization;
 
-@Named(FlowModule.NAMESPACE + ".Forms")
+@Named(FlowModule.NAMESPACE + ".EmailTargets")
 @DomainService
 @DomainServiceLayout()
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
-@Log4j2
-public class Forms {
+public class EmailTargets {
     final RepositoryService repositoryService;
-    final FormRepository repository;
-    final DestinationHookFactory destinationHookFactory;
-    final ObjectMapper objectMapper;
-    final FormSubmissionProxy formSubmissionProxy;
+    final EmailTargetRepository repository;
 
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR)
-    public Form create(
+    public EmailTarget create(
             final Organization organization,
             @Name final String name) {
-        return repositoryService.persist(Form.withName(organization, name));
+        return repositoryService.persist(EmailTarget.withName(organization, name));
     }
 
     @Action(semantics = SemanticsOf.SAFE)
     @ActionLayout()
-    public List<Form> listAll() {
+    public List<EmailTarget> listAll() {
         return repository.findAll();
     }
 
     @Programmatic
-    public Optional<Form> findById(final String id) {
+    public Optional<EmailTarget> findById(final String id) {
         return repository.findById(id);
     }
 
     @Programmatic
-    public void submitForm(final String formId, final Map<String, Object> payload, final String apiKey,
-            String recaptcha, String clientIP)
-            throws JsonProcessingException {
-        var form = repository.findById(formId).orElseThrow();
-        log.info("submitting form: " + form.getName());
-        formSubmissionProxy.submitForm(form, payload, apiKey, recaptcha, clientIP);
-
-        log.info("executing hooks for form: " + form.getName());
-
+    public Set<EmailTarget> findByOrganizationId(String id) {
+        return repository.findByOrganizationId(id);
     }
 
 }

@@ -11,9 +11,9 @@ import org.springframework.http.RequestEntity;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import net.savantly.nexus.flow.dom.destinations.Destination;
-import net.savantly.nexus.flow.dom.destinations.DestinationHook;
-import net.savantly.nexus.flow.dom.destinations.DestinationHookResponse;
+import net.savantly.nexus.flow.dom.destination.Destination;
+import net.savantly.nexus.flow.dom.destination.DestinationHook;
+import net.savantly.nexus.flow.dom.destination.DestinationHookResponse;
 import net.savantly.nexus.flow.dom.formMapping.Mapping;
 import net.savantly.nexus.webhooks.dom.webhook.Webhooks;
 

@@ -23,7 +23,7 @@ public class DefaultSecurityConfig {
 
     private boolean debug = false;
     private boolean useCsrf = false;
-    private final CorsConfig corsConfig;
+    private CorsConfig corsConfig = new CorsConfig();
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {

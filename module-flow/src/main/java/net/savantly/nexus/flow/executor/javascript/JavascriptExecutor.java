@@ -1,6 +1,5 @@
 package net.savantly.nexus.flow.executor.javascript;
 
-import java.util.HashMap;
 import java.util.Objects;
 
 import com.caoccao.javet.enums.V8AwaitMode;
@@ -16,13 +15,11 @@ import net.savantly.nexus.flow.dom.flowContext.FlowContext;
 @RequiredArgsConstructor
 public class JavascriptExecutor {
 
-    final IJavetEnginePool javetEnginePool;
+    final Provider<IJavetEnginePool> javetEnginePoolProvider;
 
     public Object execute(String script, FlowContext context) throws Exception {
-        var ctx = new HashMap<String, Object>();
-        ctx.put("ctx", context);
 
-        try (var engine = javetEnginePool.getEngine()) {
+        try (var engine = javetEnginePoolProvider.get().getEngine()) {
 
             try (var runtime = engine.getV8Runtime()) {
 
@@ -61,6 +58,10 @@ public class JavascriptExecutor {
             log.error("Error executing script", e);
             throw e;
         }
+    }
+
+    public static interface Provider<T> {
+        T get();
     }
 
 }

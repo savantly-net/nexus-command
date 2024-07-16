@@ -19,7 +19,7 @@ public class JavascriptNodeTest {
 
         try (JavetEnginePool<NodeRuntime> javetEnginePool = new JavetEnginePool<NodeRuntime>()) {
             javetEnginePool.getConfig().setJSRuntimeType(JSRuntimeType.Node);
-            var javascriptExecutor = new JavascriptExecutor(javetEnginePool);
+            var javascriptExecutor = new JavascriptExecutor(() -> javetEnginePool);
 
             JavascriptNode node = new JavascriptNode("test", javascriptExecutor);
             node.setScript("console.log('Hello World!')");
@@ -33,7 +33,7 @@ public class JavascriptNodeTest {
     public void testJavascriptNodeWithException() throws JavetException {
         try (JavetEnginePool<NodeRuntime> javetEnginePool = new JavetEnginePool<NodeRuntime>()) {
             javetEnginePool.getConfig().setJSRuntimeType(JSRuntimeType.Node);
-            var javascriptExecutor = new JavascriptExecutor(javetEnginePool);
+            var javascriptExecutor = new JavascriptExecutor(() -> javetEnginePool);
 
             JavascriptNode node = new JavascriptNode("test", javascriptExecutor);
 
@@ -52,7 +52,7 @@ public class JavascriptNodeTest {
     public void testJavascriptNodeWithVariable() throws JavetException {
         try (JavetEnginePool<NodeRuntime> javetEnginePool = new JavetEnginePool<NodeRuntime>()) {
             javetEnginePool.getConfig().setJSRuntimeType(JSRuntimeType.Node);
-            var javascriptExecutor = new JavascriptExecutor(javetEnginePool);
+            var javascriptExecutor = new JavascriptExecutor(() -> javetEnginePool);
 
             JavascriptNode node = new JavascriptNode("test", javascriptExecutor);
 
@@ -72,7 +72,7 @@ public class JavascriptNodeTest {
     public void testJavascriptNodeWithFetch() throws JavetException {
         try (JavetEnginePool<NodeRuntime> javetEnginePool = new JavetEnginePool<NodeRuntime>()) {
             javetEnginePool.getConfig().setJSRuntimeType(JSRuntimeType.Node);
-            var javascriptExecutor = new JavascriptExecutor(javetEnginePool);
+            var javascriptExecutor = new JavascriptExecutor(() -> javetEnginePool);
 
             JavascriptNode node = new JavascriptNode("test", javascriptExecutor);
             node.setScript(

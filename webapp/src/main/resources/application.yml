@@ -86,6 +86,9 @@ causeway:
         no-params-only: true
         explicit-object-type: true
     runtime-services:
+      email:
+        sender:
+          address: ${spring.mail.from}
       translation:
         po:
           mode: disabled
@@ -192,6 +195,16 @@ spring:
     location: banner.txt
   quartz:
     job-store-type: memory
+  mail:
+    host: localhost
+    port: 25
+    username: user
+    password: password
+    from: user@localhost
+    javamail.properties.mail.smtp.starttls.enable: false
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: false
 
 management:
   endpoint:

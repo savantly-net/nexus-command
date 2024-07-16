@@ -1,5 +1,4 @@
-package net.savantly.nexus.flow.dom.destinations;
-
+package net.savantly.nexus.flow.dom.emailTarget;
 
 import static org.apache.causeway.applib.annotation.SemanticsOf.NON_IDEMPOTENT_ARE_YOU_SURE;
 
@@ -11,7 +10,6 @@ import org.apache.causeway.applib.annotation.ActionLayout;
 import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.DomainObjectLayout;
 import org.apache.causeway.applib.annotation.Editing;
-import org.apache.causeway.applib.annotation.Programmatic;
 import org.apache.causeway.applib.annotation.Property;
 import org.apache.causeway.applib.annotation.PropertyLayout;
 import org.apache.causeway.applib.annotation.Publishing;
@@ -38,20 +36,19 @@ import lombok.ToString;
 import lombok.val;
 import net.savantly.nexus.common.types.Name;
 import net.savantly.nexus.flow.FlowModule;
-import net.savantly.nexus.flow.dom.form.Form;
-import net.savantly.nexus.organizations.api.HasOrganization;
+import net.savantly.nexus.organizations.api.OrganizationEntity;
 import net.savantly.nexus.organizations.dom.organization.Organization;
 
-@Named(FlowModule.NAMESPACE + ".Destination")
+@Named(FlowModule.NAMESPACE + ".EmailTarget")
 @jakarta.persistence.Entity
 @jakarta.persistence.Table(schema = FlowModule.SCHEMA)
 @jakarta.persistence.EntityListeners(CausewayEntityListener.class)
-@DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.DISABLED)
-@DomainObjectLayout(cssClassFa = "Destination")
+@DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.ENABLED)
+@DomainObjectLayout(cssClassFa = "envelope")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
-public class Destination implements Comparable<Destination>, HasOrganization {
+public class EmailTarget extends OrganizationEntity implements Comparable<EmailTarget> {
 
     @Inject
     @Transient
@@ -63,14 +60,11 @@ public class Destination implements Comparable<Destination>, HasOrganization {
     @Transient
     MessageService messageService;
 
-    public static Destination withName(Form form, DestinationType destinationType, String destinationId, String name, String collectionName) {
-        val entity = new Destination();
+    public static EmailTarget withName(Organization organization, String name) {
+        val entity = new EmailTarget();
         entity.id = UUID.randomUUID().toString();
         entity.setName(name);
-        entity.setDestinationType(destinationType);
-        entity.setDestinationId(destinationId);
-        entity.setCollectionName(collectionName);
-        entity.setForm(form);
+        entity.setOrganization(organization);
         return entity;
     }
 
@@ -95,49 +89,55 @@ public class Destination implements Comparable<Destination>, HasOrganization {
     @Getter
     @Setter
     @ToString.Include
-    @PropertyLayout(fieldSetId = "name", sequence = "1")
+    @PropertyLayout(fieldSetId = "identity", sequence = "1")
     private String name;
 
-    @JoinColumn(name = "org_id", nullable = false)
-    @Property(editing = Editing.DISABLED)
-    @PropertyLayout(fieldSetId = "name", sequence = "1.1")
+    @Column(name="email_to", length = 255, nullable = true)
+    @PropertyLayout(fieldSetId = "identity", sequence = "1.5")
     @Getter
     @Setter
-    private Form form;
+    private String to;
 
-    @Column(name = "destination_type", nullable = false)
-    @PropertyLayout(fieldSetId = "name", sequence = "1.5")
+    @Column(name="email_cc", length = 255, nullable = true)
+    @PropertyLayout(fieldSetId = "identity", sequence = "1.6")
     @Getter
     @Setter
-    private DestinationType destinationType;
+    private String cc;
 
-    @Column(name = "destination_id", nullable = false)
-    @PropertyLayout(fieldSetId = "name", sequence = "1.6")
+    @Column(name="email_bcc", length = 255, nullable = true)
+    @PropertyLayout(fieldSetId = "identity", sequence = "1.7")
     @Getter
     @Setter
-    private String destinationId;
+    private String bcc;
 
-    @Column(name = "collection_name", nullable = false)
-    @PropertyLayout(fieldSetId = "name", sequence = "1.7")
+    @Column(name="email_subject", columnDefinition = "text", nullable = true)
+    @PropertyLayout(fieldSetId = "identity", sequence = "1.8")
     @Getter
     @Setter
-    private String collectionName;
+    private String subject;
+
+    @Column(name="email_body", columnDefinition = "text", nullable = true)
+    @PropertyLayout(fieldSetId = "identity", sequence = "1.9", multiLine = 10)
+    @Getter
+    @Setter
+    private String body = "{{variables.payload}}";
+
 
     // *** IMPLEMENTATIONS ****
 
-    private final static Comparator<Destination> comparator = Comparator.comparing(Destination::getName);
+    private final static Comparator<EmailTarget> comparator = Comparator.comparing(EmailTarget::getName);
 
     @Override
-    public int compareTo(final Destination other) {
+    public int compareTo(final EmailTarget other) {
         return comparator.compare(this, other);
     }
 
     // *** ACTIONS ***
 
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
-    @ActionLayout(associateWith = "form", describedAs = "Update which Form this belongs to")
-    public Destination updateForm(Form form) {
-        setForm(form);
+    @ActionLayout(associateWith = "organization", describedAs = "Update which Organization this belongs to")
+    public EmailTarget updateOrganization(Organization organization) {
+        setOrganization(organization);
         return this;
     }
 
@@ -147,15 +147,5 @@ public class Destination implements Comparable<Destination>, HasOrganization {
         final String title = titleService.titleOf(this);
         messageService.informUser(String.format("'%s' deleted", title));
         repositoryService.removeAndFlush(this);
-    }
-
-    @Programmatic
-    @Transient
-    @Override
-    public Organization getOrganization() {
-        if (form != null) {
-            return form.getOrganization();
-        }
-        return null;
     }
 }

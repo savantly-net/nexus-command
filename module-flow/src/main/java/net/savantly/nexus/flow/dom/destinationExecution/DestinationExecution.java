@@ -1,4 +1,4 @@
-package net.savantly.nexus.flow.dom.flowExecution;
+package net.savantly.nexus.flow.dom.destinationExecution;
 
 
 import java.util.Comparator;
@@ -35,9 +35,9 @@ import lombok.ToString;
 import lombok.val;
 import net.savantly.nexus.audited.api.AuditedEntity;
 import net.savantly.nexus.flow.FlowModule;
-import net.savantly.nexus.flow.dom.flowDefinition.FlowDefinition;
+import net.savantly.nexus.flow.dom.destination.Destination;
 
-@Named(FlowModule.NAMESPACE + ".FlowExecution")
+@Named(FlowModule.NAMESPACE + ".DestinationExecution")
 @jakarta.persistence.Entity
 @jakarta.persistence.Table(schema = FlowModule.SCHEMA)
 @jakarta.persistence.EntityListeners(CausewayEntityListener.class)
@@ -46,7 +46,7 @@ import net.savantly.nexus.flow.dom.flowDefinition.FlowDefinition;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
-public class FlowExecution extends AuditedEntity implements Comparable<FlowExecution> {
+public class DestinationExecution extends AuditedEntity implements Comparable<DestinationExecution> {
 
     @Inject
     @Transient
@@ -58,11 +58,12 @@ public class FlowExecution extends AuditedEntity implements Comparable<FlowExecu
     @Transient
     MessageService messageService;
 
-    public static FlowExecution withContext(FlowDefinition flowDefinition, String context) {
-        val entity = new FlowExecution();
+    public static DestinationExecution withResult(Destination destination, boolean successful, String message) {
+        val entity = new DestinationExecution();
         entity.id = UUID.randomUUID().toString();
-        entity.flowDefinition = flowDefinition;
-        entity.context = context;
+        entity.destination = destination;
+        entity.successful = successful;
+        entity.message = message;
         return entity;
     }
 
@@ -71,7 +72,7 @@ public class FlowExecution extends AuditedEntity implements Comparable<FlowExecu
     @Id
     @Column(name = "id", nullable = false)
     @Getter
-    @Title(prepend = "Flow Execution: ")
+    @Title(prepend = "Destination Execution: ")
     private String id;
 
     @jakarta.persistence.Version
@@ -82,13 +83,20 @@ public class FlowExecution extends AuditedEntity implements Comparable<FlowExecu
     private long version;
 
 
-    @JoinColumn(name = "flow_id", nullable = false)
+    @JoinColumn(name = "destination_id", nullable = false)
     @Property
     @PropertyLayout(fieldSetId = "identity", sequence = "1.1", hidden = Where.PARENTED_TABLES)
     @Getter
     @Setter
     @Parent
-    private FlowDefinition flowDefinition;
+    private Destination destination;
+
+    @Column(name = "successful", nullable = false)
+    @Property
+    @PropertyLayout(fieldSetId = "identity", sequence = "1.2")
+    @Getter
+    @Setter
+    private boolean successful;
 
 
     @Column(columnDefinition = "text", nullable = true)
@@ -96,15 +104,15 @@ public class FlowExecution extends AuditedEntity implements Comparable<FlowExecu
     @PropertyLayout(fieldSetId = "identity", sequence = "1.5", multiLine = 10)
     @Getter
     @Setter
-    private String context;
+    private String message;
 
 
     // *** IMPLEMENTATIONS ****
 
-    private final static Comparator<FlowExecution> comparator = Comparator.comparing(FlowExecution::getId);
+    private final static Comparator<DestinationExecution> comparator = Comparator.comparing(DestinationExecution::getId);
 
     @Override
-    public int compareTo(final FlowExecution other) {
+    public int compareTo(final DestinationExecution other) {
         return comparator.compare(this, other);
     }
 

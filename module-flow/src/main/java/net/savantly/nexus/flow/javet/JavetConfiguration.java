@@ -3,6 +3,7 @@ package net.savantly.nexus.flow.javet;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 
 import com.caoccao.javet.enums.JSRuntimeType;
 import com.caoccao.javet.interop.engine.IJavetEnginePool;
@@ -27,6 +28,7 @@ public class JavetConfiguration {
     private int resetEngineTimeoutSeconds = JavetEngineConfig.DEFAULT_RESET_ENGINE_TIMEOUT_SECONDS;
 
     @Bean(name = "JavetEnginePoolNode")
+    @Scope(scopeName = "prototype")
     public IJavetEnginePool getJavetEnginePoolNode() {
         JavetEngineConfig javetEngineConfigNode = new JavetEngineConfig();
         javetEngineConfigNode.setAllowEval(allowEval);

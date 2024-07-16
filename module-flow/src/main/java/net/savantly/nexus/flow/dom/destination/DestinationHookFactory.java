@@ -1,4 +1,4 @@
-package net.savantly.nexus.flow.dom.destinations;
+package net.savantly.nexus.flow.dom.destination;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 
@@ -11,6 +11,7 @@ import net.savantly.nexus.flow.dom.connections.flowHook.FlowDestinationHookFacto
 import net.savantly.nexus.flow.dom.connections.jdbcConnection.JdbcConnectionDestinationHook;
 import net.savantly.nexus.flow.dom.connections.jdbcConnection.JdbcConnections;
 import net.savantly.nexus.flow.dom.connections.webhook.WebhookDestinationHook;
+import net.savantly.nexus.flow.dom.emailTarget.EmailDestinationHookFactory;
 import net.savantly.nexus.webhooks.dom.webhook.Webhooks;
 
 @RequiredArgsConstructor
@@ -23,6 +24,7 @@ public class DestinationHookFactory {
     final Webhooks webhooks;
     final RestTemplateBuilder restTemplateBuilder;
     final FlowDestinationHookFactory flowDestinationHookFactory;
+    final EmailDestinationHookFactory   emailDestinationHookFactory;
 
     public DestinationHook createHook(Destination destination) {
         log.info("Creating destination hook for: " + destination.getDestinationType());
@@ -34,6 +36,9 @@ public class DestinationHookFactory {
                 return getWebhookHook(destination);
             case FLOW:
                 return getFlowDestinationHook(destination);
+
+            case EMAIL:
+                return getEmailDestinationHook(destination);
 
             default:
                 throw new RuntimeException("Destination type not supported");
@@ -59,5 +64,9 @@ public class DestinationHookFactory {
 
     private DestinationHook getFlowDestinationHook(Destination destination) {
         return flowDestinationHookFactory.createHook();
+    }
+
+    private DestinationHook getEmailDestinationHook(Destination destination) {
+        return emailDestinationHookFactory.createHook();
     }
 }

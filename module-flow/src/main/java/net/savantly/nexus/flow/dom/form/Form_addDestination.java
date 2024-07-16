@@ -14,8 +14,9 @@ import org.apache.causeway.applib.services.repository.RepositoryService;
 import jakarta.inject.Inject;
 import lombok.extern.log4j.Log4j2;
 import net.savantly.nexus.flow.dom.connections.jdbcConnection.JdbcConnectionRepository;
-import net.savantly.nexus.flow.dom.destinations.Destination;
-import net.savantly.nexus.flow.dom.destinations.DestinationType;
+import net.savantly.nexus.flow.dom.destination.Destination;
+import net.savantly.nexus.flow.dom.destination.DestinationType;
+import net.savantly.nexus.flow.dom.emailTarget.EmailTargets;
 import net.savantly.nexus.flow.dom.flowDefinition.FlowDefinitions;
 import net.savantly.nexus.webhooks.dom.webhook.WebhookRepository;
 
@@ -40,6 +41,8 @@ public class Form_addDestination {
     FlowDefinitions flowDefinitions;
     @Inject
     RepositoryService repositoryService;
+    @Inject
+    EmailTargets emailTargets;
 
     @MemberSupport
     public Form act(
@@ -78,7 +81,12 @@ public class Form_addDestination {
                 .toList();
         log.info("flows: {}", allFlows.size());
 
-        var allInstances = List.of(allJdbcConnections, allWebhooks, allFlows).stream()
+        var allEmailTargets = emailTargets.findByOrganizationId(org.getId()).stream()
+                .map(d -> new DestinationValue(d.getName(), DestinationType.EMAIL, d.getId()).toString())
+                .toList();
+
+
+        var allInstances = List.of(allJdbcConnections, allWebhooks, allFlows, allEmailTargets).stream()
                 .flatMap(List::stream)
                 .toList();
         return allInstances;

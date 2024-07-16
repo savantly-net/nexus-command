@@ -1,4 +1,4 @@
-package net.savantly.nexus.flow.dom.flowSecret;
+package net.savantly.nexus.organizations.dom.organizationSecret;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
@@ -18,12 +18,12 @@ import net.savantly.encryption.jpa.AttributeEncryptor;
 @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
 @ActionLayout(associateWith = "secret", describedAs = "Update Secret", promptStyle = PromptStyle.DIALOG)
 @lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
-public class FlowSecret_update {
+public class OrganizationSecret_update {
 
-    final FlowSecret object;
+    final OrganizationSecret object;
 
     public static class ActionEvent
-            extends org.apache.causeway.applib.CausewayModuleApplib.ActionDomainEvent<FlowSecret_update> {
+            extends org.apache.causeway.applib.CausewayModuleApplib.ActionDomainEvent<OrganizationSecret_update> {
     }
 
     @Inject
@@ -34,7 +34,7 @@ public class FlowSecret_update {
     AttributeEncryptor attributeEncryptor;
 
     @MemberSupport
-    public FlowSecret act(
+    public OrganizationSecret act(
         @ParameterLayout(named = "Secret", multiLine = 5, typicalLength = 100)
             final String secret) {
 

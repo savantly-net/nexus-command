@@ -45,7 +45,7 @@ public class FlowExecutorTest {
                 "}";
 
         var javetEnginePool = new JavetEnginePool<NodeRuntime>();
-        JavascriptExecutor javascriptExecutor = new JavascriptExecutor(javetEnginePool);
+        JavascriptExecutor javascriptExecutor = new JavascriptExecutor(() -> javetEnginePool);
         FlowNodeFactory flowNodeFactory = new FlowNodeFactory(javascriptExecutor);
 
         FlowExecutor executor = new FlowExecutor(flowNodeFactory, jsonPayload);
@@ -74,7 +74,7 @@ public class FlowExecutorTest {
             );
 
         var javetEnginePool = new JavetEnginePool<NodeRuntime>();
-        JavascriptExecutor javascriptExecutor = new JavascriptExecutor(javetEnginePool);
+        JavascriptExecutor javascriptExecutor = new JavascriptExecutor(() -> javetEnginePool);
         FlowNodeFactory flowNodeFactory = new FlowNodeFactory(javascriptExecutor);
 
         FlowExecutor executor = new FlowExecutor(flowNodeFactory, flow);

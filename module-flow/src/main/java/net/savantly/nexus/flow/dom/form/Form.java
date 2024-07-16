@@ -42,7 +42,7 @@ import lombok.ToString;
 import lombok.val;
 import net.savantly.nexus.common.types.Name;
 import net.savantly.nexus.flow.FlowModule;
-import net.savantly.nexus.flow.dom.destinations.Destination;
+import net.savantly.nexus.flow.dom.destination.Destination;
 import net.savantly.nexus.flow.dom.formMapping.FormMapping;
 import net.savantly.nexus.organizations.api.OrganizationEntity;
 import net.savantly.nexus.organizations.dom.organization.Organization;
@@ -52,7 +52,7 @@ import net.savantly.nexus.organizations.dom.organization.Organization;
 @jakarta.persistence.Table(schema = FlowModule.SCHEMA)
 @jakarta.persistence.EntityListeners(CausewayEntityListener.class)
 @DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.DISABLED, bounding = Bounding.BOUNDED)
-@DomainObjectLayout(cssClassFa = "form")
+@DomainObjectLayout(cssClassFa = "file-alt")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)

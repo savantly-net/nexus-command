@@ -40,7 +40,7 @@ import net.savantly.security.preauthenticated.PreAuthConfigProperties;
 public class CustomSecurityConfig {
 
     private final OAuth2ConfigProperties oauth2;
-    private final CorsConfig corsConfig;
+    private CorsConfig corsConfig = new CorsConfig();
 
     @Setter
     private String bearerTokenHeaderName = "x-forwarded-access-token";

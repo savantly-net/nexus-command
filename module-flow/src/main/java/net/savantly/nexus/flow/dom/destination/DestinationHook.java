@@ -1,4 +1,4 @@
-package net.savantly.nexus.flow.dom.destinations;
+package net.savantly.nexus.flow.dom.destination;
 
 import java.util.Collection;
 import java.util.Map;

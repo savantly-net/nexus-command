@@ -17,8 +17,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.inject.Inject;
 import lombok.extern.log4j.Log4j2;
-import net.savantly.nexus.flow.dom.destinations.Destination;
-import net.savantly.nexus.flow.dom.destinations.DestinationHookFactory;
+import net.savantly.nexus.flow.dom.destination.Destination;
+import net.savantly.nexus.flow.dom.destination.DestinationHookFactory;
 
 @Log4j2
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)

@@ -1,14 +1,21 @@
 package net.savantly.nexus.flow.dom.flowContext;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.util.Objects;
 
+import com.github.jknack.handlebars.Handlebars;
+
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
 public class VariableReplacement {
 
+    final static Handlebars handlebars = new Handlebars();
 
     /**
      * Replaces variables in the input string with values from the context
-     * Uses the format ${variableName} for variables and {{ secrets.secretName }} for secrets
+     * Uses the format ${variableName} for variables and {{ secrets.secretName }}
+     * for secrets
      * 
      * @param input
      * @param context
@@ -16,19 +23,16 @@ public class VariableReplacement {
      */
     public static String replaceVariables(String input, FlowContext context) {
 
-        Map<String, Object> variables = context.getVariables();
-        Map<String, String> secrets = context.getSecrets();
-
-        String result = input;
-        for (Map.Entry<String, Object> entry : variables.entrySet()) {
-            result = result.replace("${" + entry.getKey() + "}", entry.getValue().toString());
+        if (Objects.isNull(input) || input.isEmpty()) {
+            return input;
         }
 
-        // should be like github actions secrets format {{ secrets.secretName }}
-        for (Map.Entry<String, String> entry : secrets.entrySet()) {
-            result = result.replaceAll("\\{\\{\\s*secrets\\." + entry.getKey() + "\\s*\\}\\}", entry.getValue());
+        try {
+            return handlebars.compileInline(input).apply(context);
+        } catch (IOException e) {
+            log.error("Failed to compile handlebars template", e);
+            throw new IllegalArgumentException("Failed to compile handlebars template. " + e.getMessage());
         }
-        return result;
     }
-    
+
 }

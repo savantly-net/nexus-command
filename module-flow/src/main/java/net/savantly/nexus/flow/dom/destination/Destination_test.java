@@ -1,4 +1,4 @@
-package net.savantly.nexus.flow.dom.destinations;
+package net.savantly.nexus.flow.dom.destination;
 
 import java.util.List;
 import java.util.Map;
@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
 import org.apache.causeway.applib.annotation.MemberSupport;
+import org.apache.causeway.applib.annotation.ParameterLayout;
 import org.apache.causeway.applib.annotation.PriorityPrecedence;
 import org.apache.causeway.applib.annotation.PromptStyle;
 import org.apache.causeway.applib.annotation.Publishing;
@@ -38,7 +39,7 @@ public class Destination_test {
     ObjectMapper objectMapper;
 
     @MemberSupport
-    public Destination act(final String payload) {
+    public Destination act(@ParameterLayout(multiLine = 10) final String payload) {
         try {
             var payloadMap = objectMapper.readValue(payload, Map.class);
             var destinationHook = destinationHookFactory.createHook(object);
@@ -50,6 +51,10 @@ public class Destination_test {
         }
 
         return object;
+    }
+
+    public String default0Act() {
+        return "{\n" + "  \"key\": \"value\"\n" + "}";
     }
 
 }

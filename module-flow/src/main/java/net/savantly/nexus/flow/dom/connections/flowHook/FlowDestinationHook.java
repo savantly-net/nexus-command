@@ -4,9 +4,9 @@ import java.util.Collection;
 import java.util.Map;
 
 import lombok.RequiredArgsConstructor;
-import net.savantly.nexus.flow.dom.destinations.Destination;
-import net.savantly.nexus.flow.dom.destinations.DestinationHook;
-import net.savantly.nexus.flow.dom.destinations.DestinationHookResponse;
+import net.savantly.nexus.flow.dom.destination.Destination;
+import net.savantly.nexus.flow.dom.destination.DestinationHook;
+import net.savantly.nexus.flow.dom.destination.DestinationHookResponse;
 import net.savantly.nexus.flow.dom.flowDefinition.FlowDefinitionExecutionProxy;
 import net.savantly.nexus.flow.dom.flowDefinition.FlowDefinitions;
 import net.savantly.nexus.flow.dom.formMapping.Mapping;

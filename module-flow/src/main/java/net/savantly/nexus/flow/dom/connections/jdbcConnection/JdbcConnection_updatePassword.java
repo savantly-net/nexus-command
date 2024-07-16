@@ -15,8 +15,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.inject.Inject;
 import lombok.extern.log4j.Log4j2;
-import net.savantly.nexus.flow.dom.flowSecret.FlowSecret;
-import net.savantly.nexus.flow.dom.flowSecret.FlowSecrets;
+import net.savantly.nexus.organizations.dom.organizationSecret.OrganizationSecret;
+import net.savantly.nexus.organizations.dom.organizationSecret.OrganizationSecrets;
 
 @Log4j2
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
@@ -36,10 +36,10 @@ public class JdbcConnection_updatePassword {
     @Inject
     ObjectMapper objectMapper;
     @Inject
-    FlowSecrets flowSecrets;
+    OrganizationSecrets flowSecrets;
 
     @MemberSupport
-    public JdbcConnection act(final FlowSecret secret) {
+    public JdbcConnection act(final OrganizationSecret secret) {
         try {
             object.setPassword(secret);
             messageService.informUser("Updated Secret Reference");
@@ -52,12 +52,12 @@ public class JdbcConnection_updatePassword {
     }
 
     @MemberSupport
-    public FlowSecret default0Act() {
+    public OrganizationSecret default0Act() {
         return object.getPassword();
     }
 
     @MemberSupport
-    public Set<FlowSecret> choices0Act() {
+    public Set<OrganizationSecret> choices0Act() {
         return flowSecrets.findByOrganizationId(object.getOrganization().getId());
     }
 

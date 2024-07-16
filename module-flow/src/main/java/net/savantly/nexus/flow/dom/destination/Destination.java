@@ -1,4 +1,5 @@
-package net.savantly.nexus.flow.dom.connections.jdbcConnection;
+package net.savantly.nexus.flow.dom.destination;
+
 
 import static org.apache.causeway.applib.annotation.SemanticsOf.NON_IDEMPOTENT_ARE_YOU_SURE;
 
@@ -10,11 +11,15 @@ import org.apache.causeway.applib.annotation.ActionLayout;
 import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.DomainObjectLayout;
 import org.apache.causeway.applib.annotation.Editing;
+import org.apache.causeway.applib.annotation.MemberSupport;
+import org.apache.causeway.applib.annotation.ParameterLayout;
+import org.apache.causeway.applib.annotation.Programmatic;
 import org.apache.causeway.applib.annotation.Property;
 import org.apache.causeway.applib.annotation.PropertyLayout;
 import org.apache.causeway.applib.annotation.Publishing;
 import org.apache.causeway.applib.annotation.SemanticsOf;
 import org.apache.causeway.applib.annotation.Title;
+import org.apache.causeway.applib.annotation.Where;
 import org.apache.causeway.applib.jaxb.PersistentEntityAdapter;
 import org.apache.causeway.applib.services.message.MessageService;
 import org.apache.causeway.applib.services.repository.RepositoryService;
@@ -36,19 +41,20 @@ import lombok.ToString;
 import lombok.val;
 import net.savantly.nexus.common.types.Name;
 import net.savantly.nexus.flow.FlowModule;
+import net.savantly.nexus.flow.dom.form.Form;
+import net.savantly.nexus.organizations.api.HasOrganization;
 import net.savantly.nexus.organizations.dom.organization.Organization;
-import net.savantly.nexus.organizations.dom.organizationSecret.OrganizationSecret;
 
-@Named(FlowModule.NAMESPACE + ".JdbcConnection")
+@Named(FlowModule.NAMESPACE + ".Destination")
 @jakarta.persistence.Entity
 @jakarta.persistence.Table(schema = FlowModule.SCHEMA)
 @jakarta.persistence.EntityListeners(CausewayEntityListener.class)
-@DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.ENABLED)
-@DomainObjectLayout(cssClassFa = "data")
+@DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.DISABLED)
+@DomainObjectLayout(cssClassFa = "circle-dot")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
-public class JdbcConnection implements Comparable<JdbcConnection> {
+public class Destination implements Comparable<Destination>, HasOrganization {
 
     @Inject
     @Transient
@@ -60,11 +66,14 @@ public class JdbcConnection implements Comparable<JdbcConnection> {
     @Transient
     MessageService messageService;
 
-    public static JdbcConnection withName(Organization organization, String name) {
-        val entity = new JdbcConnection();
+    public static Destination withName(Form form, DestinationType destinationType, String destinationId, String name, String collectionName) {
+        val entity = new Destination();
         entity.id = UUID.randomUUID().toString();
         entity.setName(name);
-        entity.setOrganization(organization);
+        entity.setDestinationType(destinationType);
+        entity.setDestinationId(destinationId);
+        entity.setCollectionName(collectionName);
+        entity.setForm(form);
         return entity;
     }
 
@@ -89,58 +98,67 @@ public class JdbcConnection implements Comparable<JdbcConnection> {
     @Getter
     @Setter
     @ToString.Include
-    @PropertyLayout(fieldSetId = "identity", sequence = "1")
+    @PropertyLayout(fieldSetId = "name", sequence = "1")
     private String name;
 
     @JoinColumn(name = "org_id", nullable = false)
     @Property(editing = Editing.DISABLED)
-    @PropertyLayout(fieldSetId = "identity", sequence = "1.1")
+    @PropertyLayout(fieldSetId = "name", sequence = "1.1", hidden = Where.PARENTED_TABLES)
     @Getter
     @Setter
-    private Organization organization;
+    private Form form;
 
-    @Column(length = 255, nullable = true)
-    @PropertyLayout(fieldSetId = "identity", sequence = "1.5")
+    @Column(name = "destination_type", nullable = false)
+    @PropertyLayout(fieldSetId = "name", sequence = "1.5")
     @Getter
     @Setter
-    private String jdbcUrl = "jdbc:postgresql://localhost:5432/postgres";
+    private DestinationType destinationType;
 
-    @Column(length = 255, nullable = true)
-    @PropertyLayout(fieldSetId = "identity", sequence = "1.6")
+    @Column(name = "destination_id", nullable = false)
+    @PropertyLayout(fieldSetId = "name", sequence = "1.6")
     @Getter
     @Setter
-    private String username;
+    private String destinationId;
 
-
-    @JoinColumn(name = "flow_secret_id", nullable = true)
-    @Property(editing = Editing.DISABLED)
-    @PropertyLayout(fieldSetId = "identity", sequence = "1.7")
-    @Setter
-    @Getter
-    private OrganizationSecret password;
-
-
-    @Column(length = 255, nullable = true)
-    @PropertyLayout(fieldSetId = "identity", sequence = "1.8")
+    @Column(name = "collection_name", nullable = false)
+    @PropertyLayout(fieldSetId = "name", sequence = "1.7")
     @Getter
     @Setter
-    private String driverClassName = "org.postgresql.Driver";
+    private String collectionName;
+
+    @Column(name = "transform_script", columnDefinition = "text", nullable = true)
+    @PropertyLayout(fieldSetId = "name", sequence = "1.8", multiLine = 20, hidden = Where.ALL_TABLES)
+    @Getter
+    @Setter
+    private String transformScript;
 
     // *** IMPLEMENTATIONS ****
 
-    private final static Comparator<JdbcConnection> comparator = Comparator.comparing(JdbcConnection::getName);
+    private final static Comparator<Destination> comparator = Comparator.comparing(Destination::getName);
 
     @Override
-    public int compareTo(final JdbcConnection other) {
+    public int compareTo(final Destination other) {
         return comparator.compare(this, other);
     }
 
     // *** ACTIONS ***
 
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
-    @ActionLayout(associateWith = "organization", describedAs = "Update which Organization this belongs to")
-    public JdbcConnection updateOrganization(Organization organization) {
-        setOrganization(organization);
+    @ActionLayout(associateWith = "transformScript", describedAs = "Update script")
+    public Destination updateTransformScript(@ParameterLayout(multiLine = 20) String transformScript) {
+        setTransformScript(transformScript);
+        return this;
+    }
+
+    @MemberSupport
+    public String default0UpdateTransformScript() {
+        return getTransformScript();
+    }
+
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
+    @ActionLayout(associateWith = "form", describedAs = "Update which Form this belongs to")
+    public Destination updateForm(Form form) {
+        setForm(form);
         return this;
     }
 
@@ -150,5 +168,15 @@ public class JdbcConnection implements Comparable<JdbcConnection> {
         final String title = titleService.titleOf(this);
         messageService.informUser(String.format("'%s' deleted", title));
         repositoryService.removeAndFlush(this);
+    }
+
+    @Programmatic
+    @Transient
+    @Override
+    public Organization getOrganization() {
+        if (form != null) {
+            return form.getOrganization();
+        }
+        return null;
     }
 }

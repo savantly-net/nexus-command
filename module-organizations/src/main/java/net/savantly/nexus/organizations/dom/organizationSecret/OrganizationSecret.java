@@ -1,4 +1,4 @@
-package net.savantly.nexus.flow.dom.flowSecret;
+package net.savantly.nexus.organizations.dom.organizationSecret;
 
 
 import static org.apache.causeway.applib.annotation.SemanticsOf.NON_IDEMPOTENT_ARE_YOU_SURE;
@@ -36,20 +36,20 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
 import net.savantly.nexus.common.types.Name;
-import net.savantly.nexus.flow.FlowModule;
+import net.savantly.nexus.organizations.OrganizationsModule;
 import net.savantly.nexus.organizations.api.OrganizationEntity;
 import net.savantly.nexus.organizations.dom.organization.Organization;
 
-@Named(FlowModule.NAMESPACE + ".FlowSecret")
+@Named(OrganizationsModule.NAMESPACE + ".OrganizationSecret")
 @jakarta.persistence.Entity
-@jakarta.persistence.Table(schema = FlowModule.SCHEMA)
+@jakarta.persistence.Table(schema = OrganizationsModule.SCHEMA)
 @jakarta.persistence.EntityListeners(CausewayEntityListener.class)
 @DomainObject(entityChangePublishing = Publishing.ENABLED, editing = Editing.DISABLED, bounding = Bounding.BOUNDED)
 @DomainObjectLayout(cssClassFa = "user-secret")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
-public class FlowSecret extends OrganizationEntity implements Comparable<FlowSecret> {
+public class OrganizationSecret extends OrganizationEntity implements Comparable<OrganizationSecret> {
 
     @Inject
     @Transient
@@ -61,8 +61,8 @@ public class FlowSecret extends OrganizationEntity implements Comparable<FlowSec
     @Transient
     MessageService messageService;
 
-    public static FlowSecret withName(Organization organization, String name) {
-        val entity = new FlowSecret();
+    public static OrganizationSecret withName(Organization organization, String name) {
+        val entity = new OrganizationSecret();
         entity.id = UUID.randomUUID().toString();
         entity.setName(name);
         entity.setOrganization(organization);
@@ -119,10 +119,10 @@ public class FlowSecret extends OrganizationEntity implements Comparable<FlowSec
 
     // *** IMPLEMENTATIONS ****
 
-    private final static Comparator<FlowSecret> comparator = Comparator.comparing(FlowSecret::getName);
+    private final static Comparator<OrganizationSecret> comparator = Comparator.comparing(OrganizationSecret::getName);
 
     @Override
-    public int compareTo(final FlowSecret other) {
+    public int compareTo(final OrganizationSecret other) {
         return comparator.compare(this, other);
     }
 
