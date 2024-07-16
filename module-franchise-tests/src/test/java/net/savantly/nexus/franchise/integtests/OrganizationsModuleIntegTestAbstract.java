@@ -1,6 +1,5 @@
 package net.savantly.nexus.franchise.integtests;
 
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -27,19 +26,18 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 import org.springframework.test.context.ActiveProfiles;
 
+import net.savantly.encryption.jpa.AttributeEncryptor;
 import net.savantly.nexus.command.web.NexusCommandWebModule;
 import net.savantly.nexus.franchise.FranchiseModule;
 import net.savantly.nexus.organizations.OrganizationsModule;
 
-
-@SpringBootTest(
-        classes = OrganizationsModuleIntegTestAbstract.TestApp.class
-)
+@SpringBootTest(classes = OrganizationsModuleIntegTestAbstract.TestApp.class)
 @ActiveProfiles("test")
 public abstract class OrganizationsModuleIntegTestAbstract extends CausewayIntegrationTestAbstractWithFixtures {
 
     /**
-     * Compared to the production app manifest <code>domainapp.webapp.AppManifest</code>,
+     * Compared to the production app manifest
+     * <code>domainapp.webapp.AppManifest</code>,
      * here we in effect disable security checks, and we exclude any web/UI modules.
      */
     @SpringBootConfiguration
@@ -60,6 +58,12 @@ public abstract class OrganizationsModuleIntegTestAbstract extends CausewayInteg
             @PropertySource(CausewayPresets.UseLog4j2Test),
     })
     public static class TestApp {
+
+        @Bean
+        public AttributeEncryptor attributeEncryptor() throws Exception {
+            String fakeSecret = "12312312312312312312312312312312";
+            return new AttributeEncryptor(fakeSecret);
+        }
 
         @Bean
         public ApplicationUserRepository applicationUserRepository() {
