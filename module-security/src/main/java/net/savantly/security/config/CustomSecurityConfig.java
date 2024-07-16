@@ -22,6 +22,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.savantly.security.jwt.ProxyBearerTokenResolver;
 import net.savantly.security.listener.AppUserAutoCreationService;
+import net.savantly.security.oauth.LoginForwardingController;
 import net.savantly.security.oauth.OAuth2ConfigProperties;
 import net.savantly.security.preauthenticated.PreAuthConfigProperties;
 
@@ -39,6 +40,7 @@ import net.savantly.security.preauthenticated.PreAuthConfigProperties;
 public class CustomSecurityConfig {
 
     private final OAuth2ConfigProperties oauth2;
+    private final CorsConfig corsConfig;
 
     @Setter
     private String bearerTokenHeaderName = "x-forwarded-access-token";
@@ -59,6 +61,11 @@ public class CustomSecurityConfig {
     private PreAuthConfigProperties preauth = new PreAuthConfigProperties();
 
     @Bean
+    public LoginForwardingController loginForwardingController() {
+        return new LoginForwardingController();
+    }
+
+    @Bean
     public AppUserAutoCreationService appUserAutoCreationService(OAuth2ConfigProperties securityConfigProps,
             ApplicationUserRepository userRepo, ApplicationRoleRepository roleRepo, FactoryService factoryService) {
         return new AppUserAutoCreationService(securityConfigProps, userRepo, roleRepo, factoryService);
@@ -71,6 +78,15 @@ public class CustomSecurityConfig {
         if (!useCsrf) {
             http.csrf(c -> c.disable());
         }
+        http.cors(cors -> {
+            cors.configurationSource(request -> {
+                var c = new org.springframework.web.cors.CorsConfiguration();
+                c.setAllowedOrigins(corsConfig.getAllowedHeaders());
+                c.setAllowedMethods(corsConfig.getAllowedMethods());
+                c.setAllowedHeaders(corsConfig.getAllowedHeaders());
+                return c;
+            });
+        });
 
         log.info("**** Custom security enabled. creating clientFilterChain ****");
 

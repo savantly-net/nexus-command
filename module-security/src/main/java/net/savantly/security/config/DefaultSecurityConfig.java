@@ -1,5 +1,7 @@
 package net.savantly.security.config;
 
+import java.util.List;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +23,7 @@ public class DefaultSecurityConfig {
 
     private boolean debug = false;
     private boolean useCsrf = false;
+    private final CorsConfig corsConfig;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -39,6 +42,15 @@ public class DefaultSecurityConfig {
         log.info("**** Using default security chain ****");
         http.authorizeHttpRequests(authz -> authz.requestMatchers("/**").permitAll());
         http.formLogin(Customizer.withDefaults());
+        http.cors(cors -> {
+            cors.configurationSource(request -> {
+                var c = new org.springframework.web.cors.CorsConfiguration();
+                c.setAllowedOrigins(corsConfig.getAllowedHeaders());
+                c.setAllowedMethods(corsConfig.getAllowedMethods());
+                c.setAllowedHeaders(corsConfig.getAllowedHeaders());
+                return c;
+            });
+        });
         return http.build();
     }
 }
