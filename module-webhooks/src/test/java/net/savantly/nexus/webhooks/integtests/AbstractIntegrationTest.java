@@ -22,42 +22,41 @@ import org.springframework.context.annotation.PropertySources;
 import org.springframework.test.context.ActiveProfiles;
 
 import net.savantly.ai.AIModule;
+import net.savantly.encryption.jpa.AttributeEncryptor;
 import net.savantly.nexus.organizations.OrganizationsModule;
 import net.savantly.nexus.webhooks.WebhooksModule;
 
-@SpringBootTest(
-    classes = {
-            // we use a slightly different configuration compared to the production (AppManifest/webapp)
-            AbstractIntegrationTest.TestApp.class,
-            WebhooksModule.class,
-            OrganizationsModule.class,
-            AIModule.class
-    },
-    properties = {}
-)
-@ActiveProfiles({"test"})
+@SpringBootTest(classes = {
+        // we use a slightly different configuration compared to the production
+        // (AppManifest/webapp)
+        AbstractIntegrationTest.TestApp.class,
+        WebhooksModule.class,
+        OrganizationsModule.class,
+        AIModule.class
+}, properties = {})
+@ActiveProfiles({ "test" })
 public abstract class AbstractIntegrationTest extends CausewayIntegrationTestAbstract {
 
     /**
-     * Compared to the production app manifest <code>domainapp.webapp.AppManifest</code>,
+     * Compared to the production app manifest
+     * <code>domainapp.webapp.AppManifest</code>,
      * here we in effect disable security checks, and we exclude any web/UI modules.
      */
     @SpringBootConfiguration
     @EnableAutoConfiguration
     @Import({
 
-        CausewayModuleCoreRuntimeServices.class,
-        CausewayModuleSecurityBypass.class,
-        CausewayModulePersistenceJpaEclipselink.class,
-        CausewayModuleTestingFixturesApplib.class,
+            CausewayModuleCoreRuntimeServices.class,
+            CausewayModuleSecurityBypass.class,
+            CausewayModulePersistenceJpaEclipselink.class,
+            CausewayModuleTestingFixturesApplib.class,
 
     })
     @PropertySources({
-        @PropertySource(CausewayPresets.H2InMemory_withUniqueSchema),
-        @PropertySource(CausewayPresets.UseLog4j2Test),
+            @PropertySource(CausewayPresets.H2InMemory_withUniqueSchema),
+            @PropertySource(CausewayPresets.UseLog4j2Test),
     })
     public static class TestApp {
-
 
         @Bean
         public ApplicationUserRepository applicationUserRepository() {
@@ -65,6 +64,12 @@ public abstract class AbstractIntegrationTest extends CausewayIntegrationTestAbs
             when(mock.allUsers()).thenReturn(
                     Collections.emptyList());
             return mock;
+        }
+
+        @Bean
+        public AttributeEncryptor attributeEncryptor() throws Exception {
+            String fakeSecret = "12312312312312312312312312312312";
+            return new AttributeEncryptor(fakeSecret);
         }
 
     }
