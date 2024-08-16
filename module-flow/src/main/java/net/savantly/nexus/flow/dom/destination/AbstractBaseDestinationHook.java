@@ -32,6 +32,11 @@ public abstract class AbstractBaseDestinationHook implements DestinationHook {
             try {
                 var result = javascriptExecutor.execute(destination.getTransformScript(), context);
                 log.info("Transform script result type: {}", result.getClass());
+                if (Map.class.isAssignableFrom(result.getClass())) {
+                    return (Map<String, Object>) result;
+                } else {
+                    log.warn("Transform script did not return a Map. Ignoring result.");
+                }
             } catch (Exception e) {
                 log.error("Failed to execute transform script", e);
                 throw new IllegalArgumentException("Failed to execute transform script. " + e.getMessage());

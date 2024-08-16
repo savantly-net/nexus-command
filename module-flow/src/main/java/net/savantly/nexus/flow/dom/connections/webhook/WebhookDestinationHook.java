@@ -29,7 +29,6 @@ public class WebhookDestinationHook implements DestinationHook {
             Collection<? extends Mapping> formMappings) {
         var webhook = webhooks.findById(destination.getDestinationId()).orElseThrow();
 
-
         var headers = new HttpHeaders();
         if (Objects.nonNull(webhook.getHeaders())) {
             var headerLines = webhook.getHeaders().split("\n");
@@ -42,7 +41,6 @@ public class WebhookDestinationHook implements DestinationHook {
         var template = restTemplateBuilder.build();
         var method = HttpMethod.valueOf(webhook.getMethod().name());
         var request = RequestEntity.method(method, webhook.getUrl()).headers(headers).body(payload);
-
 
         log.info("Sending webhook request: {}", request);
 
