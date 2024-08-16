@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <mb3:menuBars
-        xsi:schemaLocation="https://causeway.apache.org/applib/layout/menubars/bootstrap3 https://causeway.apache.org/applib/layout/menubars/bootstrap3/menubars.xsd https://causeway.apache.org/applib/layout/component https://causeway.apache.org/applib/layout/component/component.xsd"
-        xmlns:cpt="https://causeway.apache.org/applib/layout/component"
-        xmlns:mb3="https://causeway.apache.org/applib/layout/menubars/bootstrap3"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    xsi:schemaLocation="https://causeway.apache.org/applib/layout/menubars/bootstrap3 https://causeway.apache.org/applib/layout/menubars/bootstrap3/menubars.xsd
+                        https://causeway.apache.org/applib/layout/component https://causeway.apache.org/applib/layout/component/component.xsd"
+    xmlns:cpt="https://causeway.apache.org/applib/layout/component"
+    xmlns:mb3="https://causeway.apache.org/applib/layout/menubars/bootstrap3"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <mb3:primary>
         <mb3:menu>
             <mb3:named>Organizations</mb3:named>
@@ -30,10 +31,12 @@
                 </mb3:serviceAction>
             </mb3:section>
             <mb3:section>
-                <mb3:serviceAction objectType="nexus.organizations.OrganizationMemberRoles" id="create">
+                <mb3:serviceAction objectType="nexus.organizations.OrganizationMemberRoles"
+                    id="create">
                     <cpt:named>New Role</cpt:named>
                 </mb3:serviceAction>
-                <mb3:serviceAction objectType="nexus.organizations.OrganizationMemberRoles" id="listAll">
+                <mb3:serviceAction objectType="nexus.organizations.OrganizationMemberRoles"
+                    id="listAll">
                     <cpt:named>List Roles</cpt:named>
                 </mb3:serviceAction>
             </mb3:section>
@@ -81,8 +84,8 @@
             </mb3:section>
             <mb3:section>
                 <mb3:named>Project Member Roles</mb3:named>
-                <mb3:serviceAction objectType="nexus.projects.ProjectMemberRoles" id="create"/>
-                <mb3:serviceAction objectType="nexus.projects.ProjectMemberRoles" id="listAll"/>
+                <mb3:serviceAction objectType="nexus.projects.ProjectMemberRoles" id="create" />
+                <mb3:serviceAction objectType="nexus.projects.ProjectMemberRoles" id="listAll" />
             </mb3:section>
             <mb3:section>
                 <mb3:named>Issues</mb3:named>
@@ -98,8 +101,8 @@
             </mb3:section>
             <mb3:section>
                 <mb3:named>Issue Member Roles</mb3:named>
-                <mb3:serviceAction objectType="nexus.projects.IssueMemberRoles" id="create"/>
-                <mb3:serviceAction objectType="nexus.projects.IssueMemberRoles" id="listAll"/>
+                <mb3:serviceAction objectType="nexus.projects.IssueMemberRoles" id="create" />
+                <mb3:serviceAction objectType="nexus.projects.IssueMemberRoles" id="listAll" />
             </mb3:section>
         </mb3:menu>
         <mb3:menu>
@@ -144,6 +147,14 @@
                     <cpt:named>List Destinations</cpt:named>
                 </mb3:serviceAction>
             </mb3:section>
+            <mb3:section>
+                <mb3:serviceAction objectType="nexus.flow.FileEntities" id="create">
+                    <cpt:named>New File</cpt:named>
+                </mb3:serviceAction>
+                <mb3:serviceAction objectType="nexus.flow.FileEntities" id="listAll">
+                    <cpt:named>List Files</cpt:named>
+                </mb3:serviceAction>
+            </mb3:section>
         </mb3:menu>
         <mb3:menu>
             <mb3:named>Franchisees</mb3:named>
@@ -160,20 +171,23 @@
             </mb3:section>
             <mb3:section>
                 <mb3:named>Markets</mb3:named>
-                <mb3:serviceAction objectType="nexus.franchise.FranchiseMarkets" id="create"/>
-                <mb3:serviceAction objectType="nexus.franchise.FranchiseMarkets" id="listAll"/>
+                <mb3:serviceAction objectType="nexus.franchise.FranchiseMarkets" id="create" />
+                <mb3:serviceAction objectType="nexus.franchise.FranchiseMarkets" id="listAll" />
             </mb3:section>
             <mb3:section>
                 <mb3:named>Locations</mb3:named>
-                <mb3:serviceAction objectType="nexus.franchise.FranchiseLocations" id="create"/>
-                <mb3:serviceAction objectType="nexus.franchise.FranchiseLocations" id="listAll"/>
-                <mb3:serviceAction objectType="nexus.franchise.FranchiseLocations" id="findByName"/>
-                <mb3:serviceAction objectType="nexus.franchise.FranchiseLocations" id="findByNameExact"/>
+                <mb3:serviceAction objectType="nexus.franchise.FranchiseLocations" id="create" />
+                <mb3:serviceAction objectType="nexus.franchise.FranchiseLocations" id="listAll" />
+                <mb3:serviceAction objectType="nexus.franchise.FranchiseLocations" id="findByName" />
+                <mb3:serviceAction objectType="nexus.franchise.FranchiseLocations"
+                    id="findByNameExact" />
             </mb3:section>
             <mb3:section>
                 <mb3:named>Location Roles</mb3:named>
-                <mb3:serviceAction objectType="nexus.franchise.FranchiseLocationMemberRoles" id="create"/>
-                <mb3:serviceAction objectType="nexus.franchise.FranchiseLocationMemberRoles" id="listAll"/>
+                <mb3:serviceAction objectType="nexus.franchise.FranchiseLocationMemberRoles"
+                    id="create" />
+                <mb3:serviceAction objectType="nexus.franchise.FranchiseLocationMemberRoles"
+                    id="listAll" />
             </mb3:section>
         </mb3:menu>
         <mb3:menu>
@@ -253,45 +267,64 @@
             <mb3:named>Prototyping</mb3:named>
             <mb3:section>
                 <mb3:named>Fixtures</mb3:named>
-                <mb3:serviceAction objectType="causeway.testing.fixtures.FixtureScripts" id="runFixtureScript"/>
-                <mb3:serviceAction objectType="causeway.testing.fixtures.FixtureScripts" id="recreateObjectsAndReturnFirst"/>
+                <mb3:serviceAction objectType="causeway.testing.fixtures.FixtureScripts"
+                    id="runFixtureScript" />
+                <mb3:serviceAction objectType="causeway.testing.fixtures.FixtureScripts"
+                    id="recreateObjectsAndReturnFirst" />
             </mb3:section>
             <mb3:section>
                 <mb3:named>Layouts</mb3:named>
-                <mb3:serviceAction objectType="causeway.applib.LayoutServiceMenu" id="downloadLayouts"/>
-                <mb3:serviceAction objectType="causeway.applib.LayoutServiceMenu" id="downloadMenuBarsLayout"/>
+                <mb3:serviceAction objectType="causeway.applib.LayoutServiceMenu"
+                    id="downloadLayouts" />
+                <mb3:serviceAction objectType="causeway.applib.LayoutServiceMenu"
+                    id="downloadMenuBarsLayout" />
             </mb3:section>
             <mb3:section>
                 <mb3:named>Meta Model and Features</mb3:named>
-                <mb3:serviceAction objectType="causeway.applib.MetaModelServiceMenu" id="downloadMetaModel"/>
-                <mb3:serviceAction objectType="causeway.applib.MetaModelServiceMenu" id="downloadMetaModelDiff"/>
-                <mb3:serviceAction objectType="causeway.feat.ApplicationFeatureMenu" id="allNamespaces"/>
-                <mb3:serviceAction objectType="causeway.feat.ApplicationFeatureMenu" id="allTypes"/>
-                <mb3:serviceAction objectType="causeway.feat.ApplicationFeatureMenu" id="allActions"/>
-                <mb3:serviceAction objectType="causeway.feat.ApplicationFeatureMenu" id="allProperties"/>
-                <mb3:serviceAction objectType="causeway.feat.ApplicationFeatureMenu" id="allCollections"/>
+                <mb3:serviceAction objectType="causeway.applib.MetaModelServiceMenu"
+                    id="downloadMetaModel" />
+                <mb3:serviceAction objectType="causeway.applib.MetaModelServiceMenu"
+                    id="downloadMetaModelDiff" />
+                <mb3:serviceAction objectType="causeway.feat.ApplicationFeatureMenu"
+                    id="allNamespaces" />
+                <mb3:serviceAction objectType="causeway.feat.ApplicationFeatureMenu" id="allTypes" />
+                <mb3:serviceAction objectType="causeway.feat.ApplicationFeatureMenu" id="allActions" />
+                <mb3:serviceAction objectType="causeway.feat.ApplicationFeatureMenu"
+                    id="allProperties" />
+                <mb3:serviceAction objectType="causeway.feat.ApplicationFeatureMenu"
+                    id="allCollections" />
             </mb3:section>
             <mb3:section>
                 <mb3:named>Persistence</mb3:named>
-                <mb3:serviceAction objectType="causeway.persistence.jdo.JdoMetamodelMenu" id="downloadMetamodels"/>
-                <mb3:serviceAction objectType="causeway.ext.h2Console.H2ManagerMenu" id="openH2Console"/>
+                <mb3:serviceAction objectType="causeway.persistence.jdo.JdoMetamodelMenu"
+                    id="downloadMetamodels" />
+                <mb3:serviceAction objectType="causeway.ext.h2Console.H2ManagerMenu"
+                    id="openH2Console" />
             </mb3:section>
             <mb3:section>
                 <mb3:named>REST API</mb3:named>
-                <mb3:serviceAction objectType="causeway.viewer.roRendering.SwaggerServiceMenu" id="openSwaggerUi"/>
-                <mb3:serviceAction objectType="causeway.viewer.roRendering.SwaggerServiceMenu" id="openRestApi"/>
-                <mb3:serviceAction objectType="causeway.viewer.roRendering.SwaggerServiceMenu" id="downloadSwaggerSchemaDefinition"/>
+                <mb3:serviceAction objectType="causeway.viewer.roRendering.SwaggerServiceMenu"
+                    id="openSwaggerUi" />
+                <mb3:serviceAction objectType="causeway.viewer.roRendering.SwaggerServiceMenu"
+                    id="openRestApi" />
+                <mb3:serviceAction objectType="causeway.viewer.roRendering.SwaggerServiceMenu"
+                    id="downloadSwaggerSchemaDefinition" />
             </mb3:section>
             <mb3:section>
                 <mb3:named>i18n</mb3:named>
-                <mb3:serviceAction objectType="causeway.applib.TranslationServicePoMenu" id="downloadTranslations"/>
-                <mb3:serviceAction objectType="causeway.applib.TranslationServicePoMenu" id="resetTranslationCache"/>
-                <mb3:serviceAction objectType="causeway.applib.TranslationServicePoMenu" id="switchToReadingTranslations"/>
-                <mb3:serviceAction objectType="causeway.applib.TranslationServicePoMenu" id="switchToWritingTranslations"/>
+                <mb3:serviceAction objectType="causeway.applib.TranslationServicePoMenu"
+                    id="downloadTranslations" />
+                <mb3:serviceAction objectType="causeway.applib.TranslationServicePoMenu"
+                    id="resetTranslationCache" />
+                <mb3:serviceAction objectType="causeway.applib.TranslationServicePoMenu"
+                    id="switchToReadingTranslations" />
+                <mb3:serviceAction objectType="causeway.applib.TranslationServicePoMenu"
+                    id="switchToWritingTranslations" />
             </mb3:section>
             <mb3:section>
                 <mb3:named>Manual Testing</mb3:named>
-                <mb3:serviceAction objectType="causeway.applib.SitemapServiceMenu" id="downloadSitemap" >
+                <mb3:serviceAction objectType="causeway.applib.SitemapServiceMenu"
+                    id="downloadSitemap">
                     <cpt:named>Download Site-Map Template (Adoc)</cpt:named>
                 </mb3:serviceAction>
             </mb3:section>
@@ -300,80 +333,103 @@
             <mb3:named>Activity</mb3:named>
             <mb3:section>
                 <mb3:named>Sessions</mb3:named>
-                <mb3:serviceAction id="activeSessions" objectType="causeway.ext.sessionLog.SessionLogMenu"/>
-                <mb3:serviceAction id="findSessions" objectType="causeway.ext.sessionLog.SessionLogMenu"/>
+                <mb3:serviceAction id="activeSessions"
+                    objectType="causeway.ext.sessionLog.SessionLogMenu" />
+                <mb3:serviceAction id="findSessions"
+                    objectType="causeway.ext.sessionLog.SessionLogMenu" />
             </mb3:section>
             <mb3:section>
                 <mb3:named>Commands</mb3:named>
-                <mb3:serviceAction id="activeCommands" objectType="causeway.ext.commandLog.CommandLogMenu"/>
-                <mb3:serviceAction id="findMostRecent" objectType="causeway.ext.commandLog.CommandLogMenu"/>
-                <mb3:serviceAction id="findCommands" objectType="causeway.ext.commandLog.CommandLogMenu"/>
-                <mb3:serviceAction id="findAll" objectType="causeway.ext.commandLog.CommandLogMenu"/>
+                <mb3:serviceAction id="activeCommands"
+                    objectType="causeway.ext.commandLog.CommandLogMenu" />
+                <mb3:serviceAction id="findMostRecent"
+                    objectType="causeway.ext.commandLog.CommandLogMenu" />
+                <mb3:serviceAction id="findCommands"
+                    objectType="causeway.ext.commandLog.CommandLogMenu" />
+                <mb3:serviceAction id="findAll" objectType="causeway.ext.commandLog.CommandLogMenu" />
             </mb3:section>
             <mb3:section>
                 <mb3:named>Execution Log</mb3:named>
-                <mb3:serviceAction id="findMostRecent" objectType="causeway.ext.executionLog.ExecutionLogMenu"/>
-                <mb3:serviceAction id="findExecutions" objectType="causeway.ext.executionLog.ExecutionLogMenu"/>
-                <mb3:serviceAction id="findAll" objectType="causeway.ext.executionLog.ExecutionLogMenu"/>
+                <mb3:serviceAction id="findMostRecent"
+                    objectType="causeway.ext.executionLog.ExecutionLogMenu" />
+                <mb3:serviceAction id="findExecutions"
+                    objectType="causeway.ext.executionLog.ExecutionLogMenu" />
+                <mb3:serviceAction id="findAll"
+                    objectType="causeway.ext.executionLog.ExecutionLogMenu" />
             </mb3:section>
             <mb3:section>
                 <mb3:named>Audit Trail</mb3:named>
-                <mb3:serviceAction id="findMostRecent" objectType="causeway.ext.auditTrail.AuditTrailMenu"/>
-                <mb3:serviceAction id="findAuditEntries" objectType="causeway.ext.auditTrail.AuditTrailMenu"/>
-                <mb3:serviceAction id="findAll" objectType="causeway.ext.auditTrail.AuditTrailMenu"/>
+                <mb3:serviceAction id="findMostRecent"
+                    objectType="causeway.ext.auditTrail.AuditTrailMenu" />
+                <mb3:serviceAction id="findAuditEntries"
+                    objectType="causeway.ext.auditTrail.AuditTrailMenu" />
+                <mb3:serviceAction id="findAll" objectType="causeway.ext.auditTrail.AuditTrailMenu" />
             </mb3:section>
             <mb3:section>
                 <mb3:named>Execution Outbox</mb3:named>
-                <mb3:serviceAction id="findOldest" objectType="causeway.ext.executionOutbox.ExecutionOutboxMenu"/>
-                <mb3:serviceAction id="findAll" objectType="causeway.ext.executionOutbox.ExecutionOutboxMenu"/>
+                <mb3:serviceAction id="findOldest"
+                    objectType="causeway.ext.executionOutbox.ExecutionOutboxMenu" />
+                <mb3:serviceAction id="findAll"
+                    objectType="causeway.ext.executionOutbox.ExecutionOutboxMenu" />
             </mb3:section>
         </mb3:menu>
         <mb3:menu>
             <mb3:named>Security</mb3:named>
             <mb3:section>
                 <mb3:named>Users</mb3:named>
-                <mb3:serviceAction objectType="causeway.ext.secman.ApplicationUserMenu" id="userManager"/>
-                <mb3:serviceAction objectType="causeway.ext.secman.ApplicationUserMenu" id="findUsers"/>
+                <mb3:serviceAction objectType="causeway.ext.secman.ApplicationUserMenu"
+                    id="userManager" />
+                <mb3:serviceAction objectType="causeway.ext.secman.ApplicationUserMenu"
+                    id="findUsers" />
             </mb3:section>
             <mb3:section>
                 <mb3:named>Roles</mb3:named>
-                <mb3:serviceAction objectType="causeway.ext.secman.ApplicationRoleMenu" id="roleManager"/>
-                <mb3:serviceAction objectType="causeway.ext.secman.ApplicationRoleMenu" id="findRoles"/>
+                <mb3:serviceAction objectType="causeway.ext.secman.ApplicationRoleMenu"
+                    id="roleManager" />
+                <mb3:serviceAction objectType="causeway.ext.secman.ApplicationRoleMenu"
+                    id="findRoles" />
             </mb3:section>
             <mb3:section>
                 <mb3:named>Permissions</mb3:named>
-                <mb3:serviceAction objectType="causeway.ext.secman.ApplicationPermissionMenu" id="allPermissions" />
-                <mb3:serviceAction objectType="causeway.ext.secman.ApplicationPermissionMenu" id="findOrphanedPermissions" />
+                <mb3:serviceAction objectType="causeway.ext.secman.ApplicationPermissionMenu"
+                    id="allPermissions" />
+                <mb3:serviceAction objectType="causeway.ext.secman.ApplicationPermissionMenu"
+                    id="findOrphanedPermissions" />
             </mb3:section>
             <mb3:section>
                 <mb3:named>Tenancies</mb3:named>
-                <mb3:serviceAction objectType="causeway.ext.secman.ApplicationTenancyMenu" id="tenancyManager"/>
-                <mb3:serviceAction objectType="causeway.ext.secman.ApplicationTenancyMenu" id="findTenancies"/>
+                <mb3:serviceAction objectType="causeway.ext.secman.ApplicationTenancyMenu"
+                    id="tenancyManager" />
+                <mb3:serviceAction objectType="causeway.ext.secman.ApplicationTenancyMenu"
+                    id="findTenancies" />
             </mb3:section>
         </mb3:menu>
     </mb3:secondary>
     <mb3:tertiary>
         <mb3:menu>
-            <mb3:named/>
+            <mb3:named />
             <mb3:section>
                 <mb3:named>Documentation</mb3:named>
-                <mb3:serviceAction objectType="causeway.ext.docgen.DocumentationMenu" id="help"/>
+                <mb3:serviceAction objectType="causeway.ext.docgen.DocumentationMenu" id="help" />
             </mb3:section>
             <mb3:section>
                 <mb3:named>Configuration</mb3:named>
-                <mb3:serviceAction objectType="causeway.conf.ConfigurationMenu" id="configuration"/>
+                <mb3:serviceAction objectType="causeway.conf.ConfigurationMenu" id="configuration" />
             </mb3:section>
             <mb3:section>
                 <mb3:named>Impersonate</mb3:named>
-                <mb3:serviceAction objectType="causeway.sudo.ImpersonateMenu" id="impersonate"/>
-                <mb3:serviceAction objectType="causeway.sudo.ImpersonateMenu" id="impersonateWithRoles"/>
-                <mb3:serviceAction objectType="causeway.applib.ImpersonateStopMenu" id="stopImpersonating"/>
+                <mb3:serviceAction objectType="causeway.sudo.ImpersonateMenu" id="impersonate" />
+                <mb3:serviceAction objectType="causeway.sudo.ImpersonateMenu"
+                    id="impersonateWithRoles" />
+                <mb3:serviceAction objectType="causeway.applib.ImpersonateStopMenu"
+                    id="stopImpersonating" />
             </mb3:section>
             <mb3:section>
                 <mb3:named>Security</mb3:named>
-                <mb3:serviceAction objectType="causeway.applib.UserMenu" id="me"/>  <!-- this is hidden by secman -->
-                <mb3:serviceAction objectType="causeway.ext.secman.MeService" id="me"/>
-                <mb3:serviceAction objectType="causeway.security.LogoutMenu" id="logout"/>
+                <mb3:serviceAction objectType="causeway.applib.UserMenu" id="me" />  <!-- this is
+                hidden by secman -->
+                <mb3:serviceAction objectType="causeway.ext.secman.MeService" id="me" />
+                <mb3:serviceAction objectType="causeway.security.LogoutMenu" id="logout" />
             </mb3:section>
         </mb3:menu>
     </mb3:tertiary>
