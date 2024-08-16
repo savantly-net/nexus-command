@@ -12,7 +12,6 @@ USER root
 WORKDIR /app
 
 ENV APP_USER=1000
-RUN useradd --uid ${APP_USER} --gid 0 app
 RUN chown -R ${APP_USER}:0 /app
 USER ${APP_USER}
 
