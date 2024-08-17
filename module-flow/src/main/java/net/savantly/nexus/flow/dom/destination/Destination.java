@@ -1,6 +1,5 @@
 package net.savantly.nexus.flow.dom.destination;
 
-
 import static org.apache.causeway.applib.annotation.SemanticsOf.NON_IDEMPOTENT_ARE_YOU_SURE;
 
 import java.util.Comparator;
@@ -66,7 +65,8 @@ public class Destination implements Comparable<Destination>, HasOrganization {
     @Transient
     MessageService messageService;
 
-    public static Destination withName(Form form, DestinationType destinationType, String destinationId, String name, String collectionName) {
+    public static Destination withName(Form form, DestinationType destinationType, String destinationId, String name,
+            String collectionName) {
         val entity = new Destination();
         entity.id = UUID.randomUUID().toString();
         entity.setName(name);
@@ -94,7 +94,7 @@ public class Destination implements Comparable<Destination>, HasOrganization {
     @Title
     @Name
     @Column(length = Name.MAX_LEN, nullable = false)
-    @Property(editing = Editing.DISABLED)
+    @Property(editing = Editing.ENABLED)
     @Getter
     @Setter
     @ToString.Include
@@ -147,6 +147,13 @@ public class Destination implements Comparable<Destination>, HasOrganization {
     @ActionLayout(associateWith = "transformScript", describedAs = "Update script")
     public Destination updateTransformScript(@ParameterLayout(multiLine = 20) String transformScript) {
         setTransformScript(transformScript);
+        return this;
+    }
+
+    @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
+    @ActionLayout(describedAs = "Clear the transform script")
+    public Destination clearTransformScript() {
+        setTransformScript(null);
         return this;
     }
 
