@@ -10,9 +10,8 @@ import net.savantly.nexus.flow.dom.connections.datasource.DatasourceFactory;
 import net.savantly.nexus.flow.dom.connections.flowHook.FlowDestinationHookFactory;
 import net.savantly.nexus.flow.dom.connections.jdbcConnection.JdbcConnectionDestinationHook;
 import net.savantly.nexus.flow.dom.connections.jdbcConnection.JdbcConnections;
-import net.savantly.nexus.flow.dom.connections.webhook.WebhookDestinationHook;
+import net.savantly.nexus.flow.dom.connections.webhook.WebhookDestinationHookFactory;
 import net.savantly.nexus.flow.dom.emailTarget.EmailDestinationHookFactory;
-import net.savantly.nexus.webhooks.dom.webhook.Webhooks;
 
 @RequiredArgsConstructor
 @Log4j2
@@ -21,10 +20,10 @@ public class DestinationHookFactory {
     final ObjectMapper objectMapper;
     final DatasourceFactory datasourceFactory;
     final JdbcConnections jdbcConnections;
-    final Webhooks webhooks;
     final RestTemplateBuilder restTemplateBuilder;
     final FlowDestinationHookFactory flowDestinationHookFactory;
-    final EmailDestinationHookFactory   emailDestinationHookFactory;
+    final EmailDestinationHookFactory emailDestinationHookFactory;
+    final WebhookDestinationHookFactory webhookDestinationHookFactory;
 
     public DestinationHook createHook(Destination destination) {
         log.info("Creating destination hook for: " + destination.getDestinationType());
@@ -55,11 +54,7 @@ public class DestinationHookFactory {
     }
 
     private DestinationHook getWebhookHook(Destination destination) {
-        var opt = webhooks.findById(destination.getDestinationId());
-        if (opt.isEmpty()) {
-            throw new RuntimeException("Webhook not found");
-        }
-        return new WebhookDestinationHook(webhooks, restTemplateBuilder);
+        return webhookDestinationHookFactory.createHook();
     }
 
     private DestinationHook getFlowDestinationHook(Destination destination) {

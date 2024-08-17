@@ -36,6 +36,7 @@ import net.savantly.nexus.flow.api.FlowService;
 import net.savantly.nexus.flow.dom.connections.datasource.DatasourceFactory;
 import net.savantly.nexus.flow.dom.connections.flowHook.FlowDestinationHookFactory;
 import net.savantly.nexus.flow.dom.connections.jdbcConnection.JdbcConnections;
+import net.savantly.nexus.flow.dom.connections.webhook.WebhookDestinationHookFactory;
 import net.savantly.nexus.flow.dom.destination.DestinationHookFactory;
 import net.savantly.nexus.flow.dom.emailTarget.EmailDestinationHookFactory;
 import net.savantly.nexus.flow.dom.emailTarget.EmailTargets;
@@ -117,12 +118,23 @@ public class FlowModule implements ModuleWithFixtures {
     }
 
     @Bean
+    public WebhookDestinationHookFactory flow_webhookDestinationHookFactory(Webhooks webhooks,
+            FlowContextFactory flowContextFactory, JavascriptExecutor javascriptExecutor,
+            RepositoryService repositoryService, RestTemplateBuilder restTemplateBuilder,
+            ObjectMapper objectMapper) {
+        return new WebhookDestinationHookFactory(flowContextFactory, javascriptExecutor, repositoryService, webhooks,
+                restTemplateBuilder, objectMapper);
+    }
+
+    @Bean
     public DestinationHookFactory flow_destinationHookFactory(ObjectMapper objectMapper,
             DatasourceFactory datasourceFactory, JdbcConnections jdbcConnections, Webhooks webhooks,
             RestTemplateBuilder restTemplateBuilder, FlowDestinationHookFactory flowDestinationHookFactory,
-            EmailDestinationHookFactory emailDestinationHookFactory) {
-        return new DestinationHookFactory(objectMapper, datasourceFactory, jdbcConnections, webhooks,
-                restTemplateBuilder, flowDestinationHookFactory, emailDestinationHookFactory);
+            EmailDestinationHookFactory emailDestinationHookFactory,
+            WebhookDestinationHookFactory webhookDestinationHookFactory) {
+        return new DestinationHookFactory(objectMapper, datasourceFactory, jdbcConnections,
+                restTemplateBuilder, flowDestinationHookFactory, emailDestinationHookFactory,
+                webhookDestinationHookFactory);
     }
 
     @Bean
@@ -159,7 +171,8 @@ public class FlowModule implements ModuleWithFixtures {
     @Bean
     public FlowDefinitionExecutionProxy flow_flowDefinitionExecutionProxy(FlowExecutorFactory flowExecutorFactory,
             FlowDefinitionRepository flowDefinitionRepository, ObjectMapper objectMapper,
-            RepositoryService repositoryService, OrganizationSecretRepository secretRepository, FlowContextFactory flowContextFactory) {
+            RepositoryService repositoryService, OrganizationSecretRepository secretRepository,
+            FlowContextFactory flowContextFactory) {
         return new FlowDefinitionExecutionProxy(flowExecutorFactory, flowDefinitionRepository, objectMapper,
                 repositoryService, flowContextFactory);
     }
@@ -190,8 +203,10 @@ public class FlowModule implements ModuleWithFixtures {
 
     @Bean
     public EmailDestinationHookFactory flow_emailDestinationHookFactory(EmailService emailService,
-            EmailTargets emailTargets, JavascriptExecutor javascriptExecutor, FlowContextFactory flowContextFactory, RepositoryService repositoryService) {
-        return new EmailDestinationHookFactory(emailService, emailTargets, javascriptExecutor, flowContextFactory, repositoryService);
+            EmailTargets emailTargets, JavascriptExecutor javascriptExecutor, FlowContextFactory flowContextFactory,
+            RepositoryService repositoryService, ObjectMapper objectMapper) {
+        return new EmailDestinationHookFactory(emailService, emailTargets, javascriptExecutor, flowContextFactory,
+                repositoryService, objectMapper);
     }
 
 }

@@ -7,6 +7,8 @@ import java.util.Map;
 import org.apache.causeway.applib.services.email.EmailService;
 import org.apache.causeway.applib.services.repository.RepositoryService;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.extern.log4j.Log4j2;
 import net.savantly.nexus.flow.dom.destination.AbstractBaseDestinationHook;
 import net.savantly.nexus.flow.dom.destination.Destination;
@@ -25,8 +27,8 @@ public class EmailDestinationHook extends AbstractBaseDestinationHook {
 
     public EmailDestinationHook(EmailService emailService, EmailTargets emailTargets,
             JavascriptExecutor javascriptExecutor, FlowContextFactory flowContextFactory,
-            RepositoryService repositoryService) {
-        super(flowContextFactory, javascriptExecutor, repositoryService);
+            RepositoryService repositoryService, ObjectMapper objectMapper) {
+        super(flowContextFactory, javascriptExecutor, repositoryService, objectMapper);
         this.emailService = emailService;
         this.emailTargets = emailTargets;
         this.flowContextFactory = flowContextFactory;
