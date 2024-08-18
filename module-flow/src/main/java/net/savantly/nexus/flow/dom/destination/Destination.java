@@ -151,7 +151,7 @@ public class Destination implements Comparable<Destination>, HasOrganization {
     }
 
     @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
-    @ActionLayout(describedAs = "Clear the transform script")
+    @ActionLayout(associateWith = "transformScript", describedAs = "Clear the transform script")
     public Destination clearTransformScript() {
         setTransformScript(null);
         return this;
