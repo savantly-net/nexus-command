@@ -1,6 +1,5 @@
 package net.savantly.nexus.webhooks.dom.webhook;
 
-
 import static org.apache.causeway.applib.annotation.SemanticsOf.NON_IDEMPOTENT_ARE_YOU_SURE;
 
 import java.util.Comparator;
@@ -94,7 +93,7 @@ public class Webhook extends OrganizationEntity implements Comparable<Webhook> {
     @Title
     @Name
     @Column(length = Name.MAX_LEN, nullable = false)
-    @Property(editing = Editing.DISABLED)
+    @Property(editing = Editing.ENABLED)
     @Getter
     @Setter
     @ToString.Include
@@ -114,7 +113,7 @@ public class Webhook extends OrganizationEntity implements Comparable<Webhook> {
     @Enumerated(EnumType.STRING)
     private WebhookMethodType method = WebhookMethodType.POST;
 
-    @Column(columnDefinition="text", nullable = true)
+    @Column(columnDefinition = "text", nullable = true)
     @PropertyLayout(fieldSetId = "identity", sequence = "1.7", multiLine = 10)
     @Getter
     @Setter
