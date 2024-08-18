@@ -1,6 +1,6 @@
 package net.savantly.nexus.flow.dom.destination;
 
-import static org.apache.causeway.applib.annotation.SemanticsOf.NON_IDEMPOTENT_ARE_YOU_SURE;
+import static org.apache.causeway.applib.annotation.SemanticsOf.IDEMPOTENT_ARE_YOU_SURE;
 
 import java.util.Comparator;
 import java.util.UUID;
@@ -20,12 +20,8 @@ import org.apache.causeway.applib.annotation.SemanticsOf;
 import org.apache.causeway.applib.annotation.Title;
 import org.apache.causeway.applib.annotation.Where;
 import org.apache.causeway.applib.jaxb.PersistentEntityAdapter;
-import org.apache.causeway.applib.services.message.MessageService;
-import org.apache.causeway.applib.services.repository.RepositoryService;
-import org.apache.causeway.applib.services.title.TitleService;
 import org.apache.causeway.persistence.jpa.applib.integration.CausewayEntityListener;
 
-import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
@@ -54,16 +50,6 @@ import net.savantly.nexus.organizations.dom.organization.Organization;
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
 public class Destination implements Comparable<Destination>, HasOrganization {
-
-    @Inject
-    @Transient
-    RepositoryService repositoryService;
-    @Inject
-    @Transient
-    TitleService titleService;
-    @Inject
-    @Transient
-    MessageService messageService;
 
     public static Destination withName(Form form, DestinationType destinationType, String destinationId, String name,
             String collectionName) {
@@ -150,7 +136,7 @@ public class Destination implements Comparable<Destination>, HasOrganization {
         return this;
     }
 
-    @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
+    @Action(semantics = IDEMPOTENT_ARE_YOU_SURE)
     @ActionLayout(associateWith = "transformScript", describedAs = "Clear the transform script")
     public Destination clearTransformScript() {
         setTransformScript(null);
@@ -167,14 +153,6 @@ public class Destination implements Comparable<Destination>, HasOrganization {
     public Destination updateForm(Form form) {
         setForm(form);
         return this;
-    }
-
-    @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
-    @ActionLayout(describedAs = "Deletes this object from the persistent datastore")
-    public void delete() {
-        final String title = titleService.titleOf(this);
-        messageService.informUser(String.format("'%s' deleted", title));
-        repositoryService.removeAndFlush(this);
     }
 
     @Programmatic
