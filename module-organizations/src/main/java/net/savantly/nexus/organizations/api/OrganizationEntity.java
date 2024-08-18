@@ -18,7 +18,7 @@ public abstract class OrganizationEntity extends AuditedEntity implements HasOrg
 
     @JoinColumn(name = "org_id", nullable = false)
     @Property(editing = Editing.DISABLED)
-    @PropertyLayout(fieldSetId = "identity", sequence = "2", navigable = Navigable.PARENT, hidden = Where.ALL_TABLES)
+    @PropertyLayout(fieldSetId = "identity", sequence = "2", navigable = Navigable.PARENT, hidden = Where.ALL_EXCEPT_STANDALONE_TABLES)
     @Getter
     @Setter
     private Organization organization;
