@@ -1,6 +1,7 @@
 package net.savantly.nexus.flow.dom.destination;
 
 import static org.apache.causeway.applib.annotation.SemanticsOf.IDEMPOTENT_ARE_YOU_SURE;
+import static org.apache.causeway.applib.annotation.SemanticsOf.NON_IDEMPOTENT;
 
 import java.util.Comparator;
 import java.util.UUID;
@@ -80,7 +81,7 @@ public class Destination implements Comparable<Destination>, HasOrganization {
     @Title
     @Name
     @Column(length = Name.MAX_LEN, nullable = false)
-    @Property(editing = Editing.ENABLED)
+    @Property
     @Getter
     @Setter
     @ToString.Include
@@ -88,7 +89,7 @@ public class Destination implements Comparable<Destination>, HasOrganization {
     private String name;
 
     @JoinColumn(name = "org_id", nullable = false)
-    @Property(editing = Editing.DISABLED)
+    @Property
     @PropertyLayout(fieldSetId = "name", sequence = "1.1", hidden = Where.PARENTED_TABLES)
     @Getter
     @Setter
@@ -128,6 +129,20 @@ public class Destination implements Comparable<Destination>, HasOrganization {
     }
 
     // *** ACTIONS ***
+
+    @Action(semantics = NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
+    @ActionLayout(associateWith = "name", describedAs = "Update name")
+    public Destination updateName(@ParameterLayout(named = "Name") String name) {
+        setName(name);
+        return this;
+    }
+
+    @Action(semantics = NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
+    @ActionLayout(associateWith = "collectionName", describedAs = "Update collection name")
+    public Destination updateCollectionName(@ParameterLayout(named = "Collection Name") String collectionName) {
+        setCollectionName(collectionName);
+        return this;
+    }
 
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
     @ActionLayout(associateWith = "transformScript", describedAs = "Update script")
