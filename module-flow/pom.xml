@@ -78,6 +78,7 @@
             <artifactId>jsonschema-generator</artifactId>
             <version>${jsonschema-generator.version}</version>
         </dependency>
+
         <!-- Jackson Module dependencies -->
         <dependency>
             <groupId>com.github.victools</groupId>
@@ -88,6 +89,14 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
         </dependency>
+        <!--
+        https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310 -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+
+
         <!-- JakartaValidation Module dependencies -->
         <dependency>
             <groupId>com.github.victools</groupId>
@@ -110,7 +119,7 @@
             <groupId>com.github.jknack</groupId>
             <artifactId>handlebars</artifactId>
             <version>${handlebars-version}</version>
-          </dependency>
+        </dependency>
 
         <!-- Spring -->
 
