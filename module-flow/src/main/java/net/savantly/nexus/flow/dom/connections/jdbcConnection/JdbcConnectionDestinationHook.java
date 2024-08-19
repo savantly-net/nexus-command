@@ -4,6 +4,7 @@ import java.io.Closeable;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
+import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -75,6 +76,9 @@ public class JdbcConnectionDestinationHook implements DestinationHook {
                         preparedStatement.setInt(i + 1, (Integer) value);
                     } else if (String.class.isAssignableFrom(value.getClass())) {
                         preparedStatement.setString(i + 1, (String) value);
+                    } else if (ZonedDateTime.class.isAssignableFrom(value.getClass())) {
+                        preparedStatement.setTimestamp(i + 1,
+                                Timestamp.valueOf(((ZonedDateTime) value).toLocalDateTime()));
                     } else if (isParsableDate(value)) {
                         preparedStatement.setDate(i + 1, Date.valueOf(value.toString()));
                     } else if (isParsableTimeStamp(value)) {
