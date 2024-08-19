@@ -34,7 +34,7 @@ public class FormSubmissionProxy {
         payload.put("_form_id", form.getId());
         payload.put("_form_name", form.getName());
         payload.put("_submission_id", submission.getId());
-        payload.put("_submission_datetime", Instant.now());
+        payload.put("_submission_datetime", nowAsIsoString());
 
         var destinations = form.getDestinations();
         log.info("executing form hooks: " + destinations.size());
@@ -76,7 +76,7 @@ public class FormSubmissionProxy {
         payload.put("_form_id", form.getId());
         payload.put("_form_name", form.getName());
         payload.put("_submission_id", submission.getId());
-        payload.put("_submission_datetime", Instant.now());
+        payload.put("_submission_datetime", nowAsIsoString());
 
         var destinations = form.getDestinations();
         log.info("executing form hooks: " + destinations.size());
@@ -89,6 +89,10 @@ public class FormSubmissionProxy {
 
             }
         }
+    }
+
+    private String nowAsIsoString() {
+        return Instant.now().toString();
     }
 
 }
