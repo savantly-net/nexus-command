@@ -7,4 +7,5 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class FileEntityDto {
     private String id;
+    private String url;
 }

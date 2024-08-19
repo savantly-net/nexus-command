@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import net.savantly.nexus.flow.dom.files.FileEntities;
@@ -86,12 +87,17 @@ public class FlowApi {
     }
 
     @PostMapping(value = "/files/{organizationId}")
-    public ResponseEntity createFile(@RequestParam("file") MultipartFile file, @PathVariable String organizationId) {
+    public ResponseEntity createFile(@RequestParam("file") MultipartFile file, @PathVariable String organizationId,
+            HttpServletRequest request) {
         log.info("Requested to upload file");
         try {
             var entity = files.uploadFile(organizationId, file);
             log.info("File uploaded: {}", entity);
-            var dto = new FileEntityDto().setId(entity.getId());
+
+            // get the url used to download the file
+            var url = request.getRequestURL().toString().replace(organizationId, entity.getId());
+
+            var dto = new FileEntityDto().setId(entity.getId()).setUrl(url);
             return ResponseEntity.ok(dto);
         } catch (IOException e) {
             log.error("Failed to upload file", e);
