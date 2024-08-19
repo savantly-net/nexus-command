@@ -3,13 +3,12 @@ package net.savantly.nexus.flow.dom.connections.jdbcConnection;
 import java.io.Closeable;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
-
-import org.springframework.beans.factory.DisposableBean;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -78,6 +77,8 @@ public class JdbcConnectionDestinationHook implements DestinationHook {
                         preparedStatement.setString(i + 1, (String) value);
                     } else if (isParsableDate(value)) {
                         preparedStatement.setDate(i + 1, Date.valueOf(value.toString()));
+                    } else if (isParsableTimeStamp(value)) {
+                        preparedStatement.setTimestamp(i + 1, Timestamp.valueOf(value.toString()));
                     } else if (Boolean.class.isAssignableFrom(value.getClass())) {
                         preparedStatement.setBoolean(i + 1, (Boolean) value);
                     } else {
@@ -107,6 +108,15 @@ public class JdbcConnectionDestinationHook implements DestinationHook {
     private boolean isParsableDate(Object value) {
         try {
             java.sql.Date.valueOf(value.toString());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private boolean isParsableTimeStamp(Object value) {
+        try {
+            java.sql.Timestamp.valueOf(value.toString());
             return true;
         } catch (Exception e) {
             return false;
