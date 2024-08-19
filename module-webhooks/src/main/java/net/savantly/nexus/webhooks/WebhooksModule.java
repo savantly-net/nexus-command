@@ -58,7 +58,8 @@ public class WebhooksModule implements ModuleWithFixtures {
     }
 
     @Bean
-    public OnCommandListener onCommandListener(EventFilter eventFilter, WebhookExecutor webhookExecutor, BookmarkService bookmarkService, ObjectMapper objectMapper) {
+    public OnCommandListener onCommandListener(EventFilter eventFilter, WebhookExecutor webhookExecutor,
+            BookmarkService bookmarkService, ObjectMapper objectMapper) {
         return new OnCommandListener(eventFilter, webhookExecutor, bookmarkService, objectMapper);
     }
 
@@ -74,9 +75,10 @@ public class WebhooksModule implements ModuleWithFixtures {
 
     @Bean
     @ConditionalOnMissingBean
-    public ObjectMapper objectMapper () {
-        return new ObjectMapper();
+    public ObjectMapper objectMapper() {
+        var mapper = new ObjectMapper();
+        mapper.findAndRegisterModules();
+        return mapper;
     }
-
 
 }
