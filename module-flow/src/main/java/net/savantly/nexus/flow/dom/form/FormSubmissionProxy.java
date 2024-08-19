@@ -1,6 +1,6 @@
 package net.savantly.nexus.flow.dom.form;
 
-import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -34,7 +34,7 @@ public class FormSubmissionProxy {
         payload.put("_form_id", form.getId());
         payload.put("_form_name", form.getName());
         payload.put("_submission_id", submission.getId());
-        payload.put("_submission_datetime", nowAsIsoString());
+        payload.put("_submission_datetime", now());
 
         var destinations = form.getDestinations();
         log.info("executing form hooks: " + destinations.size());
@@ -76,7 +76,7 @@ public class FormSubmissionProxy {
         payload.put("_form_id", form.getId());
         payload.put("_form_name", form.getName());
         payload.put("_submission_id", submission.getId());
-        payload.put("_submission_datetime", nowAsIsoString());
+        payload.put("_submission_datetime", now());
 
         var destinations = form.getDestinations();
         log.info("executing form hooks: " + destinations.size());
@@ -91,8 +91,8 @@ public class FormSubmissionProxy {
         }
     }
 
-    private String nowAsIsoString() {
-        return Instant.now().toString();
+    private ZonedDateTime now() {
+        return ZonedDateTime.now();
     }
 
 }
