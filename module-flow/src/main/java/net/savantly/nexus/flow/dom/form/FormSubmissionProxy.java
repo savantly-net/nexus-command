@@ -31,6 +31,7 @@ public class FormSubmissionProxy {
         var submission = formSubmissions.create(form, stringPayload);
 
         payload.put("_form_id", form.getId());
+        payload.put("_form_name", form.getName());
         payload.put("_submission_id", submission.getId());
         payload.put("_submission_datetime", submission.getCreatedDate());
 
@@ -72,7 +73,9 @@ public class FormSubmissionProxy {
         var submission = formSubmissions.create(form, stringPayload);
 
         payload.put("_form_id", form.getId());
+        payload.put("_form_name", form.getName());
         payload.put("_submission_id", submission.getId());
+        payload.put("_submission_datetime", submission.getCreatedDate());
 
         var destinations = form.getDestinations();
         log.info("executing form hooks: " + destinations.size());
