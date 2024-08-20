@@ -88,16 +88,20 @@ public class FlowApi {
 
     @PostMapping(value = "/files/{organizationId}")
     public ResponseEntity createFile(@RequestParam("file") MultipartFile file, @PathVariable String organizationId,
+            @RequestParam(name = "public", required = false) Boolean isPublic,
             HttpServletRequest request) {
         log.info("Requested to upload file");
         try {
             var entity = files.uploadFile(organizationId, file);
+            if (Objects.nonNull(isPublic)) {
+                entity.setPublicFile(isPublic);
+            }
             log.info("File uploaded: {}", entity);
 
             // get the url used to download the file
             var url = request.getRequestURL().toString().replace(organizationId, entity.getId());
-
-            var dto = new FileEntityDto().setId(entity.getId()).setUrl(url);
+            var urlWithApiKey = url + "?api-key=" + entity.getApiKey();
+            var dto = new FileEntityDto().setId(entity.getId()).setUrl(urlWithApiKey);
             return ResponseEntity.ok(dto);
         } catch (IOException e) {
             log.error("Failed to upload file", e);
@@ -107,7 +111,7 @@ public class FlowApi {
 
     @GetMapping("/files/{fileId}")
     public ResponseEntity downloadFile(@PathVariable String fileId,
-            @RequestParam(name = "key", required = false) String apiKey) {
+            @RequestParam(name = "api-key", required = false) String apiKey) {
         log.info("Requested to get file: {}", fileId);
         var entity = files.findById(fileId);
         if (entity.isEmpty()) {
