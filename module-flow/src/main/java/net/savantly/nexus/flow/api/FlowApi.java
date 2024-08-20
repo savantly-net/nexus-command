@@ -106,7 +106,8 @@ public class FlowApi {
     }
 
     @GetMapping("/files/{fileId}")
-    public ResponseEntity downloadFile(@PathVariable String fileId, @RequestParam("key") String apiKey) {
+    public ResponseEntity downloadFile(@PathVariable String fileId,
+            @RequestParam(name = "key", required = false) String apiKey) {
         log.info("Requested to get file: {}", fileId);
         var entity = files.findById(fileId);
         if (entity.isEmpty()) {
