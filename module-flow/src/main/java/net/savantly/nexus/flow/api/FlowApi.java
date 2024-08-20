@@ -113,8 +113,14 @@ public class FlowApi {
         if (entity.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        if (!entity.get().isPublicFile() && !apiKey.equals(entity.get().getApiKey())) {
-            return ResponseEntity.status(403).build();
+        if (!entity.get().isPublicFile()) {
+            if (Objects.isNull(apiKey) || apiKey.isBlank() || Objects.isNull(entity.get().getApiKey())
+                    || entity.get().getApiKey().isBlank()) {
+                return ResponseEntity.status(403).build();
+            }
+            if (!entity.get().getApiKey().equals(apiKey)) {
+                return ResponseEntity.status(403).build();
+            }
         }
         if (entity.isPresent()) {
             var file = entity.get().getFile();
