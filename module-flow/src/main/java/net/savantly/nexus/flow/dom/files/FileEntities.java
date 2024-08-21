@@ -61,7 +61,7 @@ public class FileEntities {
         if (organization == null) {
             throw new IllegalArgumentException("Organization not found: " + organizationId);
         }
-        Blob blob = new Blob(file.getName(), file.getContentType(), file.getBytes());
+        Blob blob = new Blob(file.getOriginalFilename(), file.getContentType(), file.getBytes());
         var fileEntity = create(organization, file.getOriginalFilename(), blob);
         fileEntity.setFile(blob);
         return fileEntity;
