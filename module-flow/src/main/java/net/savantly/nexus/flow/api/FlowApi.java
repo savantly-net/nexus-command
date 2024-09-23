@@ -1,6 +1,7 @@
 package net.savantly.nexus.flow.api;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -56,17 +57,26 @@ public class FlowApi {
     }
 
     @PostMapping(value = "/submit/{formId}", consumes = "application/json")
-    public ResponseEntity submitFormJson(@PathVariable String formId, @RequestBody Map<String, Object> payload,
+    public ResponseEntity submitFormJson(@PathVariable String formId, @RequestBody Object payload,
             @RequestHeader(name = "api-key", required = false) String apiKey,
             @RequestParam(name = "g-recaptcha-response", required = false) String recaptcha,
             @RequestHeader(name = "X-Forwarded-For", required = false) String clientIP)
             throws JsonProcessingException {
         log.info("Requested to submit form: {}", formId);
 
+        Map<String, Object> payloadMap = null;
+        if (payload instanceof Map) {
+            payloadMap = (Map<String, Object>) payload;
+        } else if (List.class.isAssignableFrom(payload.getClass())) {
+            payloadMap = Map.of("payload_array", payload);
+        } else {
+            payloadMap = mapper.readValue(mapper.writeValueAsString(payload), Map.class);
+        }
+
         if (Objects.isNull(recaptcha)) {
             log.debug("attempting to get recaptcha from payload");
-            if (payload.containsKey("g-recaptcha-response")) {
-                var rcFromPayload = payload.get("g-recaptcha-response");
+            if (payloadMap.containsKey("g-recaptcha-response")) {
+                var rcFromPayload = payloadMap.get("g-recaptcha-response");
                 if (rcFromPayload instanceof String) {
                     recaptcha = (String) rcFromPayload;
                 } else {
@@ -78,7 +88,7 @@ public class FlowApi {
         }
 
         try {
-            flowService.submitForm(formId, payload, apiKey, recaptcha, clientIP);
+            flowService.submitForm(formId, payloadMap, apiKey, recaptcha, clientIP);
             return ResponseEntity.ok().build();
         } catch (IllegalArgumentException e) {
             var errBody = Map.of("error", e.getMessage());

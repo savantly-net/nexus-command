@@ -41,6 +41,18 @@ public class Destination_test {
     @MemberSupport
     public Destination act(@ParameterLayout(multiLine = 10) final String payload) {
         try {
+            if (payload == null) {
+                messageService.raiseError("Payload is required");
+                return object;
+            }
+            if (payload.isBlank()) {
+                messageService.raiseError("Payload is required");
+                return object;
+            }
+            if (payload.startsWith("[")) {
+                messageService.raiseError("Wrap array payloads in an object, where the key is 'payload_array'.");
+                return object;
+            }
             var payloadMap = objectMapper.readValue(payload, Map.class);
             var destinationHook = destinationHookFactory.createHook(object);
             var result = destinationHook.execute(object, payloadMap, List.of());
