@@ -1,6 +1,7 @@
 package net.savantly.nexus.flow.api;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -68,7 +69,8 @@ public class FlowApi {
         if (payload instanceof Map) {
             payloadMap = (Map<String, Object>) payload;
         } else if (List.class.isAssignableFrom(payload.getClass())) {
-            payloadMap = Map.of("payload_array", payload);
+            payloadMap = new HashMap<String, Object>();
+            payloadMap.put("payload_array", payload);
         } else {
             payloadMap = mapper.readValue(mapper.writeValueAsString(payload), Map.class);
         }
