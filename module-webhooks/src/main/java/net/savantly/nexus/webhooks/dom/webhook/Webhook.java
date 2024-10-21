@@ -104,7 +104,7 @@ public class Webhook extends OrganizationEntity implements Comparable<Webhook> {
     @PropertyLayout(fieldSetId = "identity", sequence = "1.5")
     @Getter
     @Setter
-    private String url = "https://savantly/api/webhook";
+    private String url = "https://postman-echo.com/post";
 
     @Column(name = "method", length = 255, nullable = true)
     @PropertyLayout(fieldSetId = "identity", sequence = "1.6")
