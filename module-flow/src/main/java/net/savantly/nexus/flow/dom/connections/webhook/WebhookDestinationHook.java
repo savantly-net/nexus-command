@@ -60,9 +60,13 @@ public class WebhookDestinationHook extends AbstractBaseDestinationHook {
 
         log.info("Sending webhook request: {}", request);
 
-        var response = template.exchange(request, String.class);
-        return new DestinationHookResponse().setSuccess(response.getStatusCode().is2xxSuccessful())
-                .setMessage(response.getBody());
+        try {
+            var response = template.exchange(request, String.class);
+            return new DestinationHookResponse().setSuccess(response.getStatusCode().is2xxSuccessful())
+                    .setMessage(response.getBody());
+        } catch (Exception e) {
+            return new DestinationHookResponse().setSuccess(false).setMessage(e.getMessage());
+        }
     }
 
 }
