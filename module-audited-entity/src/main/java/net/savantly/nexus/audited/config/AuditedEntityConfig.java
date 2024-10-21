@@ -1,5 +1,6 @@
 package net.savantly.nexus.audited.config;
 
+import java.time.ZonedDateTime;
 import java.util.Optional;
 
 import jakarta.annotation.PostConstruct;
@@ -10,6 +11,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.auditing.DateTimeProvider;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
@@ -24,7 +26,7 @@ import net.savantly.security.users.UserProvider;
 @Configuration("auditedConfig")
 @ConfigurationProperties(prefix = "nexus.modules.audited")
 @Data
-@EnableJpaAuditing(auditorAwareRef = "auditorAware")
+@EnableJpaAuditing(auditorAwareRef = "auditorAware", dateTimeProviderRef = "auditingDateTimeProvider")
 public class AuditedEntityConfig implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
@@ -43,6 +45,11 @@ public class AuditedEntityConfig implements ApplicationContextAware {
     @Bean
     public AuditorAware<String> auditorAware(UserProvider userProvider) {
         return () -> Optional.of(userProvider.getCurrentUser());
+    }
+
+    @Bean // Makes ZonedDateTime compatible with auditing fields
+    public DateTimeProvider auditingDateTimeProvider() {
+        return () -> Optional.of(ZonedDateTime.now());
     }
 
 }
