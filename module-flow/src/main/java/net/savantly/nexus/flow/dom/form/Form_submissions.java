@@ -8,6 +8,7 @@ import org.apache.causeway.applib.annotation.PriorityPrecedence;
 
 import jakarta.inject.Inject;
 import jakarta.persistence.Transient;
+import net.savantly.nexus.audited.api.AuditedEntitySortedByDateDesc;
 import net.savantly.nexus.flow.dom.formSubmission.FormSubmission;
 import net.savantly.nexus.flow.dom.formSubmission.FormSubmissionRepository;
 
@@ -26,7 +27,7 @@ public class Form_submissions {
     @Transient
     FormSubmissionRepository repository;
 
-    @CollectionLayout(named = "Submissions", describedAs = "Submissions of this form", sequence = "99")
+    @CollectionLayout(named = "Submissions", describedAs = "Submissions of this form", sequence = "99", sortedBy = AuditedEntitySortedByDateDesc.class)
     public Set<FormSubmission> coll() {
         return repository.findByFormId(object.getId());
     }

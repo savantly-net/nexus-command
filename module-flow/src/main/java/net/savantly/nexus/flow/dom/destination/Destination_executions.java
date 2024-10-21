@@ -9,6 +9,7 @@ import org.apache.causeway.applib.annotation.PriorityPrecedence;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.persistence.Transient;
+import net.savantly.nexus.audited.api.AuditedEntitySortedByDateDesc;
 import net.savantly.nexus.flow.dom.destinationExecution.DestinationExecution;
 import net.savantly.nexus.flow.dom.destinationExecution.DestinationExecutionRepository;
 
@@ -28,7 +29,7 @@ public class Destination_executions {
     @Transient
     DestinationExecutionRepository repository;
 
-    @CollectionLayout(named = "Logs", describedAs = "Executions of this flow definition", sequence = "99")
+    @CollectionLayout(named = "Logs", describedAs = "Executions of this flow definition", sequence = "99", sortedBy = AuditedEntitySortedByDateDesc.class)
     public Set<DestinationExecution> coll() {
         return repository.findByDestinationId(object.getId());
     }
