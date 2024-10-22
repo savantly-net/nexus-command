@@ -78,7 +78,7 @@ tag-version:
 	@echo "Image Tag: $(IMAGE_TAG)"
 	mvn versions:set -DnewVersion=$(VERSION)
 	mvn versions:commit
-	git add * > /dev/null
+	git add * &> /dev/null
 	git commit -m "Published $(VERSION)"
 	git tag -a $(TAGGED_VERSION) -m "Release $(VERSION)"
 	git push origin $(TAGGED_VERSION)
