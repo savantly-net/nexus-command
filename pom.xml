@@ -13,7 +13,7 @@
 
     <artifactId>nexus-command</artifactId>
     <groupId>net.savantly</groupId>
-    <version>3.0.0</version>
+    <version>3.0.1</version>
 
     <name>Nexus Command - Parent</name>
 
@@ -23,8 +23,9 @@
         <java.version>17</java.version>
         <maven.compiler.release>17</maven.compiler.release>
         <langchain4j.version>0.30.0</langchain4j.version>
+        <causeway.version>3.0.0</causeway.version>
     </properties>
-    
+
 
     <dependencyManagement>
         <dependencies>
@@ -148,7 +149,7 @@
                 <artifactId>causeway-valuetypes-markdown</artifactId>
                 <scope>import</scope>
                 <type>pom</type>
-                <version>${project.version}</version>
+                <version>${causeway.version}</version>
             </dependency>
 
 

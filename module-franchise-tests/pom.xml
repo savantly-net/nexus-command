@@ -7,7 +7,7 @@
     <parent>
         <artifactId>nexus-command</artifactId>
         <groupId>net.savantly</groupId>
-        <version>3.0.0</version>
+        <version>3.0.1</version>
     </parent>
 
     <artifactId>module-franchise-tests</artifactId>
