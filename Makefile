@@ -1,6 +1,20 @@
 export DOCKER_TAG_NAME := savantly/nexus-command
-export DOCKER_TAG_VERSION := 2.0.0
 export PROJECT_ROOT := $(shell pwd)
+VERSION := $(shell mvn -q \
+    -Dexec.executable=echo \
+    -Dexec.args='$${project.version}' \
+    --non-recursive \
+    exec:exec)
+# Strip the -SNAPSHOT suffix
+VERSION := $(shell echo $(VERSION) | sed 's/-SNAPSHOT//')
+TAGGED_VERSION := $(VERSION)
+NEXT_VERSION := $(shell echo $(VERSION) | awk -F. '{$$NF = $$NF + 1;} 1' | sed 's/ /./g')
+
+GIT_COMMIT := $(shell git rev-parse --short HEAD)
+
+.PHONY: get-version
+get-version:
+	@echo $(VERSION)
 
 .PHONY: dev
 dev:
@@ -25,12 +39,12 @@ build-image:
 	mvn install -DskipTests
 	docker build \
 	-f docker/Dockerfile \
-	-t ${DOCKER_TAG_NAME}:${DOCKER_TAG_VERSION} \
+	-t ${DOCKER_TAG_NAME}:${VERSION} \
 	-t ${DOCKER_TAG_NAME}:latest \
 	.
 
 .PHONY: push-image
-	docker push ${DOCKER_TAG_NAME}:${DOCKER_TAG_VERSION}
+	docker push ${DOCKER_TAG_NAME}:${VERSION}
 
 
 .PHONY: run-image
@@ -40,6 +54,38 @@ run-image:
 .PHONY: run-image-postgres
 run-image-postgres:
 	docker compose -f docker-compose.postgres.yml up
+
+
+.PHONY: ensure-git-repo-pristine
+ensure-git-repo-pristine:
+	@echo "Ensuring git repo is pristine"
+	@[[ $(shell git status --porcelain=v1 2>/dev/null | wc -l) -gt 0 ]] && echo "Git repo is not pristine" && exit 1 || echo "Git repo is pristine"
+
+
+.PHONY: bump-version
+bump-version:
+	@echo "Bumping version to $(NEXT_VERSION)"
+	@echo $(NEXT_VERSION) > VERSION
+	git add VERSION
+	git commit -m "Published $(VERSION) and prepared for $(NEXT_VERSION)"
+
+.PHONY: tag-version
+tag-version:
+	@echo "Preparing release..."
+	@echo "Version: $(VERSION)"
+	@echo "Commit: $(GIT_COMMIT)"
+	@echo "Image Tag: $(IMAGE_TAG)"
+	mvn versions:set -DnewVersion=$(VERSION)
+	mvn versions:commit
+	git tag -a $(TAGGED_VERSION) -m "Release $(VERSION)"
+	git push origin $(TAGGED_VERSION)
+	@echo "Tag $(TAGGED_VERSION) created and pushed to origin"
+
+.PHONY: release
+release: ensure-git-repo-pristine tag-version bump-version 
+	git push
+	@echo "Release $(VERSION) completed and pushed to origin"
+	
 
 
 define setup_env
