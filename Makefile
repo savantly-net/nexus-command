@@ -67,7 +67,7 @@ bump-version:
 	@echo "Bumping version to $(NEXT_VERSION)"
 	mvn versions:set -DnewVersion=$(NEXT_VERSION)-SNAPSHOT
 	mvn versions:commit
-	git add *
+	git add * || true
 	git commit -m "Prepared for $(NEXT_VERSION)"
 
 .PHONY: tag-version
