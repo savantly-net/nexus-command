@@ -6,6 +6,10 @@ on:
     tags:
       - '*'
 
+# Cancel concurrent runs
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
 env:
   PROJ_NAME: nexus-command
   DOCKER_IMAGE: savantly/nexus-command
