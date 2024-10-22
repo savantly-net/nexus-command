@@ -65,9 +65,10 @@ ensure-git-repo-pristine:
 .PHONY: bump-version
 bump-version:
 	@echo "Bumping version to $(NEXT_VERSION)"
-	@echo $(NEXT_VERSION) > VERSION
-	git add VERSION
-	git commit -m "Published $(VERSION) and prepared for $(NEXT_VERSION)"
+	mvn versions:set -DnewVersion=$(NEXT_VERSION)-SNAPSHOT
+	mvn versions:commit
+	git add *
+	git commit -m "Prepared for $(NEXT_VERSION)"
 
 .PHONY: tag-version
 tag-version:
@@ -77,6 +78,8 @@ tag-version:
 	@echo "Image Tag: $(IMAGE_TAG)"
 	mvn versions:set -DnewVersion=$(VERSION)
 	mvn versions:commit
+	git add *
+	git commit -m "Published $(VERSION)"
 	git tag -a $(TAGGED_VERSION) -m "Release $(VERSION)"
 	git push origin $(TAGGED_VERSION)
 	@echo "Tag $(TAGGED_VERSION) created and pushed to origin"
