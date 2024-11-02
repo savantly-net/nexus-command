@@ -1,5 +1,6 @@
 package net.savantly.nexus.flow.dom.formSubmission;
 
+import java.time.ZonedDateTime;
 import java.util.Comparator;
 import java.util.UUID;
 
@@ -68,14 +69,12 @@ public class FormSubmission extends AuditedEntity implements Comparable<FormSubm
     @Setter
     private long version;
 
-
     @JoinColumn(name = "form_id", nullable = false)
     @Property
     @PropertyLayout(fieldSetId = "identity", sequence = "1.1", hidden = Where.PARENTED_TABLES)
     @Getter
     @Setter
     private Form form;
-
 
     @Column(columnDefinition = "text", nullable = true)
     @Property
@@ -84,6 +83,11 @@ public class FormSubmission extends AuditedEntity implements Comparable<FormSubm
     @Setter
     private String payload;
 
+    @Override
+    @PropertyLayout(fieldSetId = "metadata", sequence = "10.3", hidden = Where.NOWHERE)
+    public ZonedDateTime getCreatedDate() {
+        return super.getCreatedDate();
+    }
 
     // *** IMPLEMENTATIONS ****
 
@@ -105,5 +109,5 @@ public class FormSubmission extends AuditedEntity implements Comparable<FormSubm
     }
 
     // *** ACTIONS ***
-    
+
 }

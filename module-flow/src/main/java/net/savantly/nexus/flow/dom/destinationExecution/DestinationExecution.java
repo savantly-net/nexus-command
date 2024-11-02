@@ -1,6 +1,6 @@
 package net.savantly.nexus.flow.dom.destinationExecution;
 
-
+import java.time.ZonedDateTime;
 import java.util.Comparator;
 import java.util.UUID;
 
@@ -82,7 +82,6 @@ public class DestinationExecution extends AuditedEntity implements Comparable<De
     @Setter
     private long version;
 
-
     @JoinColumn(name = "destination_id", nullable = false)
     @Property
     @PropertyLayout(fieldSetId = "identity", sequence = "1.1", hidden = Where.PARENTED_TABLES)
@@ -98,7 +97,6 @@ public class DestinationExecution extends AuditedEntity implements Comparable<De
     @Setter
     private boolean successful;
 
-
     @Column(columnDefinition = "text", nullable = true)
     @Property
     @PropertyLayout(fieldSetId = "identity", sequence = "1.5", multiLine = 10)
@@ -106,10 +104,16 @@ public class DestinationExecution extends AuditedEntity implements Comparable<De
     @Setter
     private String message;
 
+    @Override
+    @PropertyLayout(fieldSetId = "metadata", sequence = "10.3", hidden = Where.NOWHERE)
+    public ZonedDateTime getCreatedDate() {
+        return super.getCreatedDate();
+    }
 
     // *** IMPLEMENTATIONS ****
 
-    private final static Comparator<DestinationExecution> comparator = Comparator.comparing(DestinationExecution::getId);
+    private final static Comparator<DestinationExecution> comparator = Comparator
+            .comparing(DestinationExecution::getId);
 
     @Override
     public int compareTo(final DestinationExecution other) {
@@ -117,5 +121,5 @@ public class DestinationExecution extends AuditedEntity implements Comparable<De
     }
 
     // *** ACTIONS ***
-    
+
 }

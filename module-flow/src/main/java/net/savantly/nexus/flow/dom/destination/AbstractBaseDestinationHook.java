@@ -64,14 +64,23 @@ public abstract class AbstractBaseDestinationHook implements DestinationHook {
     public DestinationHookResponse execute(Destination destination, Map<String, Object> payload,
             Collection<? extends Mapping> formMappings) {
 
-        var transformedPayload = transformPayload(destination, payload);
+        try {
 
-        var result = sendData(destination, transformedPayload, formMappings);
-        var executionAudit = DestinationExecution.withResult(destination, result.isSuccess(), result.getMessage());
+            var transformedPayload = transformPayload(destination, payload);
 
-        repositoryService.persist(executionAudit);
+            var result = sendData(destination, transformedPayload, formMappings);
+            var executionAudit = DestinationExecution.withResult(destination, result.isSuccess(), result.getMessage());
 
-        return result;
+            repositoryService.persist(executionAudit);
+
+            return result;
+        } catch (Exception e) {
+            log.error("Failed to execute destination hook", e);
+            var executionAudit = DestinationExecution.withResult(destination, false, e.getMessage());
+            repositoryService.persist(executionAudit);
+            return DestinationHookResponse.failure(e.getMessage());
+        }
+
     }
 
 }
