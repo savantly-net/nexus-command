@@ -1,6 +1,8 @@
 services:
   nexus-command:
-    image: savantly/nexus-command:latest
+    image: eclipse-temurin:17-jdk
+    working_dir: /app
+    command: ./mvnw install -DskipTests && ./mvnw -pl webapp spring-boot:run
     ports:
       - "8080:8080"
     environment:
@@ -21,9 +23,9 @@ services:
       - nexus.seed.admin.enabled=true
       - nexus.seed.admin.username=admin
       - nexus.seed.admin.password=admin
-
     volumes:
-      - ./webapp/log4j2-test.xml:/app/BOOT-INF/classes/log4j2.xml
+      - .:/app
+      - m2:/root/.m2
 
   kafka:
     image: confluentinc/confluent-local:7.4.1
@@ -46,3 +48,6 @@ services:
       DYNAMIC_CONFIG_ENABLED: true
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+
+volumes:
+    m2: {}

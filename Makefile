@@ -20,23 +20,43 @@ get-version:
 dev:
 	$(call setup_env, .env)
 	@echo "Running the program"
-	mvn install -DskipTests
-	mvn -pl webapp spring-boot:run
+	./mvnw install -DskipTests -U
+	./mvnw -pl webapp spring-boot:run
+
+.PHONY: test-docker
+test-docker: build-image
+	$(call setup_env, .env)
+	@echo "Running the program"
+	docker compose -f docker-compose.yml up
+
+
+.PHONY: dev-docker
+dev-docker:
+	$(call setup_env, .env)
+	@echo "Running the program"
+	docker compose -f docker-compose.dev.yml up
+
+
+.PHONY: start-kafka
+start-kafka:
+	@echo "Running the program"
+	docker compose -f docker-compose.kafka.yml up
+
 
 .PHONY: test
 test:
 	@echo "Running the tests"
-	mvn test integration-test
+	./mvnw test integration-test
 
 .PHONY: clean
 clean:
 	@echo "Cleaning the project"
-	mvn clean
+	./mvnw clean
 
 .PHONY: build-image
 build-image:
 	@echo "Building the project"
-	mvn install -DskipTests
+	./mvnw install -DskipTests
 	docker build \
 	-f docker/Dockerfile \
 	-t ${DOCKER_TAG_NAME}:${VERSION} \
@@ -65,8 +85,8 @@ ensure-git-repo-pristine:
 .PHONY: bump-version
 bump-version:
 	@echo "Bumping version to $(NEXT_VERSION)"
-	mvn versions:set -DnewVersion=$(NEXT_VERSION)-SNAPSHOT
-	mvn versions:commit
+	./mvnw versions:set -DnewVersion=$(NEXT_VERSION)-SNAPSHOT
+	./mvnw versions:commit
 	git add * || true
 	git commit -m "Prepared for $(NEXT_VERSION)"
 
@@ -76,8 +96,8 @@ tag-version:
 	@echo "Version: $(VERSION)"
 	@echo "Commit: $(GIT_COMMIT)"
 	@echo "Image Tag: $(IMAGE_TAG)"
-	mvn versions:set -DnewVersion=$(VERSION)
-	mvn versions:commit
+	./mvnw versions:set -DnewVersion=$(VERSION)
+	./mvnw versions:commit
 	git add * || true
 	git commit -m "Published $(VERSION)"
 	git tag -a $(TAGGED_VERSION) -m "Release $(VERSION)"
