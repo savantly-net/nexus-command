@@ -1,0 +1,9 @@
+**/build/
+**/target/
+.vscode/
+.idea/
+*.iml
+./postgres-data/
+.env
+.run/
+.github/
