@@ -1,4 +1,4 @@
-name: Production Release
+name: Release
 on:
   push:
     branches:
@@ -44,10 +44,9 @@ jobs:
           java-package: jdk # (jre, jdk, or jdk+fx) - defaults to jdk
           architecture: x64 # (x64 or x86) - defaults to x64
 
-      # Install artifacts locally for the docker build
-      # Also runs unit/integration tests
-      - name: Install artifacts locally
-        run: mvn install
+      # Build with Maven
+      - name: Test
+        run: mvn test
 
       
       # Cache Docker layers

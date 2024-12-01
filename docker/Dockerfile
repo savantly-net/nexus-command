@@ -1,13 +1,18 @@
 ARG BASE_IMAGE=eclipse-temurin
 ARG JRE_VERSION=17-jdk
 
+
+FROM ${BASE_IMAGE}:${JRE_VERSION} as source
+WORKDIR /build
+COPY . /build/
+RUN ./mvnw clean package -DskipTests
+
 FROM ${BASE_IMAGE}:${JRE_VERSION} as builder
 WORKDIR /build
-COPY webapp/target/*-exec.jar app.jar
+COPY --from=source /build/webapp/target/*-exec.jar app.jar
 RUN java -Djarmode=layertools -jar app.jar extract
 
 FROM ${BASE_IMAGE}:${JRE_VERSION}
-
 USER root
 WORKDIR /app
 
