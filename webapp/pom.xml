@@ -123,6 +123,11 @@
             <artifactId>nexus-security-module</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>kafka-module</artifactId>
+        </dependency>
+
 
         <!-- causeway -->
         <dependency>
@@ -186,7 +191,7 @@
             <groupId>org.apache.causeway.extensions</groupId>
             <artifactId>causeway-extensions-spring-security-oauth2</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>org.apache.causeway.extensions</groupId>
             <artifactId>causeway-extensions-flyway-impl</artifactId>
@@ -347,7 +352,7 @@
                 <dependency>
                     <groupId>org.postgresql</groupId>
                     <artifactId>postgresql</artifactId>
-                    <!-- <version>42.2.12</version> ... version already managed -->
+                    <version>42.7.4</version>
                 </dependency>
             </dependencies>
         </profile>

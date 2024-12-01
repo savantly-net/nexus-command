@@ -30,6 +30,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
 import net.savantly.nexus.audited.api.AuditedEntity;
+import net.savantly.nexus.common.api.AsJson;
 import net.savantly.nexus.flow.FlowModule;
 import net.savantly.nexus.flow.dom.form.Form;
 import net.savantly.nexus.organizations.api.HasOrganization;
@@ -44,7 +45,7 @@ import net.savantly.nexus.organizations.dom.organization.Organization;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
 @ToString(onlyExplicitlyIncluded = true)
-public class FormSubmission extends AuditedEntity implements Comparable<FormSubmission>, HasOrganization {
+public class FormSubmission extends AuditedEntity implements Comparable<FormSubmission>, HasOrganization, AsJson {
 
     public static FormSubmission withRequiredArgs(Form form, String payload) {
         val entity = new FormSubmission();
@@ -106,6 +107,13 @@ public class FormSubmission extends AuditedEntity implements Comparable<FormSubm
             return form.getOrganization();
         }
         return null;
+    }
+
+    @Transient
+    @Override
+    @Programmatic
+    public String asJson() {
+        return payload;
     }
 
     // *** ACTIONS ***

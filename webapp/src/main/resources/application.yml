@@ -47,6 +47,8 @@ nexus:
     enabled: true
   agents:
     enabled: true
+  kafka:
+    enabled: true
   webhooks:
     enabled: true
   web:
@@ -105,6 +107,7 @@ causeway:
       - orgweb
       - franchise
       - webhooks
+      - kafka
       - causewayExtSecman
       - causewayExtAuditTrail
       - causewayExtCommandLog

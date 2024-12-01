@@ -1,12 +1,12 @@
 causeway:
   persistence:
     schema:
-      auto-create-schemas: 
-      - nc_web
-      - organizations
-      - franchise
-      - causewayExtSecman
-      - products
-      - projects
-      - webhooks
-
+      auto-create-schemas:
+        - nc_web
+        - organizations
+        - franchise
+        - causewayExtSecman
+        - products
+        - projects
+        - webhooks
+        - kafka

@@ -1,0 +1,18 @@
+causeway:
+  persistence:
+    schema:
+      create-schema-sql-template: CREATE SCHEMA IF NOT EXISTS %s
+      auto-create-schemas:
+        - kafka
+        - organizations
+spring:
+  jpa:
+    hibernate.ddl-auto: update
+
+eclipselink:
+  deploy-on-startup: true
+  ddl-generation: create-tables
+  application-location: .
+  jpa:
+    upper-case-column-names: false
+  logging.level: WARNING

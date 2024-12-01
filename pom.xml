@@ -128,6 +128,11 @@
                 <artifactId>home-module</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>kafka-module</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>${project.groupId}</groupId>
@@ -196,6 +201,7 @@
         <module>module-franchise-tests</module>
         <module>module-webhooks</module>
         <module>module-home</module>
+        <module>module-kafka</module>
         <module>webapp</module>
     </modules>
 

@@ -8,6 +8,7 @@ import org.apache.causeway.applib.services.publishing.spi.CommandSubscriber;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import net.savantly.nexus.organizations.api.HasOrganization;
@@ -20,8 +21,10 @@ public class OnCommandListener implements CommandSubscriber {
 
     private final EventFilter eventFilter;
     private final WebhookExecutor webhookExecutor;
-    private final BookmarkService bookmarkService;
     private final ObjectMapper objectMapper;
+
+    @Inject
+    private BookmarkService bookmarkService;
 
     @Override
     public void onReady(Command command) {

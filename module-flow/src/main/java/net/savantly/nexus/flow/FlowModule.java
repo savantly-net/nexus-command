@@ -36,6 +36,7 @@ import net.savantly.nexus.flow.api.FlowService;
 import net.savantly.nexus.flow.dom.connections.datasource.DatasourceFactory;
 import net.savantly.nexus.flow.dom.connections.flowHook.FlowDestinationHookFactory;
 import net.savantly.nexus.flow.dom.connections.jdbcConnection.JdbcConnections;
+import net.savantly.nexus.flow.dom.connections.kafka.KafkaDestinationHookFactory;
 import net.savantly.nexus.flow.dom.connections.webhook.WebhookDestinationHookFactory;
 import net.savantly.nexus.flow.dom.destination.DestinationHookFactory;
 import net.savantly.nexus.flow.dom.emailTarget.EmailDestinationHookFactory;
@@ -56,6 +57,8 @@ import net.savantly.nexus.flow.dom.recaptcha.ReCaptchaService;
 import net.savantly.nexus.flow.executor.FlowExecutorFactory;
 import net.savantly.nexus.flow.executor.FlowNodeFactory;
 import net.savantly.nexus.flow.executor.javascript.JavascriptExecutor;
+import net.savantly.nexus.kafka.dom.connection.KafkaTemplateFactory;
+import net.savantly.nexus.kafka.dom.host.KafkaHosts;
 import net.savantly.nexus.organizations.dom.organizationSecret.OrganizationSecretRepository;
 import net.savantly.nexus.organizations.dom.organizationSecret.OrganizationSecrets;
 import net.savantly.nexus.webhooks.dom.webhook.Webhooks;
@@ -127,14 +130,24 @@ public class FlowModule implements ModuleWithFixtures {
     }
 
     @Bean
+    public KafkaDestinationHookFactory flow_kafkaDestinationHookFactory(
+            FlowContextFactory flowContextFactory, JavascriptExecutor javascriptExecutor,
+            RepositoryService repositoryService, ObjectMapper objectMapper, KafkaTemplateFactory kafkaTemplateFactory,
+            KafkaHosts kafkaHosts) {
+        return new KafkaDestinationHookFactory(flowContextFactory, javascriptExecutor, repositoryService,
+                objectMapper, kafkaTemplateFactory, kafkaHosts);
+    }
+
+    @Bean
     public DestinationHookFactory flow_destinationHookFactory(ObjectMapper objectMapper,
             DatasourceFactory datasourceFactory, JdbcConnections jdbcConnections, Webhooks webhooks,
             RestTemplateBuilder restTemplateBuilder, FlowDestinationHookFactory flowDestinationHookFactory,
             EmailDestinationHookFactory emailDestinationHookFactory,
-            WebhookDestinationHookFactory webhookDestinationHookFactory) {
+            WebhookDestinationHookFactory webhookDestinationHookFactory,
+            KafkaDestinationHookFactory kafkaDestinationHookFactory) {
         return new DestinationHookFactory(objectMapper, datasourceFactory, jdbcConnections,
                 restTemplateBuilder, flowDestinationHookFactory, emailDestinationHookFactory,
-                webhookDestinationHookFactory);
+                webhookDestinationHookFactory, kafkaDestinationHookFactory);
     }
 
     @Bean

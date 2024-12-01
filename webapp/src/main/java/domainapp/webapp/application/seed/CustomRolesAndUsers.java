@@ -49,7 +49,9 @@ public class CustomRolesAndUsers extends FixtureScript {
                 new ApplicationSuperuserRole(),
                 new ApplicationUserRole(),
                 new AgentsModuleSuperuserRole(),
-                new WebhooksModuleSuperuserRole());
+                new WebhooksModuleSuperuserRole(),
+                new KafkaModuleSuperuserRole(),
+                new KafkaModuleUserRole());
         if (nexusAppProperties.getSeed().getAdmin().isEnabled()) {
             log.info("Creating admin user: {}", nexusAppProperties.getSeed().getAdmin().getUsername());
             executionContext.executeChildren(this, new AdminUser(nexusAppProperties.getSeed().getAdmin().getUsername(),
@@ -57,16 +59,19 @@ public class CustomRolesAndUsers extends FixtureScript {
         }
         if (nexusAppProperties.getSeed().getUser().isEnabled()) {
             log.info("Creating unprivileged user: {}", nexusAppProperties.getSeed().getUser().getUsername());
-            executionContext.executeChildren(this, new UnprivilegedUser(nexusAppProperties.getSeed().getUser().getUsername(),
-                    nexusAppProperties.getSeed().getUser().getPassword()));
+            executionContext.executeChildren(this,
+                    new UnprivilegedUser(nexusAppProperties.getSeed().getUser().getUsername(),
+                            nexusAppProperties.getSeed().getUser().getPassword()));
         }
     }
 
     private static class OrganizationsModuleSuperuserRole extends AbstractRoleAndPermissionsFixtureScript {
         public static final String ROLE_NAME = "organizations-superuser";
+
         public OrganizationsModuleSuperuserRole() {
             super(ROLE_NAME, "Permission to use everything in the 'Organizations' module");
         }
+
         @Override
         protected void execute(ExecutionContext executionContext) {
             newPermissions(
@@ -78,9 +83,11 @@ public class CustomRolesAndUsers extends FixtureScript {
 
     private static class OrgWebModuleSuperuserRole extends AbstractRoleAndPermissionsFixtureScript {
         public static final String ROLE_NAME = "organizations-web-superuser";
+
         public OrgWebModuleSuperuserRole() {
             super(ROLE_NAME, "Permission to use everything in the 'OrgWeb' module");
         }
+
         @Override
         protected void execute(ExecutionContext executionContext) {
             newPermissions(
@@ -92,9 +99,11 @@ public class CustomRolesAndUsers extends FixtureScript {
 
     private static class ProductsModuleSuperuserRole extends AbstractRoleAndPermissionsFixtureScript {
         public static final String ROLE_NAME = "products-superuser";
+
         public ProductsModuleSuperuserRole() {
             super(ROLE_NAME, "Permission to use everything in the 'Products' module");
         }
+
         @Override
         protected void execute(ExecutionContext executionContext) {
             newPermissions(
@@ -106,9 +115,11 @@ public class CustomRolesAndUsers extends FixtureScript {
 
     private static class AgentsModuleSuperuserRole extends AbstractRoleAndPermissionsFixtureScript {
         public static final String ROLE_NAME = "agents-superuser";
+
         public AgentsModuleSuperuserRole() {
             super(ROLE_NAME, "Permission to use everything in the 'Agents' module");
         }
+
         @Override
         protected void execute(ExecutionContext executionContext) {
             newPermissions(
@@ -120,9 +131,11 @@ public class CustomRolesAndUsers extends FixtureScript {
 
     private static class ProjectsModuleSuperuserRole extends AbstractRoleAndPermissionsFixtureScript {
         public static final String ROLE_NAME = "projects-superuser";
+
         public ProjectsModuleSuperuserRole() {
             super(ROLE_NAME, "Permission to use everything in the 'Projects' module");
         }
+
         @Override
         protected void execute(ExecutionContext executionContext) {
             newPermissions(
@@ -132,12 +145,13 @@ public class CustomRolesAndUsers extends FixtureScript {
         }
     }
 
-
     private static class FlowModuleSuperuserRole extends AbstractRoleAndPermissionsFixtureScript {
         public static final String ROLE_NAME = "flow-superuser";
+
         public FlowModuleSuperuserRole() {
             super(ROLE_NAME, "Permission to use everything in the 'Flow' module");
         }
+
         @Override
         protected void execute(ExecutionContext executionContext) {
             newPermissions(
@@ -149,9 +163,11 @@ public class CustomRolesAndUsers extends FixtureScript {
 
     private static class NexusCommandWebModuleSuperuserRole extends AbstractRoleAndPermissionsFixtureScript {
         public static final String ROLE_NAME = "nexus-web-superuser";
+
         public NexusCommandWebModuleSuperuserRole() {
             super(ROLE_NAME, "Permission to use everything in the 'Nexus Command Web' module");
         }
+
         @Override
         protected void execute(ExecutionContext executionContext) {
             newPermissions(
@@ -180,15 +196,49 @@ public class CustomRolesAndUsers extends FixtureScript {
 
     private static class WebhooksModuleSuperuserRole extends AbstractRoleAndPermissionsFixtureScript {
         public static final String ROLE_NAME = "webhooks-superuser";
+
         public WebhooksModuleSuperuserRole() {
             super(ROLE_NAME, "Permission to use everything in the 'webhooks' module");
         }
+
         @Override
         protected void execute(ExecutionContext executionContext) {
             newPermissions(
                     ApplicationPermissionRule.ALLOW,
                     ApplicationPermissionMode.CHANGING,
                     Can.of(ApplicationFeatureId.newNamespace(WebhooksModule.NAMESPACE)));
+        }
+    }
+
+    private static class KafkaModuleSuperuserRole extends AbstractRoleAndPermissionsFixtureScript {
+        public static final String ROLE_NAME = "kafka-superuser";
+
+        public KafkaModuleSuperuserRole() {
+            super(ROLE_NAME, "Permission to use everything in the 'kafka' module");
+        }
+
+        @Override
+        protected void execute(ExecutionContext executionContext) {
+            newPermissions(
+                    ApplicationPermissionRule.ALLOW,
+                    ApplicationPermissionMode.CHANGING,
+                    Can.of(ApplicationFeatureId.newNamespace("nexus.kafka")));
+        }
+    }
+
+    private static class KafkaModuleUserRole extends AbstractRoleAndPermissionsFixtureScript {
+        public static final String ROLE_NAME = "kafka-user";
+
+        public KafkaModuleUserRole() {
+            super(ROLE_NAME, "Permission to use everything in the 'kafka' module");
+        }
+
+        @Override
+        protected void execute(ExecutionContext executionContext) {
+            newPermissions(
+                    ApplicationPermissionRule.ALLOW,
+                    ApplicationPermissionMode.VIEWING,
+                    Can.of(ApplicationFeatureId.newNamespace("nexus.kafka")));
         }
     }
 
@@ -226,10 +276,11 @@ public class CustomRolesAndUsers extends FixtureScript {
         }
     }
 
-
     /**************/
-    /******* USERS
-    /**************/
+    /*******
+     * USERS
+     * /
+     **************/
 
     private static class AdminUser extends AbstractUserAndRolesFixtureScript {
         public AdminUser(String username, String password) {
@@ -241,7 +292,7 @@ public class CustomRolesAndUsers extends FixtureScript {
             public Can<String> get() {
                 return Can.of(
                         causewayConfiguration.getExtensions().getSecman().getSeed().getAdmin().getRoleName(), // built-in
-                                                                                                                    // stuff
+                                                                                                              // stuff
                         OrgWebModuleSuperuserRole.ROLE_NAME,
                         OrganizationsModuleSuperuserRole.ROLE_NAME,
                         ProductsModuleSuperuserRole.ROLE_NAME,
@@ -251,7 +302,8 @@ public class CustomRolesAndUsers extends FixtureScript {
                         NexusCommandWebModuleSuperuserRole.ROLE_NAME,
                         ApplicationSuperuserRole.ROLE_NAME,
                         AgentsModuleSuperuserRole.ROLE_NAME,
-                        WebhooksModuleSuperuserRole.ROLE_NAME);
+                        WebhooksModuleSuperuserRole.ROLE_NAME,
+                        KafkaModuleSuperuserRole.ROLE_NAME);
             }
 
             @Inject

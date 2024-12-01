@@ -18,6 +18,7 @@ import net.savantly.nexus.flow.dom.destination.Destination;
 import net.savantly.nexus.flow.dom.destination.DestinationType;
 import net.savantly.nexus.flow.dom.emailTarget.EmailTargets;
 import net.savantly.nexus.flow.dom.flowDefinition.FlowDefinitions;
+import net.savantly.nexus.kafka.dom.host.KafkaHosts;
 import net.savantly.nexus.webhooks.dom.webhook.WebhookRepository;
 
 @Log4j2
@@ -43,6 +44,8 @@ public class Form_addDestination {
     RepositoryService repositoryService;
     @Inject
     EmailTargets emailTargets;
+    @Inject
+    KafkaHosts kafkaHosts;
 
     @MemberSupport
     public Form act(
@@ -85,8 +88,11 @@ public class Form_addDestination {
                 .map(d -> new DestinationValue(d.getName(), DestinationType.EMAIL, d.getId()).toString())
                 .toList();
 
+        var allKafkaHosts = kafkaHosts.findByOrganization(org).stream()
+                .map(d -> new DestinationValue(d.getName(), DestinationType.KAFKA, d.getId()).toString())
+                .toList();
 
-        var allInstances = List.of(allJdbcConnections, allWebhooks, allFlows, allEmailTargets).stream()
+        var allInstances = List.of(allJdbcConnections, allWebhooks, allFlows, allEmailTargets, allKafkaHosts).stream()
                 .flatMap(List::stream)
                 .toList();
         return allInstances;

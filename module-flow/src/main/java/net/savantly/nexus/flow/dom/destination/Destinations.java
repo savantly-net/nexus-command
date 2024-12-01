@@ -22,6 +22,7 @@ import net.savantly.nexus.flow.dom.connections.jdbcConnection.JdbcConnectionRepo
 import net.savantly.nexus.flow.dom.emailTarget.EmailTargets;
 import net.savantly.nexus.flow.dom.flowDefinition.FlowDefinitions;
 import net.savantly.nexus.flow.dom.form.Form;
+import net.savantly.nexus.kafka.dom.host.KafkaHostRepository;
 import net.savantly.nexus.webhooks.dom.webhook.WebhookRepository;
 
 @Named(FlowModule.NAMESPACE + ".Destinations")
@@ -37,6 +38,7 @@ public class Destinations {
     final JdbcConnectionRepository jdbcConnectionRepository;
     final FlowDefinitions flowDefinitions;
     final EmailTargets emailTargets;
+    final KafkaHostRepository kafkaHostRepository;
 
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR)
@@ -78,7 +80,11 @@ public class Destinations {
                 .map(d -> new KeyValueDto(d.getName(), formatDestinationValue(DestinationType.EMAIL, d.getId())))
                 .toList();
 
-        var allInstances = List.of(allJdbcConnections, allWebhooks, allFlows, allEmailTargets).stream()
+        var allKafkaHosts = kafkaHostRepository.findByOrganizationId(org.getId()).stream()
+                .map(d -> new KeyValueDto(d.getName(), formatDestinationValue(DestinationType.KAFKA, d.getId())))
+                .toList();
+
+        var allInstances = List.of(allJdbcConnections, allWebhooks, allFlows, allEmailTargets, allKafkaHosts).stream()
                 .flatMap(List::stream)
                 .toList();
         return allInstances;

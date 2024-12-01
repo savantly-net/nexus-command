@@ -39,7 +39,6 @@ public class ApplicationModule {
 
     private final NexusAppProperties properties;
 
-
     @Import(SecurityModule.class)
     static class SecurityModuleConfigurer {
     }
@@ -54,7 +53,6 @@ public class ApplicationModule {
     @Import(AuditedEntityModule.class)
     static class AuditedEntityModuleConfigurer {
     }
-
 
     @ConditionalOnProperty(value = "nexus.organizations.enabled", havingValue = "true")
     @Import(OrganizationsModule.class)
@@ -114,6 +112,11 @@ public class ApplicationModule {
     @ConditionalOnProperty(value = "nexus.home.enabled", havingValue = "true")
     @Import(HomeModule.class)
     static class HomeModuleConfigurer {
+    }
+
+    @ConditionalOnProperty(value = "nexus.kafka.enabled", havingValue = "true")
+    @Import({ net.savantly.nexus.kafka.KafkaModule.class })
+    static class KafkaModuleConfigurer {
     }
 
 }

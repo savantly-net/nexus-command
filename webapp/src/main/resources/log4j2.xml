@@ -20,6 +20,7 @@
         <logger name="net.savantly.nexus" level="info"/>
         <logger name="net.savantly.nexus.projects" level="debug"/>
         <logger name="net.savantly.nexus.webhooks" level="debug"/>
+        <logger name="net.savantly.nexus.kafka" level="debug"/>
         <logger name="dev.langchain4j" level="debug"/>
         <logger name="org.springframework" level="info"/>
         <logger name="domainapp" level="info"/>

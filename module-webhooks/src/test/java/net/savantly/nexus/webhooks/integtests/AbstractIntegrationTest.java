@@ -29,10 +29,7 @@ import net.savantly.nexus.webhooks.WebhooksModule;
 @SpringBootTest(classes = {
         // we use a slightly different configuration compared to the production
         // (AppManifest/webapp)
-        AbstractIntegrationTest.TestApp.class,
-        WebhooksModule.class,
-        OrganizationsModule.class,
-        AIModule.class
+        AbstractIntegrationTest.TestApp.class
 }, properties = {})
 @ActiveProfiles({ "test" })
 public abstract class AbstractIntegrationTest extends CausewayIntegrationTestAbstract {
@@ -46,6 +43,9 @@ public abstract class AbstractIntegrationTest extends CausewayIntegrationTestAbs
     @EnableAutoConfiguration
     @Import({
 
+            WebhooksModule.class,
+            OrganizationsModule.class,
+            AIModule.class,
             CausewayModuleCoreRuntimeServices.class,
             CausewayModuleSecurityBypass.class,
             CausewayModulePersistenceJpaEclipselink.class,
