@@ -13,7 +13,7 @@
 
     <artifactId>nexus-command</artifactId>
     <groupId>net.savantly</groupId>
-    <version>3.0.7-SNAPSHOT</version>
+    <version>3.0.7</version>
 
     <name>Nexus Command - Parent</name>
 
