@@ -108,7 +108,8 @@ public class FormSubmissionProxy {
         }
     }
 
-    public void submitForm(Form form, Map<String, Object> payload, String apiKey, String recaptcha, String clientIP)
+    public FormSubmission submitForm(Form form, Map<String, Object> payload, String apiKey, String recaptcha,
+            String clientIP)
             throws JsonProcessingException {
 
         if (!form.isPublicForm()) {
@@ -147,6 +148,7 @@ public class FormSubmissionProxy {
 
             }
         }
+        return submission;
     }
 
     private ZonedDateTime now() {

@@ -23,6 +23,7 @@ import lombok.extern.log4j.Log4j2;
 import net.savantly.nexus.common.types.Name;
 import net.savantly.nexus.flow.FlowModule;
 import net.savantly.nexus.flow.dom.destination.DestinationHookFactory;
+import net.savantly.nexus.flow.dom.formSubmission.FormSubmission;
 import net.savantly.nexus.organizations.dom.organization.Organization;
 
 @Named(FlowModule.NAMESPACE + ".Forms")
@@ -58,15 +59,15 @@ public class Forms {
     }
 
     @Programmatic
-    public void submitForm(final String formId, final Map<String, Object> payload, final String apiKey,
+    public FormSubmission submitForm(final String formId, final Map<String, Object> payload, final String apiKey,
             String recaptcha, String clientIP)
             throws JsonProcessingException {
         var form = repository.findById(formId).orElseThrow();
         log.info("submitting form: " + form.getName());
-        formSubmissionProxy.submitForm(form, payload, apiKey, recaptcha, clientIP);
+        var submission = formSubmissionProxy.submitForm(form, payload, apiKey, recaptcha, clientIP);
 
         log.info("executing hooks for form: " + form.getName());
-
+        return submission;
     }
 
 }

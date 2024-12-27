@@ -202,7 +202,14 @@
                 <mb3:serviceAction objectType="nexus.kafka.KafkaHooks" id="listAll" />
                 <mb3:serviceAction objectType="nexus.kafka.KafkaHooks" id="create" />
             </mb3:section>
-
+        </mb3:menu>
+        <mb3:menu>
+            <mb3:named>Analytics</mb3:named>
+            <mb3:section>
+                <mb3:named>GA Connections</mb3:named>
+                <mb3:serviceAction objectType="nexus.google.analytics.GAConnections" id="listAll" />
+                <mb3:serviceAction objectType="nexus.google.analytics.GAConnections" id="create" />
+            </mb3:section>
         </mb3:menu>
         <mb3:menu>
             <mb3:named>Configuration</mb3:named>

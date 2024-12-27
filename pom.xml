@@ -133,6 +133,16 @@
                 <artifactId>kafka-module</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>google-analytics-module</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>google-analytics-flow-module</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>${project.groupId}</groupId>
@@ -202,6 +212,8 @@
         <module>module-webhooks</module>
         <module>module-home</module>
         <module>module-kafka</module>
+        <module>module-google-analytics</module>
+        <module>module-google-analytics-flow</module>
         <module>webapp</module>
     </modules>
 

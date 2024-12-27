@@ -10,6 +10,7 @@ import net.savantly.nexus.flow.dom.flowDefinition.FlowDefinitions;
 import net.savantly.nexus.flow.dom.flowNode.FlowNodeDescriptor;
 import net.savantly.nexus.flow.dom.flowNode.FlowNodeDiscoveryService;
 import net.savantly.nexus.flow.dom.form.Forms;
+import net.savantly.nexus.flow.dom.formSubmission.FormSubmission;
 
 @RequiredArgsConstructor
 public class FlowService {
@@ -30,9 +31,10 @@ public class FlowService {
         flowDefinitions.executeFlow(flowId, payload, apiKey);
     }
 
-    public void submitForm(String formId, Map<String, Object> payload, String apiKey, String recaptcha, String clientIP)
+    public FormSubmission submitForm(String formId, Map<String, Object> payload, String apiKey, String recaptcha,
+            String clientIP)
             throws JsonProcessingException {
-        forms.submitForm(formId, payload, apiKey, recaptcha, clientIP);
+        return forms.submitForm(formId, payload, apiKey, recaptcha, clientIP);
     }
 
 }

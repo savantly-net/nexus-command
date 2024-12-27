@@ -55,6 +55,11 @@ nexus:
     enabled: false
   org-web:
     enabled: false
+  google:
+    analytics:
+      enabled: true
+      flow:
+        enabled: true
   encryption:
     secret: "12312312312312312312312312312312" # don't use this secret in production
 
@@ -108,6 +113,8 @@ causeway:
       - franchise
       - webhooks
       - kafka
+      - google_analytics
+      - google_analytics_flow
       - causewayExtSecman
       - causewayExtAuditTrail
       - causewayExtCommandLog

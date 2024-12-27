@@ -119,4 +119,14 @@ public class ApplicationModule {
     static class KafkaModuleConfigurer {
     }
 
+    @ConditionalOnProperty(value = "nexus.google.analytics.enabled", havingValue = "true")
+    @Import({ net.savantly.nexus.ga.GoogleAnalyticsModule.class })
+    static class GoogleAnalyticsModuleConfigurer {
+    }
+
+    @ConditionalOnProperty(value = "nexus.google.analytics.flow.enabled", havingValue = "true")
+    @Import({ net.savantly.nexus.gaform.GoogleAnalyticsFlowModule.class })
+    static class GoogleAnalyticsFlowModuleConfigurer {
+    }
+
 }

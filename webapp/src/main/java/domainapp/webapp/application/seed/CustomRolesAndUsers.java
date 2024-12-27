@@ -20,6 +20,8 @@ import net.savantly.nexus.agents.AgentsModule;
 import net.savantly.nexus.command.web.NexusCommandWebModule;
 import net.savantly.nexus.flow.FlowModule;
 import net.savantly.nexus.franchise.FranchiseModule;
+import net.savantly.nexus.ga.GoogleAnalyticsModule;
+import net.savantly.nexus.gaform.GoogleAnalyticsFlowModule;
 import net.savantly.nexus.organizations.OrganizationsModule;
 import net.savantly.nexus.orgweb.OrgWebModule;
 import net.savantly.nexus.products.ProductsModule;
@@ -51,7 +53,9 @@ public class CustomRolesAndUsers extends FixtureScript {
                 new AgentsModuleSuperuserRole(),
                 new WebhooksModuleSuperuserRole(),
                 new KafkaModuleSuperuserRole(),
-                new KafkaModuleUserRole());
+                new KafkaModuleUserRole(),
+                new GoogleAnalyticsModuleSuperuserRole(),
+                new GoogleAnalyticsModuleUserRole());
         if (nexusAppProperties.getSeed().getAdmin().isEnabled()) {
             log.info("Creating admin user: {}", nexusAppProperties.getSeed().getAdmin().getUsername());
             executionContext.executeChildren(this, new AdminUser(nexusAppProperties.getSeed().getAdmin().getUsername(),
@@ -242,6 +246,40 @@ public class CustomRolesAndUsers extends FixtureScript {
         }
     }
 
+    private static class GoogleAnalyticsModuleSuperuserRole extends AbstractRoleAndPermissionsFixtureScript {
+        public static final String ROLE_NAME = "google-analytics-superuser";
+
+        public GoogleAnalyticsModuleSuperuserRole() {
+            super(ROLE_NAME, "Permission to use everything in the 'google-analytics' module");
+        }
+
+        @Override
+        protected void execute(ExecutionContext executionContext) {
+            newPermissions(
+                    ApplicationPermissionRule.ALLOW,
+                    ApplicationPermissionMode.CHANGING,
+                    Can.of(ApplicationFeatureId.newNamespace(GoogleAnalyticsModule.NAMESPACE),
+                            ApplicationFeatureId.newNamespace(GoogleAnalyticsFlowModule.NAMESPACE)));
+        }
+    }
+
+    private static class GoogleAnalyticsModuleUserRole extends AbstractRoleAndPermissionsFixtureScript {
+        public static final String ROLE_NAME = "google-analytics-user";
+
+        public GoogleAnalyticsModuleUserRole() {
+            super(ROLE_NAME, "Permission to view everything in the 'google-analytics' module");
+        }
+
+        @Override
+        protected void execute(ExecutionContext executionContext) {
+            newPermissions(
+                    ApplicationPermissionRule.ALLOW,
+                    ApplicationPermissionMode.VIEWING,
+                    Can.of(ApplicationFeatureId.newNamespace(GoogleAnalyticsModule.NAMESPACE),
+                            ApplicationFeatureId.newNamespace(GoogleAnalyticsFlowModule.NAMESPACE)));
+        }
+    }
+
     private static class ApplicationSuperuserRole extends AbstractRoleAndPermissionsFixtureScript {
 
         public static final String ROLE_NAME = "application-superuser";
@@ -303,7 +341,8 @@ public class CustomRolesAndUsers extends FixtureScript {
                         ApplicationSuperuserRole.ROLE_NAME,
                         AgentsModuleSuperuserRole.ROLE_NAME,
                         WebhooksModuleSuperuserRole.ROLE_NAME,
-                        KafkaModuleSuperuserRole.ROLE_NAME);
+                        KafkaModuleSuperuserRole.ROLE_NAME,
+                        GoogleAnalyticsModuleSuperuserRole.ROLE_NAME);
             }
 
             @Inject

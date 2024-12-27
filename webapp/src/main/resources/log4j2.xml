@@ -5,26 +5,31 @@
         <Property name="LOG_EXCEPTION_CONVERSION_WORD">%xwEx</Property>
         <Property name="LOG_LEVEL_PATTERN">%5p</Property>
         <Property name="LOG_DATEFORMAT_PATTERN">yyyy-MM-dd HH:mm:ss.SSS</Property>
-        <Property name="CONSOLE_LOG_PATTERN">%clr{%d{${LOG_DATEFORMAT_PATTERN}}}{faint} %clr{${LOG_LEVEL_PATTERN}} %clr{${sys:PID}}{magenta} %clr{---}{faint} %clr{[%15.15t]}{faint} %clr{%-40.40c{1.}}{cyan} %clr{:}{faint} %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}</Property>
-        <Property name="FILE_LOG_PATTERN">%d{${LOG_DATEFORMAT_PATTERN}} ${LOG_LEVEL_PATTERN} ${sys:PID} --- [%t] %-40.40c{1.} : %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}</Property>
+        <!-- 
+        <Property name="FILE_LOG_PATTERN">%d{${LOG_DATEFORMAT_PATTERN}} ${LOG_LEVEL_PATTERN} ${sys:PID} -
+        [%t] %-40.40c{1.} : %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}</Property>
+        -->
     </Properties>
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT" follow="true">
-            <PatternLayout pattern="${sys:CONSOLE_LOG_PATTERN}" />
+            <PatternLayout
+                pattern="%clr{%d{${LOG_DATEFORMAT_PATTERN}}}{faint} %clr{${LOG_LEVEL_PATTERN}} %clr{${sys:PID}}{magenta} %clr{---}{faint} %clr{[%15.15t]}{faint} %clr{%-40.40c{1.}}{cyan} %clr{:}{faint} %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}" />
         </Console>
     </Appenders>
     <Loggers>
 
 
-        <logger name="org.apache.causeway" level="info"/>
-        <logger name="net.savantly.nexus" level="info"/>
-        <logger name="net.savantly.nexus.projects" level="debug"/>
-        <logger name="net.savantly.nexus.webhooks" level="debug"/>
-        <logger name="net.savantly.nexus.kafka" level="debug"/>
-        <logger name="dev.langchain4j" level="debug"/>
-        <logger name="org.springframework" level="info"/>
-        <logger name="domainapp" level="info"/>
-        <logger name="org.eclipse.persistence.exceptions" level="info"/>
+        <logger name="org.apache.causeway" level="info" />
+        <logger name="net.savantly.nexus" level="info" />
+        <logger name="net.savantly.nexus.projects" level="debug" />
+        <logger name="net.savantly.nexus.webhooks" level="debug" />
+        <logger name="net.savantly.nexus.kafka" level="debug" />
+        <logger name="dev.langchain4j" level="debug" />
+        <logger name="org.springframework" level="info" />
+        <logger name="domainapp" level="info" />
+        <logger name="org.eclipse.persistence.exceptions" level="info" />
+
+        <logger name="org.springframework.context.event" level="debug" />
 
 
         <!-- silence Wicket -->
@@ -33,32 +38,44 @@
         <Logger name="org.apache.catalina.startup.DigesterFactory" level="error" />
         <Logger name="org.apache.catalina.util.LifecycleBase" level="error" />
         <Logger name="org.apache.coyote.http11.Http11NioProtocol" level="warn" />
-        <logger name="org.apache.sshd.common.util.SecurityUtils" level="warn"/>
+        <logger name="org.apache.sshd.common.util.SecurityUtils" level="warn" />
         <Logger name="org.apache.tomcat.util.net.NioSelectorPool" level="warn" />
         <Logger name="org.eclipse.jetty.util.component.AbstractLifeCycle" level="error" />
         <Logger name="org.hibernate.validator.internal.util.Version" level="warn" />
-        <logger name="org.springframework.boot.actuate.endpoint.jmx" level="warn"/>
+        <logger name="org.springframework.boot.actuate.endpoint.jmx" level="warn" />
 
-        <logger name="org.apache.directory" level="warn"/>
-        <logger name="org.apache.directory.api.ldap.model.entry.Value" level="off"/>
+        <logger name="org.apache.directory" level="warn" />
+        <logger name="org.apache.directory.api.ldap.model.entry.Value" level="off" />
 
-        <logger name="org.apache.causeway.applib.services.publishing.log.CommandLogger" level="warn"/>
-        <logger name="org.apache.causeway.applib.services.publishing.log.EntityChangesLogger" level="warn"/>
-        <logger name="org.apache.causeway.applib.services.publishing.log.EntityPropertyChangeLogger" level="warn"/>
-        <logger name="org.apache.causeway.applib.services.publishing.log.ExecutionLogger" level="warn"/>
-        <logger name="org.apache.causeway.applib.services.publishing.log.PageRenderLogger" level="warn"/>
+        <logger name="org.apache.causeway.applib.services.publishing.log.CommandLogger" level="warn" />
+        <logger name="org.apache.causeway.applib.services.publishing.log.EntityChangesLogger"
+            level="warn" />
+        <logger name="org.apache.causeway.applib.services.publishing.log.EntityPropertyChangeLogger"
+            level="warn" />
+        <logger name="org.apache.causeway.applib.services.publishing.log.ExecutionLogger"
+            level="warn" />
+        <logger name="org.apache.causeway.applib.services.publishing.log.PageRenderLogger"
+            level="warn" />
 
         <!-- request scoped -->
-        <logger name="org.apache.causeway.viewer.restfulobjects.rendering.service.acceptheader.AcceptHeaderServiceForRest" level="debug"/>
-        <logger name="org.apache.causeway.applib.services.command.CommandContext" level="warn"/>
-        <logger name="org.apache.causeway.applib.services.iactn.InteractionProvider" level="warn"/>
-        <logger name="org.apache.causeway.applib.services.scratchpad.Scratchpad" level="warn"/>
-        <logger name="org.apache.causeway.core.runtimeservices.publish.PublisherDispatchServiceDefault" level="warn"/>
+        <logger
+            name="org.apache.causeway.viewer.restfulobjects.rendering.service.acceptheader.AcceptHeaderServiceForRest"
+            level="debug" />
+        <logger name="org.apache.causeway.applib.services.command.CommandContext" level="warn" />
+        <logger name="org.apache.causeway.applib.services.iactn.InteractionProvider" level="warn" />
+        <logger name="org.apache.causeway.applib.services.scratchpad.Scratchpad" level="warn" />
+        <logger
+            name="org.apache.causeway.core.runtimeservices.publish.PublisherDispatchServiceDefault"
+            level="warn" />
 
         <!-- transaction scoped -->
-        <logger name="org.apache.causeway.core.transaction.changetracking.EntityChangeTrackerDefault" level="warn"/>
-        <logger name="org.apache.causeway.core.runtimeservices.publish.ExecutionPublisherDefault" level="warn"/>
-        <logger name="org.apache.causeway.applib.services.queryresultscache.QueryResultsCache" level="warn"/>
+        <logger
+            name="org.apache.causeway.core.transaction.changetracking.EntityChangeTrackerDefault"
+            level="warn" />
+        <logger name="org.apache.causeway.core.runtimeservices.publish.ExecutionPublisherDefault"
+            level="warn" />
+        <logger name="org.apache.causeway.applib.services.queryresultscache.QueryResultsCache"
+            level="warn" />
 
         <Root level="warn">
             <AppenderRef ref="Console" />

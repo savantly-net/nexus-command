@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Set;
 
+import org.apache.causeway.applib.services.eventbus.EventBusService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import net.savantly.nexus.flow.api.events.submitFormJson.SubmitFormJsonEvent;
+import net.savantly.nexus.flow.api.events.submitFormJson.SubmitFormJsonEventData;
 import net.savantly.nexus.flow.dom.files.FileEntities;
 import net.savantly.nexus.flow.dom.files.FileEntityDto;
 import net.savantly.nexus.flow.dom.flowDefinition.FlowDefinitions;
@@ -39,6 +43,7 @@ public class FlowApi {
     private final FlowService flowService;
     private final FileEntities files;
     private final ObjectMapper mapper;
+    private final EventBusService eventBusService;
 
     @GetMapping("/definitions")
     public FlowDefinitions getFlowDefinitions() {
@@ -61,7 +66,7 @@ public class FlowApi {
     public ResponseEntity submitFormJson(@PathVariable String formId, @RequestBody Object payload,
             @RequestHeader(name = "api-key", required = false) String apiKey,
             @RequestParam(name = "g-recaptcha-response", required = false) String recaptcha,
-            @RequestHeader(name = "X-Forwarded-For", required = false) String clientIP)
+            @RequestHeader(name = "X-Forwarded-For", required = false) String clientIP, HttpServletRequest request)
             throws JsonProcessingException {
         log.info("Requested to submit form: {}", formId);
 
@@ -90,11 +95,18 @@ public class FlowApi {
         }
 
         try {
-            flowService.submitForm(formId, payloadMap, apiKey, recaptcha, clientIP);
-            return ResponseEntity.ok().build();
+            var submission = flowService.submitForm(formId, payloadMap, apiKey, recaptcha, clientIP);
+            log.info("publishing event for formId: {}", formId);
+            var eventData = SubmitFormJsonEventData.builder().submission(submission).clientIP(clientIP)
+                    .request(request).build();
+            var event = new SubmitFormJsonEvent(eventData);
+            eventBusService.post(event);
+            return ResponseEntity.ok().body(Map.of("success", true));
         } catch (IllegalArgumentException e) {
             var errBody = Map.of("error", e.getMessage());
             return ResponseEntity.badRequest().body(errBody);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 
