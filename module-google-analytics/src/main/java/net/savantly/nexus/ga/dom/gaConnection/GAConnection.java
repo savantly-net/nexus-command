@@ -100,6 +100,12 @@ public class GAConnection extends OrganizationEntity implements Comparable<GACon
     @Setter
     private String measurementId;
 
+    @Column(name = "is_debug", nullable = true, columnDefinition = "boolean default false")
+    @PropertyLayout(fieldSetId = "identity", sequence = "1.6")
+    @Getter
+    @Setter
+    private boolean debug;
+
     @JoinColumn(name = "ga_secret_id", nullable = true)
     @Property(editing = Editing.DISABLED)
     @PropertyLayout(fieldSetId = "identity", sequence = "1.7")

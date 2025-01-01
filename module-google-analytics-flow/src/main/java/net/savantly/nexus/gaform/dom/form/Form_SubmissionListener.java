@@ -18,7 +18,7 @@ import net.savantly.nexus.organizations.dom.organizationSecret.OrganizationSecre
 public class Form_SubmissionListener {
 
     private final String baseUrl = "https://www.google-analytics.com";
-    private final String measurementApi = "/mp/collect";
+    private final String measurementApi = "/mp/collect?api_secret={api_secret}&measurement_id={measurement_id}";
 
     private final RestClient rest;
 
@@ -58,35 +58,54 @@ public class Form_SubmissionListener {
             return;
         }
 
-        var apiKey = gaConnection.getConnection().getApiKey();
+        var baseGaConnection = gaConnection.getConnection();
+        var apiKey = baseGaConnection.getApiKey();
 
         if (Objects.isNull(apiKey) || Objects.isNull(apiKey.getSecret())) {
             log.debug("google analytics api key not found for formId: {}", form.getId());
             return;
         }
 
+        var gaDebugMode = baseGaConnection.isDebug() ? "1" : "0";
+
         var unencryptedKey = secrets.decryptSecretString(apiKey);
-        var uriVariables = Map.of("api_secret", unencryptedKey);
+        var uriVariables = Map.of("api_secret", unencryptedKey, "measurement_id", baseGaConnection.getMeasurementId());
 
         var eventParams = Map.of("form_id", form.getId(), "submission_id", submission.getId(), "form_name",
-                form.getName());
+                form.getName(), "debug_mode", gaDebugMode);
         var gaEvent = Map.of("name", "form_submission", "params", eventParams);
         var events = List.of(gaEvent);
-        var body = Map.of("events", events, "user_id", extractUserId(source.getRequest()));
+        var body = Map.of("events", events, "user_id", extractUserId(source.getRequest()), "client_id",
+                extractClientId(source.getRequest()));
+
+        var fullMeasurementApi = measurementApi;
+
+        if (baseGaConnection.isDebug()) {
+            fullMeasurementApi = "/debug" + measurementApi;
+        }
 
         var response = rest.post()
-                .uri(measurementApi, uriVariables)
+                .uri(fullMeasurementApi, uriVariables)
                 .body(body)
                 .contentType(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .onStatus(status -> status.isError(), (req, res) -> {
                     log.error("Failed to send event to Google Analytics: {}", res.getStatusText());
                 })
-                .toBodilessEntity();
+                .toEntity(Object.class);
         log.info("end handling event with GA response: {}", response);
     }
 
     private String extractUserId(HttpServletRequest request) {
+
+        var uid = request.getParameter("uid");
+        if (Objects.nonNull(uid)) {
+            return uid;
+        }
+        var userId = request.getParameter("user_id");
+        if (Objects.nonNull(userId)) {
+            return userId;
+        }
 
         var cid = request.getParameter("cid");
         if (Objects.nonNull(cid)) {
@@ -101,5 +120,34 @@ public class Form_SubmissionListener {
             return proxiedFor;
         }
         return request.getRemoteAddr();
+    }
+
+    private String extractClientId(HttpServletRequest request) {
+
+        var cid = request.getParameter("cid");
+        if (Objects.nonNull(cid)) {
+            return cid;
+        }
+        var clientId = request.getParameter("client_id");
+        if (Objects.nonNull(clientId)) {
+            return clientId;
+        }
+        var proxiedFor = request.getParameter("X-Forwarded-For");
+        if (Objects.nonNull(proxiedFor)) {
+            return proxiedFor;
+        }
+        return request.getRemoteAddr();
+    }
+
+    private String extractSessionId(HttpServletRequest request) {
+        var sid = request.getParameter("sid");
+        if (Objects.nonNull(sid)) {
+            return sid;
+        }
+        var sessionId = request.getParameter("session_id");
+        if (Objects.nonNull(sessionId)) {
+            return sessionId;
+        }
+        return request.getSession().getId();
     }
 }
