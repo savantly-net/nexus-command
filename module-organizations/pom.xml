@@ -85,6 +85,15 @@
             <artifactId>causeway-testing-fixtures-applib</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.causeway.extensions</groupId>
+            <artifactId>causeway-extensions-secman-encryption-jbcrypt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.causeway.extensions</groupId>
+            <artifactId>causeway-extensions-secman-persistence-jpa</artifactId>
+        </dependency>
+
 
         <!-- IDE support (optional) -->
         <dependency>

@@ -50,17 +50,18 @@ public class Form_SubmissionListener_IntegTest extends AbstractIntegrationTest {
 
         var ga = GAConnection.withRequiredArgs(organization, "test", "G-K8021YZYW4");
         ga.setApiKey(secret);
+        ga.setDebug(true);
 
         var form = Form.withName(organization, "test");
         var mixin = factoryService.mixin(Form_updateGoogleAnalytics.class, form);
-        mixin.act(ga);
+        mixin.act(ga, "test");
 
         var payload = "{\"test\":\"test\"}";
         var formSubmission = FormSubmission.withRequiredArgs(form, payload);
         var clientIP = "127.0.0.1";
 
         var request = Mockito.mock(HttpServletRequest.class);
-        when(request.getParameter(anyString())).thenReturn("user-1");
+        when(request.getHeader(anyString())).thenReturn("user-1");
 
         var event = new SubmitFormJsonEvent(SubmitFormJsonEventData.builder()
                 .submission(formSubmission)

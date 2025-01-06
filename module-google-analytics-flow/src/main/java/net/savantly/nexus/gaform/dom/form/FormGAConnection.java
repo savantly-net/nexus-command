@@ -1,6 +1,7 @@
 package net.savantly.nexus.gaform.dom.form;
 
 import static org.apache.causeway.applib.annotation.SemanticsOf.NON_IDEMPOTENT_ARE_YOU_SURE;
+import static org.apache.causeway.applib.annotation.SemanticsOf.IDEMPOTENT_ARE_YOU_SURE;
 
 import java.util.Comparator;
 import java.util.UUID;
@@ -10,6 +11,7 @@ import org.apache.causeway.applib.annotation.ActionLayout;
 import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.DomainObjectLayout;
 import org.apache.causeway.applib.annotation.Editing;
+import org.apache.causeway.applib.annotation.MemberSupport;
 import org.apache.causeway.applib.annotation.Property;
 import org.apache.causeway.applib.annotation.PropertyLayout;
 import org.apache.causeway.applib.annotation.Publishing;
@@ -94,6 +96,13 @@ public class FormGAConnection implements Comparable<FormGAConnection> {
     @Getter
     private Form form;
 
+    @Property(editing = Editing.DISABLED)
+    @PropertyLayout(fieldSetId = "identity", sequence = "1.7")
+    @Getter
+    @Setter
+    @Column(name = "event_name", nullable = true)
+    private String eventName;
+
     // *** IMPLEMENTATIONS ****
 
     private final static Comparator<FormGAConnection> comparator = Comparator.comparing(FormGAConnection::getId);
@@ -105,10 +114,22 @@ public class FormGAConnection implements Comparable<FormGAConnection> {
 
     // *** ACTIONS ***
 
-    @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
+    @Action(semantics = IDEMPOTENT_ARE_YOU_SURE)
     @ActionLayout(describedAs = "Deletes this object from the persistent datastore")
     public void delete() {
         messageService.informUser(String.format("'%s' deleted", this.title()));
         repositoryService.removeAndFlush(this);
+    }
+
+    @Action(semantics = IDEMPOTENT_ARE_YOU_SURE)
+    @ActionLayout(describedAs = "Update the event name")
+    public FormGAConnection updateEventName(final String eventName) {
+        this.eventName = eventName;
+        return this;
+    }
+
+    @MemberSupport
+    public String default0UpdateEventName() {
+        return this.eventName;
     }
 }

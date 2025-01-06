@@ -42,9 +42,10 @@ public class Form_updateGoogleAnalytics {
     GAConnectionRepository gaConnectionRepository;
 
     @MemberSupport
-    public Form act(final GAConnection gaConnection) throws IOException {
+    public Form act(final GAConnection gaConnection, final String eventName) throws IOException {
         formConnectionRepository.deleteByFormId(object.getId());
         FormGAConnection formGAConnection = FormGAConnection.withRequiredArgs(object, gaConnection);
+        formGAConnection.setEventName(eventName);
         formConnectionRepository.save(formGAConnection);
 
         messageService.informUser("Google Analytics connection updated for form " + object.getName());
@@ -55,6 +56,11 @@ public class Form_updateGoogleAnalytics {
     @MemberSupport
     public List<GAConnection> choices0Act() {
         return gaConnectionRepository.findByOrganizationId(object.getOrganization().getId());
+    }
+
+    @MemberSupport
+    public String default1Act() {
+        return "form_submission";
     }
 
 }

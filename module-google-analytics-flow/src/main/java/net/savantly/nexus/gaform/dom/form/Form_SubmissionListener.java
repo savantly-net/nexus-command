@@ -1,5 +1,6 @@
 package net.savantly.nexus.gaform.dom.form;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -71,12 +72,29 @@ public class Form_SubmissionListener {
         var unencryptedKey = secrets.decryptSecretString(apiKey);
         var uriVariables = Map.of("api_secret", unencryptedKey, "measurement_id", baseGaConnection.getMeasurementId());
 
-        var eventParams = Map.of("form_id", form.getId(), "submission_id", submission.getId(), "form_name",
-                form.getName(), "debug_mode", gaDebugMode);
-        var gaEvent = Map.of("name", "form_submission", "params", eventParams);
+        var eventParams = new HashMap<String, Object>();
+        eventParams.put("form_id", form.getId());
+        eventParams.put("submission_id", submission.getId());
+        eventParams.put("form_name", form.getName());
+        eventParams.put("debug_mode", gaDebugMode);
+
+        // https://developers.google.com/analytics/devguides/collection/protocol/ga4/changelog#2022-05-23
+        var sid = extractSessionId(source.getRequest());
+        if (Objects.nonNull(sid)) {
+            eventParams.put("session_id", sid);
+        }
+
+        var eventName = gaConnection.getEventName() != null ? gaConnection.getEventName() : "form_submission";
+        var gaEvent = Map.of("name", eventName, "params", eventParams);
         var events = List.of(gaEvent);
-        var body = Map.of("events", events, "user_id", extractUserId(source.getRequest()), "client_id",
-                extractClientId(source.getRequest()));
+        var body = new HashMap<String, Object>();
+        body.put("events", events);
+        var uid = extractUserId(source.getRequest());
+        if (Objects.nonNull(uid)) {
+            body.put("user_id", uid);
+        }
+        var cid = extractClientId(source.getRequest());
+        body.put("client_id", cid);
 
         var fullMeasurementApi = measurementApi;
 
@@ -98,55 +116,26 @@ public class Form_SubmissionListener {
 
     private String extractUserId(HttpServletRequest request) {
 
-        var uid = request.getParameter("uid");
+        var uid = request.getHeader("x-ga4-user-id");
         if (Objects.nonNull(uid)) {
             return uid;
         }
-        var userId = request.getParameter("user_id");
-        if (Objects.nonNull(userId)) {
-            return userId;
-        }
-
-        var cid = request.getParameter("cid");
-        if (Objects.nonNull(cid)) {
-            return cid;
-        }
-        var clientId = request.getParameter("client_id");
-        if (Objects.nonNull(clientId)) {
-            return clientId;
-        }
-        var proxiedFor = request.getParameter("X-Forwarded-For");
-        if (Objects.nonNull(proxiedFor)) {
-            return proxiedFor;
-        }
-        return request.getRemoteAddr();
+        return null;
     }
 
     private String extractClientId(HttpServletRequest request) {
 
-        var cid = request.getParameter("cid");
+        var cid = request.getHeader("x-ga4-client-id");
         if (Objects.nonNull(cid)) {
             return cid;
         }
-        var clientId = request.getParameter("client_id");
-        if (Objects.nonNull(clientId)) {
-            return clientId;
-        }
-        var proxiedFor = request.getParameter("X-Forwarded-For");
-        if (Objects.nonNull(proxiedFor)) {
-            return proxiedFor;
-        }
-        return request.getRemoteAddr();
+        return request.getSession().getId();
     }
 
     private String extractSessionId(HttpServletRequest request) {
-        var sid = request.getParameter("sid");
+        var sid = request.getHeader("x-ga4-session-id");
         if (Objects.nonNull(sid)) {
             return sid;
-        }
-        var sessionId = request.getParameter("session_id");
-        if (Objects.nonNull(sessionId)) {
-            return sessionId;
         }
         return request.getSession().getId();
     }

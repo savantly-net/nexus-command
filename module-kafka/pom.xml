@@ -113,6 +113,18 @@
         </dependency>
 
 
+        <dependency>
+            <groupId>org.apache.causeway.extensions</groupId>
+            <artifactId>causeway-extensions-secman-encryption-jbcrypt</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.causeway.extensions</groupId>
+            <artifactId>causeway-extensions-secman-persistence-jpa</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
     </dependencies>
 
 
