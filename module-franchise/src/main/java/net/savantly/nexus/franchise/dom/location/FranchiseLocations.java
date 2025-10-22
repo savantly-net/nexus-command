@@ -14,7 +14,6 @@ import org.apache.causeway.applib.annotation.ActionLayout;
 import org.apache.causeway.applib.annotation.DomainService;
 import org.apache.causeway.applib.annotation.MemberSupport;
 import org.apache.causeway.applib.annotation.MinLength;
-import org.apache.causeway.applib.annotation.NatureOfService;
 import org.apache.causeway.applib.annotation.Optionality;
 import org.apache.causeway.applib.annotation.Parameter;
 import org.apache.causeway.applib.annotation.PriorityPrecedence;
@@ -29,7 +28,7 @@ import net.savantly.nexus.franchise.FranchiseModule;
 import net.savantly.nexus.franchise.dom.group.FranchiseGroup;
 
 @Named(FranchiseModule.NAMESPACE + ".FranchiseLocations")
-@DomainService(nature = NatureOfService.VIEW)
+@DomainService
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
 public class FranchiseLocations {

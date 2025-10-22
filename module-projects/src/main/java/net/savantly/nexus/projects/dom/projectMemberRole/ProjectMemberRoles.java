@@ -8,7 +8,6 @@ import jakarta.inject.Named;
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
 import org.apache.causeway.applib.annotation.DomainService;
-import org.apache.causeway.applib.annotation.NatureOfService;
 import org.apache.causeway.applib.annotation.PriorityPrecedence;
 import org.apache.causeway.applib.annotation.PromptStyle;
 import org.apache.causeway.applib.annotation.SemanticsOf;
@@ -17,7 +16,7 @@ import net.savantly.nexus.common.types.Name;
 import net.savantly.nexus.projects.ProjectsModule;
 
 @Named(ProjectsModule.NAMESPACE + ".ProjectMemberRoles")
-@DomainService(nature = NatureOfService.VIEW)
+@DomainService
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
 public class ProjectMemberRoles {

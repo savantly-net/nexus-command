@@ -10,7 +10,7 @@ import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
 import org.apache.causeway.applib.annotation.DomainService;
 import org.apache.causeway.applib.annotation.DomainServiceLayout;
-import org.apache.causeway.applib.annotation.NatureOfService;
+
 import org.apache.causeway.applib.annotation.PriorityPrecedence;
 import org.apache.causeway.applib.annotation.Programmatic;
 import org.apache.causeway.applib.annotation.PromptStyle;
@@ -22,7 +22,7 @@ import net.savantly.nexus.common.types.Name;
 import net.savantly.nexus.organizations.OrganizationsModule;
 
 @Named(OrganizationsModule.NAMESPACE + ".OrganizationMemberRoles")
-@DomainService(nature = NatureOfService.VIEW)
+@DomainService
 @DomainServiceLayout()
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })

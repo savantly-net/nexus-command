@@ -10,7 +10,7 @@ import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.ActionLayout;
 import org.apache.causeway.applib.annotation.BookmarkPolicy;
 import org.apache.causeway.applib.annotation.DomainService;
-import org.apache.causeway.applib.annotation.NatureOfService;
+
 import org.apache.causeway.applib.annotation.PriorityPrecedence;
 import org.apache.causeway.applib.annotation.Programmatic;
 import org.apache.causeway.applib.annotation.SemanticsOf;
@@ -22,9 +22,7 @@ import net.savantly.nexus.command.web.dom.block.Block;
 import net.savantly.nexus.command.web.dom.site.WebSite;
 
 @Named(NexusCommandWebModule.NAMESPACE + ".SiteBlocks")
-@DomainService(
-        nature = NatureOfService.VIEW
-)
+@DomainService
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @lombok.RequiredArgsConstructor(onConstructor_ = {@Inject} )
 public class SiteBlocks {
