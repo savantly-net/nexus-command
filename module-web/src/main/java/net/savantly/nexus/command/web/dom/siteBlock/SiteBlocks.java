@@ -24,7 +24,7 @@ import net.savantly.nexus.command.web.dom.site.WebSite;
 @Named(NexusCommandWebModule.NAMESPACE + ".SiteBlocks")
 @DomainService
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = {@Inject} )
+@lombok.RequiredArgsConstructor
 public class SiteBlocks {
 	
     final RepositoryService repositoryService;

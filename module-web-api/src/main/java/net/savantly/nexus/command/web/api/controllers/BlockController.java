@@ -24,7 +24,7 @@ import net.savantly.nexus.command.web.dom.block.Blocks;
 
 @RestController
 @RequestMapping("/api/blocks")
-@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@RequiredArgsConstructor
 class BlockController {
 
     private final InteractionService interactionService;

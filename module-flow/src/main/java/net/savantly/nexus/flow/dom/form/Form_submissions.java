@@ -14,7 +14,7 @@ import net.savantly.nexus.flow.dom.formSubmission.FormSubmissionRepository;
 
 @Collection
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class Form_submissions {
 
     final Form object;

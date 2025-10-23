@@ -19,7 +19,7 @@ import net.savantly.nexus.organizations.dom.organizationSecret.OrganizationSecre
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
 @ActionLayout(associateWith = "apiKey", named = "Choose Secret", describedAs = "Update the API Key with an existing secret")
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class GAConnection_updateApiKey {
 
     final GAConnection object;

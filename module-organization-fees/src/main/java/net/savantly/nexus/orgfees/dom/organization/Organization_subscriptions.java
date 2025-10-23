@@ -16,7 +16,7 @@ import net.savantly.nexus.orgfees.dom.subscription.SubscriptionRepository;
 
 @Collection
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 @Named("Organization_subscriptions")
 public class Organization_subscriptions {
 

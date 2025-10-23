@@ -25,7 +25,7 @@ import net.savantly.nexus.flow.dom.flowDefinitionNode.FlowDefinitionNode;
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
 @ActionLayout(associateWith = "edges", describedAs = "Add Edge", promptStyle = PromptStyle.DIALOG)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class FlowDefinition_addEdge {
 
     final FlowDefinition object;

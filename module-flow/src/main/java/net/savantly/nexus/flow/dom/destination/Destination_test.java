@@ -22,7 +22,7 @@ import lombok.extern.log4j.Log4j2;
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
 @ActionLayout(associateWith = "destinations", promptStyle = PromptStyle.DIALOG)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class Destination_test {
 
     final Destination object;

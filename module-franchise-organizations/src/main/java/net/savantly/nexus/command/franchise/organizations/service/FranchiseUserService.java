@@ -21,7 +21,7 @@ import net.savantly.nexus.organizations.dom.organizationUser.OrganizationUsers;
 @Named(FranchiseModule.NAMESPACE + ".OrganizationUsers")
 @DomainService
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class FranchiseUserService implements OrganizationUsers {
 
     private static final Logger logger = LogManager.getLogger(FranchiseUserService.class);

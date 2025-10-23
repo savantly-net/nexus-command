@@ -12,7 +12,7 @@ import net.savantly.nexus.flow.dom.form.Form;
 @Property(editing = Editing.DISABLED)
 @PropertyLayout(fieldSetId = "identity", describedAs = "Google Analytics connection", named = "Google Analytics", sequence = "1.7")
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class Form_GoogleAnalytics {
 
     final Form form;

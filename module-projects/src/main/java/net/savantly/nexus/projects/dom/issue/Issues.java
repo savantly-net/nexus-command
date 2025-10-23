@@ -30,7 +30,7 @@ import net.savantly.nexus.projects.dom.project.Project;
 @DomainService
 @DomainServiceLayout()
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class Issues {
     final RepositoryService repositoryService;
     final JpaSupportService jpaSupportService;

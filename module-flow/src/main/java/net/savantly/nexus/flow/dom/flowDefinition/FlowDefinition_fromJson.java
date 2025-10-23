@@ -30,7 +30,7 @@ import net.savantly.nexus.flow.dto.FlowNodeDto;
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
 @ActionLayout(describedAs = "Update from JSON", promptStyle = PromptStyle.DIALOG)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class FlowDefinition_fromJson {
 
     final FlowDefinition object;

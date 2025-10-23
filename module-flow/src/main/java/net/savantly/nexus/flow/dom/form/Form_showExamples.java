@@ -19,7 +19,7 @@ import lombok.extern.log4j.Log4j2;
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @Action(semantics = SemanticsOf.SAFE_AND_REQUEST_CACHEABLE, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
 @ActionLayout(named = "API Example", promptStyle = PromptStyle.DIALOG)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class Form_showExamples {
 
     final Form object;

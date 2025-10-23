@@ -23,7 +23,7 @@ import net.savantly.nexus.ga.dom.gaConnection.GAConnectionRepository;
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @Action(semantics = SemanticsOf.IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
 @ActionLayout(named = "Update GA", promptStyle = PromptStyle.DIALOG, associateWith = "GoogleAnalytics", describedAs = "Update the Google Analytics connection for this form")
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class Form_updateGoogleAnalytics {
 
     final Form object;

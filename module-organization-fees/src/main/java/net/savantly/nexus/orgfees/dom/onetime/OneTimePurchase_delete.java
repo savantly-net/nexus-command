@@ -15,7 +15,7 @@ import net.savantly.nexus.organizations.dom.organization.Organization;
 
 @Action(semantics = SemanticsOf.IDEMPOTENT_ARE_YOU_SURE)
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class OneTimePurchase_delete {
 
     final OneTimePurchase object;

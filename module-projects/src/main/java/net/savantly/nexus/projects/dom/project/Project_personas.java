@@ -14,7 +14,7 @@ import net.savantly.nexus.projects.dom.projectPersona.ProjectPersonaRepository;
 
 @Collection
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class Project_personas {
 
     final Project obj;

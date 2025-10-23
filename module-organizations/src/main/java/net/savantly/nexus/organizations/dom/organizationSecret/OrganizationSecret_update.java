@@ -17,7 +17,7 @@ import net.savantly.encryption.jpa.AttributeEncryptor;
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
 @ActionLayout(associateWith = "secret", describedAs = "Update Secret", promptStyle = PromptStyle.DIALOG)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class OrganizationSecret_update {
 
     final OrganizationSecret object;

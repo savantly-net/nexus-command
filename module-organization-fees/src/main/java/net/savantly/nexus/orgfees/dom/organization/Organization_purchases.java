@@ -15,7 +15,7 @@ import net.savantly.nexus.orgfees.dom.onetime.OneTimePurchaseRepository;
 
 @Collection
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 @Named("Organization_purchases")
 public class Organization_purchases {
 

@@ -19,7 +19,7 @@ import net.savantly.nexus.flow.dom.form.Form;
 @DomainService
 @DomainServiceLayout()
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 @Log4j2
 public class FormSubmissions {
     final RepositoryService repositoryService;

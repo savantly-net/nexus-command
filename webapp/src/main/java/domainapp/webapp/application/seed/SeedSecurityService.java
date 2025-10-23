@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @Priority(PriorityPrecedence.MIDPOINT + 10)
-@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@RequiredArgsConstructor
 public class SeedSecurityService {
 
     private final FixtureScripts fixtureScripts;

@@ -18,7 +18,7 @@ import net.savantly.nexus.projects.ProjectsModule;
 @Named(ProjectsModule.NAMESPACE + ".ProjectMemberRoles")
 @DomainService
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class ProjectMemberRoles {
 
     private final ProjectMemberRoleRepository repository;

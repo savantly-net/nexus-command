@@ -241,6 +241,11 @@
                         <doclint>none</doclint>
                         <failOnError>false</failOnError>
                         <quiet>true</quiet>
+                        <additionalJOptions>
+                            <additionalJOption>-J-Duser.language=en</additionalJOption>
+                        </additionalJOptions>
+                        <source>17</source>
+                        <detectJavaApiLink>false</detectJavaApiLink>
                     </configuration>
                     <executions>
                         <execution>

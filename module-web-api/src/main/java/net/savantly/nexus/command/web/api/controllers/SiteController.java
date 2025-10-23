@@ -20,7 +20,7 @@ import net.savantly.nexus.command.web.dom.site.WebSites;
 
 @RestController
 @RequestMapping("/api/sites")
-@RequiredArgsConstructor(onConstructor_ = { @Inject })
+@RequiredArgsConstructor
 class SiteController {
 
     private final InteractionService interactionService;

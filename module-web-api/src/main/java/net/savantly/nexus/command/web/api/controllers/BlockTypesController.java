@@ -24,7 +24,7 @@ import net.savantly.nexus.command.web.dom.blockType.BlockTypes;
 
 @RestController
 @RequestMapping("/api/block-types")
-@RequiredArgsConstructor(onConstructor_ = { @Inject })
+@RequiredArgsConstructor
 class BlockTypesController {
 
     private final InteractionService interactionService;

@@ -24,7 +24,7 @@ import net.savantly.nexus.organizations.dom.organization.Organization;
 @DomainService
 @DomainServiceLayout()
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class EmailTargets {
     final RepositoryService repositoryService;
     final EmailTargetRepository repository;

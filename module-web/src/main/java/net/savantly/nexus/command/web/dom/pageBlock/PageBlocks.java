@@ -25,7 +25,7 @@ import net.savantly.nexus.command.web.dom.page.WebPage;
 @Named(NexusCommandWebModule.NAMESPACE + ".PageBlocks")
 @DomainService
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = {@Inject} )
+@lombok.RequiredArgsConstructor
 public class PageBlocks {
 	
     final RepositoryService repositoryService;

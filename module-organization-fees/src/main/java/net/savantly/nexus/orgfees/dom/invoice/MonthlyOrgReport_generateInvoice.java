@@ -14,7 +14,7 @@ import jakarta.persistence.Transient;
 
 @Action(semantics = SemanticsOf.IDEMPOTENT_ARE_YOU_SURE)
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class MonthlyOrgReport_generateInvoice {
 
     final MonthlyOrgReport object;

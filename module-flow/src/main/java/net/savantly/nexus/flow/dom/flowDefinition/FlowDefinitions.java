@@ -26,7 +26,7 @@ import net.savantly.nexus.organizations.dom.organization.Organization;
 @DomainService
 @DomainServiceLayout()
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 @Log4j2
 public class FlowDefinitions {
     final RepositoryService repositoryService;

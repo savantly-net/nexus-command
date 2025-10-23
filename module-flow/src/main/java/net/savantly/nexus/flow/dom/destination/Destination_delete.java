@@ -19,7 +19,7 @@ import net.savantly.nexus.flow.dom.destinationExecution.DestinationExecutionRepo
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @Action(semantics = SemanticsOf.IDEMPOTENT_ARE_YOU_SURE, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
 @ActionLayout(associateWith = "destinations", describedAs = "Deletes this object from the persistent datastore", promptStyle = PromptStyle.DIALOG)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class Destination_delete {
 
     final Destination object;

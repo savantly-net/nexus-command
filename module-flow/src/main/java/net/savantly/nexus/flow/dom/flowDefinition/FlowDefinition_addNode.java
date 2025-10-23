@@ -25,7 +25,7 @@ import net.savantly.nexus.flow.dom.flowNode.FlowNodeDiscoveryService;
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
 @ActionLayout(associateWith = "nodes", describedAs = "Add Node", promptStyle = PromptStyle.DIALOG)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class FlowDefinition_addNode {
 
     final FlowDefinition object;

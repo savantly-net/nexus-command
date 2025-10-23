@@ -26,7 +26,7 @@ import net.savantly.nexus.common.types.Name;
 @DomainService
 @DomainServiceLayout()
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class Personas {
     final JpaSupportService jpaSupportService;
     final PersonaRepository repository;

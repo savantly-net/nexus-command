@@ -12,7 +12,7 @@ import net.savantly.nexus.organizations.dom.organization.Organization;
 
 @Collection
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class Organization_personas {
 
     final Organization organization;

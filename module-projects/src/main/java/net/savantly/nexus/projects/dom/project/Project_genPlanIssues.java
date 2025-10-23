@@ -21,7 +21,7 @@ import net.savantly.nexus.projects.dom.issue.Issue;
 
 @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class Project_genPlanIssues {
 
     final Project project;

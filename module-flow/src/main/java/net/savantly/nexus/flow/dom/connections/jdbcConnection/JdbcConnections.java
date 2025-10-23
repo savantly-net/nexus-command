@@ -23,7 +23,7 @@ import net.savantly.nexus.organizations.dom.organization.Organization;
 @DomainService
 @DomainServiceLayout()
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class JdbcConnections {
     final RepositoryService repositoryService;
     final JdbcConnectionRepository repository;

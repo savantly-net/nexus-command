@@ -30,7 +30,7 @@ import net.savantly.nexus.command.web.NexusCommandWebModule;
 @Named(NexusCommandWebModule.NAMESPACE + ".WebSites")
 @DomainService
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = {@Inject} )
+@lombok.RequiredArgsConstructor
 public class WebSites {
 	
     final RepositoryService repositoryService;

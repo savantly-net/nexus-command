@@ -21,7 +21,7 @@ import net.savantly.nexus.organizations.dom.organizationMember.OrganizationMembe
 @Named(OrganizationsModule.NAMESPACE + ".OrganizationUsers")
 @DomainService
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class DefaultOrganizationUsers implements OrganizationUsers {
 
     final private ApplicationUserRepository applicationUserRepository;

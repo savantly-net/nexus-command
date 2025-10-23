@@ -31,7 +31,7 @@ import net.savantly.nexus.organizations.dom.organizationUser.OrganizationUsers;
 @DomainService
 @DomainServiceLayout()
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class Organizations {
     final RepositoryService repositoryService;
     final JpaSupportService jpaSupportService;

@@ -14,7 +14,7 @@ import net.savantly.nexus.flow.dom.flowExecution.FlowExecutionRepository;
 
 @Collection
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 @Named("FlowDefinition_executions")
 public class FlowDefinition_executions {
 

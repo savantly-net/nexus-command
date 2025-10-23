@@ -16,7 +16,7 @@ import net.savantly.nexus.products.dom.product.Product;
 
 @Action
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class Organization_createSubscription {
 
     final Organization organization;

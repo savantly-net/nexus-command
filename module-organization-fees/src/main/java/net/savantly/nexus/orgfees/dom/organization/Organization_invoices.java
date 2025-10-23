@@ -14,7 +14,7 @@ import net.savantly.nexus.orgfees.dom.invoice.InvoiceRepository;
 
 @Collection
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class Organization_invoices {
 
     final Organization organization;

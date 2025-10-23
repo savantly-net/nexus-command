@@ -23,7 +23,7 @@ import net.savantly.nexus.flow.dom.form.FormSubmissionProxy;
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @Action(semantics = SemanticsOf.NON_IDEMPOTENT, commandPublishing = Publishing.ENABLED, executionPublishing = Publishing.ENABLED)
 @ActionLayout(promptStyle = PromptStyle.DIALOG, associateWith = "payload")
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class FormSubmission_triggerDestination {
 
     final FormSubmission object;

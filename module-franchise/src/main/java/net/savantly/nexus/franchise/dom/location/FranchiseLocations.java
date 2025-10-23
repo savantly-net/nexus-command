@@ -30,7 +30,7 @@ import net.savantly.nexus.franchise.dom.group.FranchiseGroup;
 @Named(FranchiseModule.NAMESPACE + ".FranchiseLocations")
 @DomainService
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class FranchiseLocations {
 
     final RepositoryService repositoryService;

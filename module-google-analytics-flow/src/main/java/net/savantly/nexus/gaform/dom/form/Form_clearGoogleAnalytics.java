@@ -18,7 +18,7 @@ import net.savantly.nexus.flow.dom.form.Form;
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
 @Action(semantics = SemanticsOf.IDEMPOTENT)
 @ActionLayout(named = "Clear GA", promptStyle = PromptStyle.DIALOG, associateWith = "GoogleAnalytics", describedAs = "Clear the Google Analytics connection for this form")
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class Form_clearGoogleAnalytics {
 
     final Form object;

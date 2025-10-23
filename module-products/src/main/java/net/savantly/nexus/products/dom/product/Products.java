@@ -29,7 +29,7 @@ import net.savantly.nexus.products.dom.billing.BillingIntervalType;
     menuBar = DomainServiceLayout.MenuBar.PRIMARY
 )
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class Products {
     final RepositoryService repositoryService;
     final JpaSupportService jpaSupportService;

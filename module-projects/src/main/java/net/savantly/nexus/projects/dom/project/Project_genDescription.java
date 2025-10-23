@@ -17,7 +17,7 @@ import net.savantly.nexus.projects.dom.generator.GeneralGenerator;
 
 @Action
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class Project_genDescription {
 
     final Project project;

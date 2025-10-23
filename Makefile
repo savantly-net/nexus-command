@@ -135,7 +135,7 @@ deploy-core-modules: check-deploy-env
 	export GPG_TTY=$$(tty) && ./mvnw clean deploy -Prelease -pl module-common-types,module-audited-entity,module-encryption,module-security
 
 .PHONY: deploy-release
-deploy-release: ensure-git-repo-pristine check-deploy-env
+deploy-release: ensure-git-repo-pristine
 	@echo "Deploying release version $(VERSION) to Maven Central"
 	./mvnw versions:set -DnewVersion=$(VERSION)
 	./mvnw versions:commit

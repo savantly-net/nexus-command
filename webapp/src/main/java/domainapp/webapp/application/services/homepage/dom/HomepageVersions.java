@@ -20,7 +20,7 @@ import domainapp.webapp.application.ApplicationModule;
 @Named(ApplicationModule.PUBLIC_NAMESPACE + ".HomepageVersions")
 @DomainService
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = {@Inject} )
+@lombok.RequiredArgsConstructor
 public class HomepageVersions {
 	
     final RepositoryService repositoryService;

@@ -34,7 +34,7 @@ import net.savantly.nexus.command.web.dom.blockType.BlockType;
 @Named(NexusCommandWebModule.NAMESPACE + ".Blocks")
 @DomainService
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = {@Inject} )
+@lombok.RequiredArgsConstructor
 public class Blocks {
 	
     final RepositoryService repositoryService;

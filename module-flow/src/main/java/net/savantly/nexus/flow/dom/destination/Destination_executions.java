@@ -15,7 +15,7 @@ import net.savantly.nexus.flow.dom.destinationExecution.DestinationExecutionRepo
 
 @Collection
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 @Named("Destination_executions")
 public class Destination_executions {
 

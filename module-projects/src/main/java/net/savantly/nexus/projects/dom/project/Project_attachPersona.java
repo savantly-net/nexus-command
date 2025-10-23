@@ -19,7 +19,7 @@ import net.savantly.nexus.projects.dom.projectPersona.ProjectPersonaDetailsDTO;
 @Log4j2
 @Action
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = { @Inject })
+@lombok.RequiredArgsConstructor
 public class Project_attachPersona {
 
     final Project project;

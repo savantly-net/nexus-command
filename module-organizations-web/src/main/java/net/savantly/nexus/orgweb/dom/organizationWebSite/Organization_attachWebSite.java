@@ -19,7 +19,7 @@ import net.savantly.nexus.organizations.dom.organization.Organization;
 
 @Action
 @jakarta.annotation.Priority(PriorityPrecedence.EARLY)
-@lombok.RequiredArgsConstructor(onConstructor_ = {@Inject} )
+@lombok.RequiredArgsConstructor
 public class Organization_attachWebSite {
 
     final Organization organization;
