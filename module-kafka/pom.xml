@@ -12,6 +12,7 @@
 
     <artifactId>kafka-module</artifactId>
     <name>Nexus Command - Kafka Module</name>
+    <description>Kafka integration module for Nexus Command platform</description>
 
     <build>
         <resources>

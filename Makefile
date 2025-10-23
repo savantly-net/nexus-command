@@ -104,6 +104,53 @@ tag-version:
 	git push origin $(TAGGED_VERSION)
 	@echo "Tag $(TAGGED_VERSION) created and pushed to origin"
 
+.PHONY: setup-gpg
+setup-gpg:
+	@echo "Setting up GPG for Maven Central deployment"
+	./setup-gpg.sh
+
+.PHONY: check-deploy-env
+check-deploy-env:
+	@echo "Checking deployment environment..."
+	$(call setup_env, .env)
+	@if [ -z "$$GPG_KEY_ID" ]; then echo "❌ GPG_KEY_ID not set"; exit 1; fi
+	@if [ -z "$$GPG_PASSPHRASE" ]; then echo "❌ GPG_PASSPHRASE not set"; exit 1; fi
+	@echo "✅ All required environment variables are set"
+
+.PHONY: deploy-snapshot
+deploy-snapshot: check-deploy-env
+	@echo "Deploying snapshot version to Maven Central"
+	export GPG_TTY=$$(tty) && ./mvnw clean deploy -Prelease
+
+.PHONY: deploy-modules
+deploy-modules: check-deploy-env
+	@echo "Deploying specific modules to Maven Central"
+	@echo "Usage: make deploy-modules MODULES='module-common-types,module-encryption'"
+	@if [ -z "$(MODULES)" ]; then echo "❌ MODULES variable not set. Usage: make deploy-modules MODULES='module1,module2'"; exit 1; fi
+	export GPG_TTY=$$(tty) && ./mvnw clean deploy -Prelease -pl $(MODULES)
+
+.PHONY: deploy-core-modules
+deploy-core-modules: check-deploy-env
+	@echo "Deploying core modules to Maven Central"
+	export GPG_TTY=$$(tty) && ./mvnw clean deploy -Prelease -pl module-common-types,module-audited-entity,module-encryption,module-security
+
+.PHONY: deploy-release
+deploy-release: ensure-git-repo-pristine check-deploy-env
+	@echo "Deploying release version $(VERSION) to Maven Central"
+	./mvnw versions:set -DnewVersion=$(VERSION)
+	./mvnw versions:commit
+	export GPG_TTY=$$(tty) && ./mvnw clean deploy -Prelease
+	git add * || true
+	git commit -m "Released $(VERSION) to Maven Central"
+	git tag -a v$(VERSION) -m "Release $(VERSION)"
+	git push origin v$(VERSION)
+	./mvnw versions:set -DnewVersion=$(NEXT_VERSION)-SNAPSHOT
+	./mvnw versions:commit
+	git add * || true
+	git commit -m "Prepared for next development iteration $(NEXT_VERSION)-SNAPSHOT"
+	git push
+	@echo "Release $(VERSION) deployed to Maven Central and tagged"
+
 .PHONY: release
 release: ensure-git-repo-pristine tag-version bump-version 
 	git push
