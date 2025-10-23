@@ -4,6 +4,9 @@
 
 toc::[]
 
+https://savantly.net  
+
+
 == TLDR;
 ```shell
 docker run -p 8080:8080 savantly/nexus-command
@@ -43,6 +46,9 @@ link:https://customer-xaod80vucf91n11z.cloudflarestream.com/890f241bc493cf7278ec
 
 You can use the default webapp which includes all the modules, or you can create your own webapp and include any modules you need.  
 The modules are maintained in this repo, and published to Maven Central.  
+
+https://central.sonatype.com/namespace/dev.savantly.nexus
+
 
 image::docs/customization.png[Customization]
 
