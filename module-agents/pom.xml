@@ -7,7 +7,7 @@
     <parent>
         <artifactId>nexus-command</artifactId>
         <groupId>dev.savantly.nexus</groupId>
-        <version>3.4.0</version>
+        <version>3.4.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>agents-module</artifactId>
