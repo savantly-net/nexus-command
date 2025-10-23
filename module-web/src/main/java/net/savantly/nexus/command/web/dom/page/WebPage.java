@@ -126,7 +126,6 @@ public class WebPage implements Comparable<WebPage>  {
     private OpenGraphData openGraphData = new OpenGraphData();
 
 
-    @Property
     @Collection
     @Getter @Setter
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "webPage")

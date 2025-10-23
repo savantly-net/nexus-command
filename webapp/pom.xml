@@ -6,7 +6,7 @@
 
     <parent>
         <artifactId>nexus-command</artifactId>
-        <groupId>net.savantly</groupId>
+        <groupId>dev.savantly</groupId>
         <version>3.4.0-SNAPSHOT</version>
     </parent>
 
@@ -68,6 +68,8 @@
 
     <dependencies>
 
+        <!-- Experimental -->
+
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>web-module</artifactId>
@@ -82,6 +84,8 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>organizations-web-module</artifactId>
         </dependency>
+
+        <!-- end -->
 
         <dependency>
             <groupId>${project.groupId}</groupId>

@@ -118,7 +118,7 @@ check-deploy-env:
 	@echo "✅ All required environment variables are set"
 
 .PHONY: deploy-snapshot
-deploy-snapshot: check-deploy-env
+deploy-snapshot: 
 	@echo "Deploying snapshot version to Maven Central"
 	export GPG_TTY=$$(tty) && ./mvnw clean deploy -Prelease
 

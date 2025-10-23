@@ -6,7 +6,7 @@
 
     <parent>
         <artifactId>nexus-command</artifactId>
-        <groupId>net.savantly</groupId>
+        <groupId>dev.savantly</groupId>
         <version>3.4.0-SNAPSHOT</version>
     </parent>
 
