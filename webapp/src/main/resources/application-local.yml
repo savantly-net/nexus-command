@@ -1,0 +1,10 @@
+nexus:
+  security:
+    oauth2:
+      roles:
+        claim: $.resource_access.savantly-nexus.roles # the jwt claim to get the roles from
+        mappings: # map oauth2 roles to application roles
+          admin: causeway-ext-secman-admin
+          stellar-service-brands: application-user
+      login:
+        scope: "openid roles"
