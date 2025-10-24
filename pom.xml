@@ -13,7 +13,7 @@
 
     <artifactId>nexus-command</artifactId>
     <groupId>dev.savantly.nexus</groupId>
-    <version>3.4.3</version>
+    <version>3.4.4-SNAPSHOT</version>
 
     <name>Nexus Command - Parent</name>
     <description>Multi-tenant business data management platform built on Apache Causeway framework</description>
