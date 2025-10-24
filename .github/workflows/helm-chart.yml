@@ -1,0 +1,125 @@
+name: Helm Chart OCI Deployment
+
+on:
+  push:
+    tags:
+      - "*"
+
+# Cancel concurrent runs
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CHART_PATH: helm/nexus-command
+  OCI_REGISTRY: oci://registry-1.docker.io/savantly/nexus-command-helm
+
+jobs:
+  helm-oci-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: "v3.14.0" # Ensure version supports native OCI functionality (3.8.0+)
+
+      - name: Login to Docker Hub registry
+        run: |
+          if [ -z "${{ secrets.DOCKERHUB_USERNAME }}" ] || [ -z "${{ secrets.DOCKERHUB_TOKEN }}" ]; then
+            echo "Error: DOCKERHUB_USERNAME or DOCKERHUB_TOKEN secrets are not configured"
+            exit 1
+          fi
+          echo "Authenticating with Docker Hub registry..."
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | helm registry login registry-1.docker.io -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+          echo "Successfully authenticated with registry-1.docker.io"
+
+      - name: Package Helm chart
+        run: |
+          echo "Packaging Helm chart from ${{ env.CHART_PATH }}..."
+
+          # Verify chart directory exists
+          if [ ! -d "${{ env.CHART_PATH }}" ]; then
+            echo "Error: Chart directory ${{ env.CHART_PATH }} not found"
+            exit 1
+          fi
+
+          # Verify Chart.yaml exists
+          if [ ! -f "${{ env.CHART_PATH }}/Chart.yaml" ]; then
+            echo "Error: Chart.yaml not found in ${{ env.CHART_PATH }}"
+            exit 1
+          fi
+
+          # Package the chart
+          helm package ${{ env.CHART_PATH }}
+
+          # Verify package was created
+          CHART_NAME=$(helm show chart ${{ env.CHART_PATH }} | grep '^name:' | awk '{print $2}')
+          CHART_VERSION=$(helm show chart ${{ env.CHART_PATH }} | grep '^version:' | awk '{print $2}')
+          PACKAGE_FILE="${CHART_NAME}-${CHART_VERSION}.tgz"
+
+          if [ ! -f "$PACKAGE_FILE" ]; then
+            echo "Error: Chart package $PACKAGE_FILE was not created"
+            exit 1
+          fi
+
+          echo "Successfully packaged chart: $PACKAGE_FILE"
+          ls -la *.tgz
+
+      - name: Push chart to OCI registry
+        run: |
+          echo "Pushing chart to OCI registry..."
+          
+          # Extract chart metadata
+          CHART_VERSION=$(helm show chart ${{ env.CHART_PATH }} | grep '^version:' | awk '{print $2}')
+          CHART_NAME=$(helm show chart ${{ env.CHART_PATH }} | grep '^name:' | awk '{print $2}')
+          PACKAGE_FILE="${CHART_NAME}-${CHART_VERSION}.tgz"
+          
+          # Verify package file exists before pushing
+          if [ ! -f "$PACKAGE_FILE" ]; then
+            echo "Error: Chart package $PACKAGE_FILE not found for pushing"
+            exit 1
+          fi
+          
+          echo "Chart Name: $CHART_NAME"
+          echo "Chart Version: $CHART_VERSION"
+          echo "Package File: $PACKAGE_FILE"
+          echo "Target Registry: ${{ env.OCI_REGISTRY }}"
+          
+          # Push chart to OCI registry with error handling
+          if helm push "$PACKAGE_FILE" "${{ env.OCI_REGISTRY }}"; then
+            echo "Successfully pushed $PACKAGE_FILE to ${{ env.OCI_REGISTRY }}"
+            echo "Chart is now available at: ${{ env.OCI_REGISTRY }}:${CHART_VERSION}"
+          else
+            echo "Error: Failed to push chart to OCI registry"
+            echo "Registry: ${{ env.OCI_REGISTRY }}"
+            echo "Package: $PACKAGE_FILE"
+            exit 1
+          fi
+
+      - name: Logout from registry and cleanup
+        if: always()
+        run: |
+          echo "Cleaning up registry authentication and temporary files..."
+          
+          # Logout from registry
+          if helm registry logout registry-1.docker.io; then
+            echo "Successfully logged out from registry-1.docker.io"
+          else
+            echo "Warning: Failed to logout from registry (may already be logged out)"
+          fi
+          
+          # Clean up temporary chart package files
+          if ls *.tgz 1> /dev/null 2>&1; then
+            echo "Cleaning up chart package files:"
+            ls -la *.tgz
+            rm -f *.tgz
+            echo "Chart package files cleaned up"
+          else
+            echo "No chart package files to clean up"
+          fi
+          
+          echo "Cleanup completed"
