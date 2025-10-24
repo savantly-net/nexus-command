@@ -53,6 +53,9 @@ jobs:
             exit 1
           fi
 
+          # Update the chart dependencies
+          helm dependency update ${{ env.CHART_PATH }}
+
           # Package the chart
           helm package ${{ env.CHART_PATH }}
 
