@@ -85,7 +85,7 @@ ensure-git-repo-pristine:
 .PHONY: bump-version
 bump-version:
 	@echo "Bumping version to $(NEXT_VERSION)"
-	sed "s/^version: .*/version: $NEXT_VERSION/" Chart.yaml
+	sed -i '' "s/^version: .*/version: $(NEXT_VERSION)/" ./helm/nexus-command/Chart.yaml
 	./mvnw versions:set -DnewVersion=$(NEXT_VERSION)-SNAPSHOT
 	./mvnw versions:commit
 	git add * || true
