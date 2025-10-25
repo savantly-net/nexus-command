@@ -12,7 +12,7 @@ concurrency:
 
 env:
   CHART_PATH: helm/nexus-command
-  OCI_REGISTRY: oci://registry-1.docker.io/savantly/nexus-command-helm
+  OCI_REGISTRY: oci://registry-1.docker.io/savantly
 
 jobs:
   helm-oci-deploy:
