@@ -2,7 +2,7 @@ apiVersion: v2
 name: nexus-cmd
 description: A Helm chart for Nexus Command - Multi-tenant business data management platform
 type: application
-version: 3.4.16
+version: 3.4.7
 appVersion: "latest"
 
 dependencies:

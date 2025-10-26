@@ -7,7 +7,7 @@
     <parent>
         <artifactId>nexus-command</artifactId>
         <groupId>dev.savantly.nexus</groupId>
-        <version>3.4.6</version>
+        <version>3.4.7-SNAPSHOT</version>
     </parent>
 
     <artifactId>nexus-command-webapp</artifactId>
