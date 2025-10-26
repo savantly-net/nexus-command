@@ -7,7 +7,7 @@
     <parent>
         <artifactId>nexus-command</artifactId>
         <groupId>dev.savantly.nexus</groupId>
-        <version>3.4.6-SNAPSHOT</version>
+        <version>3.4.6</version>
     </parent>
 
     <artifactId>nexus-audited-entity-module</artifactId>
