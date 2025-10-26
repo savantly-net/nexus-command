@@ -45,120 +45,52 @@ spec:
               containerPort: {{ .Values.service.port }}
               protocol: TCP
           env:
-            # Database configuration
-            # Spring profiles configuration
+            # Spring profiles configuration - includes k8s profile for ConfigMap-based configuration
             - name: SPRING_PROFILES_ACTIVE
-              value: "{{ if .Values.postgresql.enabled }}POSTGRESQL{{ else if .Values.externalDatabase.enabled }}{{ upper .Values.externalDatabase.type }}{{ else }}H2{{ end }}{{ if .Values.oidc.enabled }},OAUTH2{{ end }}"
+              value: "k8s,POSTGRESQL{{ if .Values.applicationConfig.nexus.security.oauth2.enabled }},OAUTH2{{ end }}"
+            # PROTOTYPING mode is for development
+            - name: PROTOTYPING
+              value: "false"
+            # Additional environment variables from values
+            {{- range $key, $value := .Values.extraEnvVars }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
+            {{- end }}
             
-            {{- if .Values.postgresql.enabled }}
-            - name: SPRING_DATASOURCE_URL
-              value: "jdbc:postgresql://{{ include "nexus-command.fullname" . }}-postgresql:5432/{{ .Values.postgresql.auth.database }}"
-            - name: SPRING_DATASOURCE_USERNAME
-              value: "{{ .Values.postgresql.auth.username }}"
-            - name: SPRING_DATASOURCE_PASSWORD
+            # Additional environment variables from secrets
+            {{- range .Values.extraEnvVarsSecret }}
+            - name: {{ .name }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "nexus-command.fullname" . }}-postgresql
-                  key: password
-            {{- else if .Values.externalDatabase.enabled }}
-            - name: SPRING_DATASOURCE_URL
-              value: "jdbc:{{ .Values.externalDatabase.type }}://{{ .Values.externalDatabase.host }}:{{ .Values.externalDatabase.port }}/{{ .Values.externalDatabase.database }}{{ if .Values.externalDatabase.jdbcParams }}?{{ .Values.externalDatabase.jdbcParams }}{{ end }}"
-            - name: SPRING_DATASOURCE_USERNAME
-              value: "{{ .Values.externalDatabase.username }}"
-            {{- if .Values.externalDatabase.existingSecret }}
+                  name: {{ .secretName }}
+                  key: {{ .secretKey }}
+            {{- end }}
+            
+            # Additional environment variables from config maps
+            {{- range .Values.extraEnvVarsConfigMap }}
+            - name: {{ .name }}
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .configMapName }}
+                  key: {{ .configMapKey }}
+            {{- end }}
+
+          # Handle external database existing secret for password
+          {{- if and (not .Values.postgresql.enabled) .Values.externalDatabase.existingSecret }}
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.externalDatabase.existingSecret }}
                   key: {{ .Values.externalDatabase.existingSecretPasswordKey }}
-            {{- else }}
-            - name: SPRING_DATASOURCE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "nexus-command.fullname" . }}-database
-                  key: password
-            {{- end }}
-            {{- end }}
-            
-            # OIDC configuration
-            {{- if .Values.oidc.enabled }}
-            - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID
-              {{- if .Values.oidc.existingSecret }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.oidc.existingSecret }}
-                  key: {{ .Values.oidc.existingSecretClientIdKey }}
-              {{- else }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "nexus-command.fullname" . }}-oidc
-                  key: client-id
-              {{- end }}
-            - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET
-              {{- if .Values.oidc.existingSecret }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.oidc.existingSecret }}
-                  key: {{ .Values.oidc.existingSecretClientSecretKey }}
-              {{- else }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "nexus-command.fullname" . }}-oidc
-                  key: client-secret
-              {{- end }}
-            - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_SCOPE
-              value: "{{ .Values.oidc.scope }}"
-            - name: SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI
-              value: "{{ .Values.oidc.issuerUri }}"
-            - name: SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_USER_NAME_ATTRIBUTE
-              value: "{{ .Values.oidc.usernameAttribute }}"
-            - name: NEXUS_OIDC_EMAIL_ATTRIBUTE
-              value: "{{ .Values.oidc.emailAttribute }}"
-            - name: NEXUS_OIDC_FIRST_NAME_ATTRIBUTE
-              value: "{{ .Values.oidc.firstNameAttribute }}"
-            - name: NEXUS_OIDC_LAST_NAME_ATTRIBUTE
-              value: "{{ .Values.oidc.lastNameAttribute }}"
-            {{- end }}
-            
-            # Application module configuration
-            - name: NEXUS_MODULES_ORGANIZATIONS_ENABLED
-              value: "{{ .Values.application.modules.organizations.enabled }}"
-            - name: NEXUS_MODULES_PROJECTS_ENABLED
-              value: "{{ .Values.application.modules.projects.enabled }}"
-            - name: NEXUS_MODULES_FRANCHISE_ENABLED
-              value: "{{ .Values.application.modules.franchise.enabled }}"
-            - name: NEXUS_MODULES_WEB_ENABLED
-              value: "{{ .Values.application.modules.web.enabled }}"
-            - name: NEXUS_MODULES_SECURITY_ENABLED
-              value: "{{ .Values.application.modules.security.enabled }}"
-            - name: NEXUS_MODULES_AI_ENABLED
-              value: "{{ .Values.application.modules.ai.enabled }}"
-            - name: NEXUS_MODULES_FLOW_ENABLED
-              value: "{{ .Values.application.modules.flow.enabled }}"
-            - name: NEXUS_MODULES_KAFKA_ENABLED
-              value: "{{ .Values.application.modules.kafka.enabled }}"
-            - name: NEXUS_MODULES_WEBHOOKS_ENABLED
-              value: "{{ .Values.application.modules.webhooks.enabled }}"
-            
-            # Database configuration
-            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
-              value: "{{ if .Values.application.database.schemaAutoCreate }}create-drop{{ else }}validate{{ end }}"
-            - name: SPRING_JPA_SHOW_SQL
-              value: "{{ .Values.application.database.showSql }}"
-            
-            # Logging configuration
-            - name: LOGGING_LEVEL_ROOT
-              value: "{{ .Values.application.logging.level.root }}"
-            - name: LOGGING_LEVEL_NET_SAVANTLY_NEXUS
-              value: "{{ .Values.application.logging.level.nexus }}"
-            - name: LOGGING_LEVEL_SQL
-              value: "{{ .Values.application.logging.level.sql }}"
-            
-            # Encryption configuration
-            - name: NEXUS_ENCRYPTION_ENABLED
-              value: "{{ .Values.application.encryption.enabled }}"
-            - name: NEXUS_ENCRYPTION_ALGORITHM
-              value: "{{ .Values.application.encryption.algorithm }}"
+          {{- end }}
+          
+          # Load all environment variables from the unified Secret
+          {{- if .Values.secrets }}
+          envFrom:
+            - secretRef:
+                name: {{ include "nexus-command.fullname" . }}-env
+          {{- end }}
+          
           {{- with .Values.livenessProbe }}
           livenessProbe:
             {{- toYaml . | nindent 12 }}
@@ -175,14 +107,28 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.volumeMounts }}
           volumeMounts:
+            # Mount ConfigMap containing application-k8s.yml
+            {{- if .Values.applicationConfig }}
+            - name: config
+              mountPath: /app/config
+              readOnly: true
+            {{- end }}
+            # Additional volume mounts from values
+            {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
-          {{- end }}
-      {{- with .Values.volumes }}
+            {{- end }}
       volumes:
+        # ConfigMap volume for application configuration
+        {{- if .Values.applicationConfig }}
+        - name: config
+          configMap:
+            name: {{ include "nexus-command.fullname" . }}-config
+        {{- end }}
+        # Additional volumes from values
+        {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

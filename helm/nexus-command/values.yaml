@@ -44,7 +44,7 @@ podSecurityContext:
 securityContext:
   capabilities:
     drop:
-    - ALL
+      - ALL
   readOnlyRootFilesystem: false
   runAsNonRoot: true
   runAsUser: 1000
@@ -146,7 +146,11 @@ tolerations: []
 
 affinity: {}
 
-# PostgreSQL configuration (Bitnami chart)
+# Database Configuration
+# Choose between internal PostgreSQL (via Bitnami chart) or external PostgreSQL
+
+# Internal PostgreSQL configuration (Bitnami chart)
+# Set postgresql.enabled=true to deploy PostgreSQL as part of this chart
 postgresql:
   enabled: true
   auth:
@@ -167,75 +171,456 @@ postgresql:
         memory: 512Mi
         cpu: 500m
 
-# External database configuration (when postgresql.enabled is false)
+# External PostgreSQL configuration
+# Set postgresql.enabled=false and configure this section to use an external PostgreSQL server
 externalDatabase:
-  enabled: false
-  type: postgresql  # postgresql, sqlserver, h2
+  # Database type - currently only postgresql is supported
+  type: postgresql
+  # External database server hostname or IP
   host: ""
+  # External database server port
   port: 5432
+  # Database name to connect to
   database: "nexus"
+  # Database username (non-sensitive, can be set here)
   username: "nexus"
+  # Database password (sensitive, should be set in secrets.database.password)
+  # Leave empty here and set in secrets section
   password: ""
-  # Use existing secret for password
+  # Additional JDBC parameters (optional)
+  # Example: "?sslmode=require&connectTimeout=30"
+  jdbcParams: ""
+  # Use existing secret for database password (optional)
+  # If specified, this takes precedence over secrets.database.password
   existingSecret: ""
   existingSecretPasswordKey: "password"
-  # Additional JDBC parameters
-  jdbcParams: ""
 
-# OIDC authentication configuration
-oidc:
-  enabled: false
-  issuerUri: ""
-  clientId: ""
-  clientSecret: ""
-  # Use existing secret for client credentials
-  existingSecret: ""
-  existingSecretClientIdKey: "client-id"
-  existingSecretClientSecretKey: "client-secret"
-  # OIDC configuration
-  scope: "openid profile email"
-  usernameAttribute: "preferred_username"
-  emailAttribute: "email"
-  firstNameAttribute: "given_name"
-  lastNameAttribute: "family_name"
+# Database Configuration Examples:
+#
+# Example 1: Use internal PostgreSQL (default)
+# postgresql:
+#   enabled: true
+#   auth:
+#     username: "nexus"
+#     password: "my-secure-password"
+#     database: "nexus"
+#
+# Example 2: Use external PostgreSQL
+# postgresql:
+#   enabled: false
+# externalDatabase:
+#   host: "my-postgres-server.example.com"
+#   port: 5432
+#   database: "nexus"
+#   username: "nexus"
+#   jdbcParams: "?sslmode=require"
+# secrets:
+#   database:
+#     password: "my-external-db-password"
+#
+# Example 3: Use external PostgreSQL with existing secret
+# postgresql:
+#   enabled: false
+# externalDatabase:
+#   host: "my-postgres-server.example.com"
+#   database: "nexus"
+#   username: "nexus"
+#   existingSecret: "my-db-secret"
+#   existingSecretPasswordKey: "password"
 
-# Application configuration
-application:
-  # Module configuration
-  modules:
+# Application Configuration (ConfigMap)
+# This section defines the application properties that will be mounted as application-k8s.yml
+# These properties use Spring Boot YAML format and support property interpolation with ${VAR} syntax
+# Sensitive values should reference environment variables from the secrets section below
+#
+# Property Interpolation Examples:
+# - Basic variable: "${VARIABLE_NAME}"
+# - With default value: "${VARIABLE_NAME:default-value}"
+# - Nested property: "${spring.application.name}"
+# - Number values: "${SERVER_PORT:8080}"
+# - Boolean values: "${FEATURE_ENABLED:false}"
+#
+# All sensitive values (passwords, API keys, etc.) should use environment variable interpolation
+# and be defined in the secrets section below to maintain security best practices.
+applicationConfig:
+  # Nexus application modules and features
+  nexus:
+    seed:
+      enabled: false
+      admin:
+        enabled: false
+        username: admin
+        password: admin
+      user:
+        enabled: false
+        username: user
+        password: user
+    # Module configuration - enable/disable application modules
+    products:
+      enabled: false
     organizations:
       enabled: true
     projects:
+      enabled: false
+    flow:
       enabled: true
     franchise:
       enabled: true
-    web:
-      enabled: true
-    security:
+    org-fees:
+      enabled: false
+    audited-entity:
       enabled: true
     ai:
       enabled: true
-    flow:
+    agents:
       enabled: true
     kafka:
-      enabled: false
+      enabled: true
     webhooks:
       enabled: true
-  
-  # Database configuration
+    web:
+      enabled: false
+    org-web:
+      enabled: false
+    google:
+      analytics:
+        enabled: true
+        flow:
+          enabled: true
+
+    # Security configuration with comprehensive interpolation examples
+    security:
+      debug: "${NEXUS_SECURITY_DEBUG:false}"
+      oauth2:
+        enabled: "${NEXUS_SECURITY_OAUTH2_ENABLED:false}"
+        roles:
+          sticky:
+            - application-user
+          claim: "${NEXUS_SECURITY_OAUTH2_ROLES_CLAIM:$.roles}"
+          mappings:
+            admin: "causeway-ext-secman-admin"
+            user: "application-user"
+        login:
+          enabled: "${NEXUS_SECURITY_OAUTH2_LOGIN_ENABLED:false}"
+          name: "${NEXUS_SECURITY_OAUTH2_LOGIN_NAME:OAuth2}"
+          # Sensitive values use environment variable interpolation
+          client-id: "${OAUTH2_CLIENT_ID}"
+          client-secret: "${OAUTH2_CLIENT_SECRET}"
+          scope: "${OAUTH2_CLIENT_SCOPE:openid profile email}"
+          username-attribute: "${OAUTH2_CLIENT_USERNAME_ATTRIBUTE:preferred_username}"
+          issuer-uri: "${OAUTH2_ISSUER_URI}"
+          authorization-uri: "${OAUTH2_AUTHORIZATION_URI}"
+          token-uri: "${OAUTH2_TOKEN_URI}"
+          user-info-uri: "${OAUTH2_USER_INFO_URI}"
+          jwk-set-uri: "${OAUTH2_JWK_SET_URI}"
+          registration-id: "${OAUTH2_CLIENT_REGISTRATION_ID:oauth2}"
+
+    # Encryption configuration
+    encryption:
+      secret: "${NEXUS_ENCRYPTION_SECRET}"
+
+
+    # Each module may have custom config
+    modules: {}
+
+  # Apache Causeway framework configuration
+  causeway:
+    applib:
+      annotation:
+        action:
+          explicit: true
+          command-publishing: all
+          execution-publishing: all
+        #action-layout:
+        #  css-class:
+        #    patterns:
+        #      delete.*:btn-danger,
+        #      discard.*:btn-warning,
+        #      remove.*:btn-warning
+        property:
+          command-publishing: all
+          execution-publishing: all
+        domain-object:
+          editing: false
+          entity-change-publishing: all
+    core:
+      meta-model:
+        introspector:
+          lock-after-full-introspection: true
+        validator:
+          allow-deprecated: false
+          no-params-only: true
+          explicit-object-type: true
+      runtime-services:
+        email:
+          sender:
+            address: ${spring.mail.from}
+        translation:
+          po:
+            mode: disabled
+    persistence:
+      schema:
+        auto-create-schemas:
+        - public
+        - agents
+        - products
+        - projects
+        - flow
+        - nc_web
+        - organizations
+        - orgweb
+        - franchise
+        - webhooks
+        - kafka
+        - google_analytics
+        - google_analytics_flow
+        - causewayExtSecman
+        - causewayExtAuditTrail
+        - causewayExtCommandLog
+        - causewayExtExecutionLog
+        - causewayExtExecutionOutbox
+        - causewayExtSessionLog
+    extensions:
+      secman:
+        seed:
+          admin:
+            user-name: "secman-admin"
+            password: "pass"
+            role-name: "causeway-ext-secman-admin"
+            namespace-permissions:
+              sticky: 
+              - public  
+  #            additional: ...
+          regular-user:
+            role-name: "causeway-ext-secman-user"
+            namespace-permissions:
+              sticky:
+              - public
+        user-registration:
+          initial-roles:
+            - application-user
+            - causeway-ext-secman-user
+        permissions-evaluation-policy: allow_beats_veto
+        user-menu-me-action-policy: hide
+    viewer:
+      common:
+        application:
+          about: Nexus Command
+          brand-logo-signin: images/favicon.png
+          brand-logo-header: images/favicon.png
+          favicon-url: images/favicon.png
+          menubars-layout-file: menubars.layout.xml
+          name: Nexus Command
+        credit:
+          - url:  https://savantly.net
+            image: images/favicon.png
+            name: Savantly LLC
+      wicket:
+        css: css/application.css
+        js: scripts/application.js
+        bookmarked-pages:
+          show-chooser: true
+          show-drop-down-on-footer: true
+        max-title-length-in-standalone-tables: 0
+        max-title-length-in-parented-tables: 0
+        themes:
+          show-chooser: true
+        table:
+          decoration:
+            data-tables-net:
+              options: "info: false, pagingType: 'numbers'"
+
+  # Spring Boot configuration
+  spring:
+    banner:
+      location: "banner.txt"
+
+    # Application name and configuration
+    application:
+      name: "${SPRING_APPLICATION_NAME:Nexus Command}"
+
+    # Database configuration - uses environment variable interpolation for sensitive values
+    datasource:
+      platform: "${SPRING_DATASOURCE_PLATFORM:postgresql}"
+      url: "${SPRING_DATASOURCE_URL}"
+      username: "${SPRING_DATASOURCE_USERNAME}"
+      password: "${SPRING_DATASOURCE_PASSWORD}"
+      # Connection pool settings with defaults
+      hikari:
+        maximum-pool-size: "${SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE:20}"
+        minimum-idle: "${SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE:5}"
+        connection-timeout: "${SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT:30000}"
+
+    # Mail configuration - uses environment variable interpolation for sensitive values
+    mail:
+      host: "${SPRING_MAIL_HOST:localhost}"
+      port: "${SPRING_MAIL_PORT:25}"
+      username: "${SPRING_MAIL_USERNAME:}"
+      password: "${SPRING_MAIL_PASSWORD:}"
+      from: "${SPRING_MAIL_FROM:noreply@example.com}"
+      # Mail properties with interpolation and defaults
+      properties:
+        mail.smtp.auth: "${SPRING_MAIL_SMTP_AUTH:true}"
+        mail.smtp.starttls.enable: "${SPRING_MAIL_SMTP_STARTTLS_ENABLE:false}"
+        mail.smtp.ssl.enable: "${SPRING_MAIL_SMTP_SSL_ENABLE:false}"
+
+    # JPA configuration with interpolation examples
+    jpa:
+      hibernate:
+        ddl-auto: "${SPRING_JPA_HIBERNATE_DDL_AUTO:update}"
+      show-sql: "${SPRING_JPA_SHOW_SQL:false}"
+      # Database platform detection
+      database-platform: "${SPRING_JPA_DATABASE_PLATFORM:}"
+
+    # Quartz scheduler configuration
+    quartz:
+      job-store-type: "${SPRING_QUARTZ_JOB_STORE_TYPE:memory}"
+      # Quartz properties with defaults
+      properties:
+        org.quartz.scheduler.instanceName: "${QUARTZ_SCHEDULER_INSTANCE_NAME:NexusScheduler}"
+        org.quartz.scheduler.instanceId: "${QUARTZ_SCHEDULER_INSTANCE_ID:AUTO}"
+
+  # EclipseLink configuration
+  eclipselink:
+    weaving: false
+    deploy-on-startup: true
+    ddl-generation: "create-or-extend-tables"
+    ddl-generation.output-mode: "both"
+    create-ddl-jdbc-file-name: "create-db-schema.sql"
+    application-location: "."
+    jpa.upper-case-column-names: false
+    logging.level: "WARNING"
+
+  # RESTEasy configuration
+  resteasy:
+    jaxrs:
+      app:
+        registration: beans
+      defaultPath: "/restful"
+
+  # Server configuration with interpolation examples
+  server:
+    port: "${SERVER_PORT:8080}"
+    max-http-header-size: "${SERVER_MAX_HTTP_HEADER_SIZE:16KB}"
+    # Servlet configuration
+    servlet:
+      context-path: "${SERVER_SERVLET_CONTEXT_PATH:}"
+      session:
+        timeout: "${SERVER_SERVLET_SESSION_TIMEOUT:30m}"
+    # Compression settings
+    compression:
+      enabled: "${SERVER_COMPRESSION_ENABLED:true}"
+      mime-types: "${SERVER_COMPRESSION_MIME_TYPES:text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json}"
+
+  # Management endpoints with interpolation
+  management:
+    endpoint:
+      health:
+        enabled: "${MANAGEMENT_ENDPOINT_HEALTH_ENABLED:true}"
+        show-details: "${MANAGEMENT_ENDPOINT_HEALTH_SHOW_DETAILS:when-authorized}"
+      metrics:
+        enabled: "${MANAGEMENT_ENDPOINT_METRICS_ENABLED:true}"
+      info:
+        enabled: "${MANAGEMENT_ENDPOINT_INFO_ENABLED:true}"
+    # Expose endpoints
+    endpoints:
+      web:
+        exposure:
+          include: "${MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE:health,info,metrics}"
+    # Security for actuator endpoints
+    security:
+      enabled: "${MANAGEMENT_SECURITY_ENABLED:false}"
+
+# Secrets Configuration
+# This section defines sensitive configuration values that will be stored in a Kubernetes Secret
+# and made available as environment variables to the application container
+#
+# These values correspond to the ${VAR} interpolation references in applicationConfig above
+# All sensitive data should be defined here and referenced via environment variables
+secrets:
+  # Database connection secrets
+  # These values are automatically configured based on postgresql.enabled setting
+  # For internal PostgreSQL (postgresql.enabled=true): Uses Bitnami chart credentials
+  # For external PostgreSQL (postgresql.enabled=false): Configure these values for your external database
   database:
-    profile: "POSTGRESQL"  # POSTGRESQL, SQLSERVER, H2
-    schemaAutoCreate: true
-    showSql: false
-  
-  # Logging configuration
-  logging:
-    level:
-      root: "INFO"
-      nexus: "INFO"
-      sql: "WARN"
-  
-  # Encryption configuration
+    # Database URL - automatically generated based on configuration
+    # Internal: "jdbc:postgresql://{{ release-name }}-postgresql:5432/{{ database-name }}"
+    # External: "jdbc:postgresql://{{ externalDatabase.host }}:{{ externalDatabase.port }}/{{ externalDatabase.database }}"
+    url: "" # Leave empty for auto-generation, or override with custom URL
+
+    # Database username - uses postgresql.auth.username or externalDatabase.username
+    username: "" # Leave empty for auto-generation, or override with custom username
+
+    # Database password - REQUIRED for external databases
+    # For internal PostgreSQL: uses postgresql.auth.password
+    # For external PostgreSQL: set your database password here
+    password: "" # Set this for external databases
+
+  # OAuth2/OIDC authentication secrets
+  oauth2:
+    clientId: ""
+    clientSecret: ""
+    issuerUri: ""
+    authorizationUri: ""
+    tokenUri: ""
+    userInfoUri: ""
+    jwkSetUri: ""
+
+  # Application encryption secret (must be 32 characters for AES-256)
   encryption:
-    enabled: true
-    algorithm: "AES"
+    secret: ""
+
+  # Mail server configuration
+  mail:
+    host: ""
+    port: ""
+    username: ""
+    password: ""
+    from: ""
+
+  # AI service configuration
+  ai:
+    openaiApiKey: ""
+
+  # Google Analytics configuration
+  google:
+    analyticsTrackingId: ""
+
+  # Custom environment variables
+  # Add any additional sensitive configuration here
+  # These will be available as environment variables in the container
+  custom:
+    {}
+    # CUSTOM_API_KEY: "your-api-key"
+    # ANOTHER_SECRET: "another-value"
+    # DATABASE_ENCRYPTION_KEY: "your-db-encryption-key"
+
+# Additional environment variables to be added to the container
+# These will be added as literal string values
+extraEnvVars:
+  {}
+  # CUSTOM_VAR: "custom-value"
+  # ANOTHER_VAR: "another-value"
+  # JAVA_OPTS: "-Xmx2g -Xms1g"
+
+# Additional environment variables from secrets
+# These will be added as valueFrom.secretKeyRef
+extraEnvVarsSecret:
+  []
+  # - name: SECRET_PASSWORD
+  #   secretName: my-secret
+  #   secretKey: password
+  # - name: API_KEY
+  #   secretName: api-credentials
+  #   secretKey: api-key
+
+# Additional environment variables from config maps
+# These will be added as valueFrom.configMapKeyRef
+extraEnvVarsConfigMap:
+  []
+  # - name: CONFIG_VALUE
+  #   configMapName: my-config
+  #   configMapKey: config-value
+  # - name: FEATURE_FLAG
+  #   configMapName: feature-flags
+  #   configMapKey: enable-feature-x

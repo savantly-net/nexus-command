@@ -1,0 +1,11 @@
+{{- if .Values.applicationConfig }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "nexus-command.fullname" . }}-config
+  labels:
+    {{- include "nexus-command.labels" . | nindent 4 }}
+data:
+  application-k8s.yml: |
+    {{- .Values.applicationConfig | toYaml | nindent 4 }}
+{{- end }}

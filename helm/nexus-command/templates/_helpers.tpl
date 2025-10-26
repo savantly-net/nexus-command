@@ -60,3 +60,33 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Generate the database URL based on configuration
+*/}}
+{{- define "nexus-command.databaseUrl" -}}
+{{- if .Values.postgresql.enabled }}
+{{- printf "jdbc:postgresql://%s-postgresql:5432/%s" (include "nexus-command.fullname" .) .Values.postgresql.auth.database }}
+{{- else }}
+{{- if .Values.secrets.database.url }}
+{{- .Values.secrets.database.url }}
+{{- else }}
+{{- printf "jdbc:postgresql://%s:%v/%s%s" .Values.externalDatabase.host (.Values.externalDatabase.port | int) .Values.externalDatabase.database .Values.externalDatabase.jdbcParams }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+{{/*
+Generate the database username based on configuration
+*/}}
+{{- define "nexus-command.databaseUsername" -}}
+{{- if .Values.postgresql.enabled }}
+{{- .Values.postgresql.auth.username }}
+{{- else }}
+{{- if .Values.secrets.database.username }}
+{{- .Values.secrets.database.username }}
+{{- else }}
+{{- .Values.externalDatabase.username }}
+{{- end }}
+{{- end }}
+{{- end }}
